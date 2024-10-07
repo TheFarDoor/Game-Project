@@ -1,1 +1,1 @@
-Navigate to https://github.com/TheFarDoor/IntroGame/settings/pages for static website.
+Navigate to https://github.com/TheFarDoor/Game-Project/settings/pages for static website.
