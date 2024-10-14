@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Card : MonoBehaviour
+[CreateAssetMenu(fileName = "New_Card", menuName = "Card")]
+public class Card : ScriptableObject
 {
     private enum Card_Type{
         Fire,
@@ -21,10 +22,6 @@ public class Card : MonoBehaviour
     [SerializeField] private int cost; // cost to use card
     [SerializeField] bool used; // bool to track if card is used
     [SerializeField] GameObject model; // model for summon if card summons something
-
-    private Card(){
-
-    }
 
     public int GetCardId(){
         return this.id;

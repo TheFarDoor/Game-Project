@@ -218,8 +218,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245053506}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.72, y: 0.100000024, z: 11.95}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 50, y: 1, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 1066646906}
   - component: {fileID: 1066646907}
   m_Layer: 0
-  m_Name: GameHandler
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -312,7 +312,7 @@ Transform:
   m_GameObject: {fileID: 1066646905}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.72, y: 0.100000024, z: 11.95}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -327,9 +327,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1066646905}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 609e7bb93ca263140bb3352b96d97f36, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e083c3f595e11349980da51692c545b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allFireCards: []
+  allRockCards: []
+  allSpells: []
 --- !u!1 &1899146845
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,7 +439,6 @@ GameObject:
   - component: {fileID: 1945286461}
   - component: {fileID: 1945286460}
   - component: {fileID: 1945286459}
-  - component: {fileID: 1945286458}
   - component: {fileID: 1945286463}
   m_Layer: 0
   m_Name: Enemy
@@ -445,21 +447,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1945286458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1945286456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 953e205d45aebc14780b03b052009212, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cardsSpawned: 0
-  Decksize: 20
-  InspectorDeckList: []
 --- !u!136 &1945286459
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -557,15 +544,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1945286456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ec1e4c9febd0e04d89fcea7eab31a8b, type: 3}
+  m_Script: {fileID: 11500000, guid: 6a1fd41cff151454a9edca8ed9740fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireTypesCount: 5
+  rockTypesCount: 3
+  spellsCount: 2
+  UserDeck: []
+  cardManager: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1899146847}
-  - {fileID: 245053510}
   - {fileID: 357192728}
+  - {fileID: 245053510}
   - {fileID: 1945286462}
   - {fileID: 1066646906}
