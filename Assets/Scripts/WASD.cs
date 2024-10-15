@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     public float gravity = 10f; // gravity
 
     public float lookSpeed = 2f; // speed to look around with the mouse
-    public float lookXLimit = 45f; // limit to how far the player can look up and down
+    public float lookXLimit = 20f; // limit to how far the player can look up and down
     
 
     public float defaultHeight = 2f; // height of player
@@ -25,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
     // Initializes Private Variables
     private Vector3 moveDirection = Vector3.zero; // stores/keeps the direction which the player moves
     private float rotationX = 0f; // tracks the direction which the player os looking up or down
-    private float rotationY = 0f; // tracks the direction which the player os looking left or right
 
     private CharacterController characterController; // refers to the CharacterController component in unity
 
@@ -81,8 +80,6 @@ public class PlayerMovement : MonoBehaviour
         else 
         {
             characterController.height = defaultHeight; // keeps the normal height
-            walkSpeed = 6f; // keeps the walk speed
-            runSpeed = 12f; // keeps the run speed
         }
 
         // Movement
@@ -91,15 +88,15 @@ public class PlayerMovement : MonoBehaviour
         // Rotation and Camera movement
         if (canMove)
         {
-            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed; // moves the character view based on the mouses movement for the y axis
-            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit); // keeps the limit of looking up/down as the lookxlimit
+            // Mouse vertical movement: look up/down (applied only to the camera)
+            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed; 
+            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit); 
+            playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
 
-            rotationY += Input.GetAxis("Mouse X") * lookSpeed; // moves the character view based on the mouses movement for the x axis
-            playerCamera.transform.localRotation = Quaternion.Euler(rotationX, rotationY, 0); // the camera rotation updates
+            // Mouse horizontal movement: rotate the entire player body
+            float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
+            transform.Rotate(0, mouseX, 0); // Rotate the player object based on horizontal mouse input
 
-
-            float mouseX = Input.GetAxis("Mouse X") * lookSpeed; // 
-            transform.Rotate(0, mouseX, 0);
         }
 
     }
