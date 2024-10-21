@@ -24,14 +24,16 @@ public class CardsManager : MonoBehaviour
 
     public List<Card> GetRandomCards(List<Card> listOfCards, int numOfCards){
         List<Card> tempCards = new List<Card>();
-        while (tempCards.Count < numOfCards){
-            if ((numOfCards - tempCards.Count) >= listOfCards.Count){
-                tempCards.AddRange(listOfCards.OrderBy(x => Random.value).Take(listOfCards.Count).ToList());
-            }
-            else if((numOfCards - tempCards.Count) < listOfCards.Count){
-                tempCards.AddRange(listOfCards.OrderBy(x => Random.value).Take(numOfCards - tempCards.Count).ToList());
-            }
+        if (numOfCards > listOfCards.Count){
+            Debug.Log("More cards requested than available");
         }
+
+        // Get Random card from list and add it
+        for (int i=0; i < numOfCards; i++){
+            int RandomIndex = Random.Range(0, listOfCards.Count);
+            tempCards.Add(listOfCards[RandomIndex]);
+        }
+
         return tempCards;
     }
 
