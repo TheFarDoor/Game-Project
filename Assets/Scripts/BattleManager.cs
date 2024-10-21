@@ -9,22 +9,33 @@ public class BattleManager : MonoBehaviour
     public Transform playerBattlePos;
     public Transform enemyBattlePos;
 
-     private Vector3 previousPlayerPos;
+    // variables to track postions and rotation prior to the battle
+    private Vector3 previousPlayerPos;
     private Quaternion previousPlayerRot;
     private Vector3 previousEnemyPos;
     private Quaternion previousEnemyRot;
 
+    // references to player and enemy gameobjects
     private GameObject player;
     private GameObject enemy;
 
-    [SerializeField] private bool battle;
+    private bool playerTurn; // bool to  track if its the players turn or not
+    public bool battle; // bool to track if battle is happening
+
+    public GameObject Arena;
 
     public void StartBattle(Transform p, Transform e){ // p is player transform and e is enemy transform thats passed in
 
-        // get player and enemy transform reference and save their position+rotation data prior to battle
+        // get player and enemy gameObject reference
         player = p.gameObject;
         enemy = e.gameObject;
 
+        // get arena postions
+        Arena = enemy.GetComponent<Enemy>().assginedArena;
+        playerBattlePos = Arena.transform.Find("PlayerPos");
+        enemyBattlePos = Arena.transform.Find("EnemyPos");
+
+        // save their position+rotation data prior to battle
         previousPlayerPos = player.transform.position;
         previousPlayerRot = player.transform.rotation;
 
@@ -38,6 +49,9 @@ public class BattleManager : MonoBehaviour
         player.transform.SetPositionAndRotation(playerBattlePos.position, playerBattlePos.rotation);
         enemy.transform.SetPositionAndRotation(enemyBattlePos.position, enemyBattlePos.rotation);
 
+        // Assign a random person to start first
+        playerTurn = (UnityEngine.Random.Range(0,2) == 0? true : false);
+        
         StartCoroutine(EndBattle());
     }
 
@@ -54,5 +68,9 @@ public class BattleManager : MonoBehaviour
         player.GetComponent<PlayerMovement>().enabled = true; // turn on player movement script to allow movement
 
         player = enemy = null; // reset references to gameobjects
+    }
+
+    void switchTurn() {
+        playerTurn = !playerTurn;
     }
 }
