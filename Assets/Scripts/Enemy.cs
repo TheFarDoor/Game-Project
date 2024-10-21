@@ -1,0 +1,80 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
+using UnityEngine.AI;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public class Enemy : MonoBehaviour
+{
+    [Header("Details")]
+    public string enemy_name;
+    public string description;
+
+
+    [Header("Status")]
+    public bool isDefeated = false; // Bool to track if player has beaten this enemy
+    public bool inBattle;
+
+    [Header("FOV Settings")]
+    [Range(1, 10)]
+    public float viewRadius = 5; // How far the enemy can see (default is 5)
+    [Range(10,160)]
+    public float viewAngle = 40; // How wide the enemy can see (default is 40)
+    public LayerMask playerMask; // LayerMask of player
+    public LayerMask obstacleMask; // LayerMask for obstacles such as walls
+    [Range(0.0f, 1.0f)]
+    public float decisionDelay = 0.2f; // delay time in between checks for player (0.2f by default)
+
+    [Header("References")]
+    public NavMeshAgent agent;
+    [SerializeField] private GameObject gameManager;
+    
+
+    public void Start(){
+        gameManager = GameObject.Find("Game Manager");
+        StartCoroutine("HandleBehaviour", decisionDelay);
+    }
+
+    IEnumerator HandleBehaviour(float delay){
+        // code below runs every x seconds where x is the delay given
+        while(true){
+            yield return new WaitForSeconds(delay); 
+            if (!inBattle){ // if the player is not already in a battle
+                if(CheckForPlayer() != null && !isDefeated){ // if there is a player in range and the player hasnt beaten this enenmy already
+                    // Load up a battle
+                    Transform playerTransform = CheckForPlayer();
+                    gameManager.GetComponent<BattleManager>().StartBattle(playerTransform, this.transform);
+                }    
+            }
+        }
+    }
+
+    // Check for targets in visible range. Returns transform of player if found else it returns null
+    private Transform CheckForPlayer(){
+        Collider[] targetsInView = Physics.OverlapSphere(transform.position, viewRadius, playerMask); // cast a overlap sphere and store detected colliders in array
+        
+        if (targetsInView.Length != 0){ // if player detected
+            Transform playerTarget = targetsInView[0].transform;
+            Vector3 playerDirection = (playerTarget.position - transform.position).normalized;
+            if (Vector3.Angle(transform.forward, playerDirection) < viewAngle/2){ // check if player is within view range 
+                float distanceToPlayer = Vector3.Distance(transform.position, playerTarget.position);
+                if(!Physics.Raycast(transform.position, playerDirection, distanceToPlayer, obstacleMask)){ // use raycast to make sure there is no obstacle in the way
+                    Debug.Log("Player Seen");
+                    Debug.DrawRay(transform.position, playerDirection * distanceToPlayer, Color.red, 0.15f);
+                    return playerTarget;
+                }
+            }
+        }
+        return null;
+    }
+
+    void OnDrawGizmos(){
+        Gizmos.DrawWireSphere(transform.position, viewRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + ((Quaternion.AngleAxis((viewAngle/2), transform.up) * transform.forward).normalized * viewRadius));
+        Gizmos.DrawLine(transform.position, transform.position + ((Quaternion.AngleAxis(-(viewAngle/2), transform.up) * transform.forward).normalized * viewRadius));
+    }
+}

@@ -27,11 +27,9 @@ public class CardsManager : MonoBehaviour
         while (tempCards.Count < numOfCards){
             if ((numOfCards - tempCards.Count) >= listOfCards.Count){
                 tempCards.AddRange(listOfCards.OrderBy(x => Random.value).Take(listOfCards.Count).ToList());
-                Debug.Log(tempCards.Count);
             }
             else if((numOfCards - tempCards.Count) < listOfCards.Count){
                 tempCards.AddRange(listOfCards.OrderBy(x => Random.value).Take(numOfCards - tempCards.Count).ToList());
-                Debug.Log(tempCards.Count);
             }
         }
         return tempCards;
