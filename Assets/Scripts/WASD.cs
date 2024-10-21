@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -10,21 +11,23 @@ public class PlayerMovement : MonoBehaviour
 
     public float walkSpeed = 6f; // walking speed
     public float runSpeed = 12f; // running speed
-    public float crouchSpeed = 3f; // crouching speed
+    public float crouchSpeed = 2f; // crouching speed
 
-    public float jumpPower = 7f; // jumping power
-    public float gravity = 10f; // gravity
+    public float jumpPower = 4f; // jumping power
+    public float gravity = 11f; // gravity
 
     public float lookSpeed = 2f; // speed to look around with the mouse
-    public float lookXLimit = 20f; // limit to how far the player can look up and down
     
 
     public float defaultHeight = 2f; // height of player
     public float crouchHeight = 1f; // height when crouching
 
-    // Initializes Private Variables
+    public float stamina = 100f; // stamina
+    public float staminaTime = 3f; // time for sprint
+    public float staminaRecovery = 2f; // time to 
+
+    // Initialize Private Variables
     private Vector3 moveDirection = Vector3.zero; // stores/keeps the direction which the player moves
-    private float rotationX = 0f; // tracks the direction which the player os looking up or down
 
     private CharacterController characterController; // refers to the CharacterController component in unity
 
@@ -55,6 +58,40 @@ public class PlayerMovement : MonoBehaviour
         float movementDirectionY = moveDirection.y; // The Y direction (height direction)
         moveDirection = (forward * curSpeedX) + (right * curSpeedY); // finds the direction to move the player and at what speed
 
+
+        
+
+        if (isRunning && stamina > 0)
+        {
+            // Decrease stamina over time when the player is running
+            stamina -= 100f / staminaTime * Time.deltaTime;
+
+            // make sure it doesn't drop below 0
+            if (stamina < 0) 
+            {
+                stamina = 0;
+            }
+
+            // If the player runs out of stamina they cannot sprint anymore
+            if (stamina == 0)
+            {
+                speed = walkSpeed; // forces the player to walk
+            }
+        }
+        else
+        {
+            // Recover stamina over time when the player is not running
+            stamina += 100f / staminaRecovery * Time.deltaTime;
+
+            // make sure it doesn't go above 100
+            if (stamina > 100f) 
+            {
+                stamina = 100f;
+            }
+        }
+        
+
+
         // Jumping logic
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded) // applies the jump power to height
         {
@@ -69,6 +106,9 @@ public class PlayerMovement : MonoBehaviour
         if (!characterController.isGrounded) // if the character is above ground (jumped)
         {
             moveDirection.y -= gravity * Time.deltaTime;
+            // player can't move front/back or that it makes them move slower/less distance
+            moveDirection.x *= 0.2f;
+            moveDirection.z *= 0.2f;
         }
 
         // Crouching logic
@@ -88,11 +128,6 @@ public class PlayerMovement : MonoBehaviour
         // Rotation and Camera movement
         if (canMove)
         {
-            // Mouse vertical movement: look up/down (applied only to the camera)
-            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed; 
-            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit); 
-            playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-
             // Mouse horizontal movement: rotate the entire player body
             float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
             transform.Rotate(0, mouseX, 0); // Rotate the player object based on horizontal mouse input
