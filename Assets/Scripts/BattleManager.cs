@@ -56,6 +56,8 @@ public class BattleManager : MonoBehaviour
         player.transform.Find("Main Camera").gameObject.SetActive(false); // disable player cam
         Arena.transform.Find("Cam").gameObject.SetActive(true); // enable arena cam
 
+        battle = true;
+
         StartCoroutine(EndBattle());
     }
 
@@ -76,6 +78,8 @@ public class BattleManager : MonoBehaviour
         Arena.transform.Find("Cam").gameObject.SetActive(false); // disable arena cam
 
         player = enemy = null; // reset references to gameobjects
+
+        battle = false;
     }
 
     void switchTurn() {

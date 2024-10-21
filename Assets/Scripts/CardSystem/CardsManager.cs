@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class CardsManager : MonoBehaviour
 {
+    public GameObject cardUIPrefab;  // Reference to your card UI prefab
+    public Transform cardParent;     // Parent object (like a Panel or Canvas) to hold the cards
+
     public List<Card> allFireCards;
     public List<Card> allRockCards;
 
@@ -46,5 +49,25 @@ public class CardsManager : MonoBehaviour
         tempDeck.AddRange(GetRandomCards(allSpells, spells));
 
         return tempDeck;
+    }
+    public void DisplayCards(List<Card> cards){
+        // Clear the existing UI (if any)
+        foreach (Transform child in cardParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Card card in cards)
+        {
+            // Instantiate a new card UI
+            GameObject cardUI = Instantiate(cardUIPrefab, cardParent);
+
+            // Get the UI components (you need to define a script to handle this, explained below)
+            CardUI cardUIComponent = cardUI.GetComponent<CardUI>();
+            if (cardUIComponent != null)
+            {
+                cardUIComponent.SetCardData(card); // Pass the card data to the UI
+            }
+        }
     }
 }
