@@ -132,6 +132,8 @@ GameObject:
   - component: {fileID: 817994128792328966}
   - component: {fileID: 7331416911039432396}
   - component: {fileID: 730961371546676554}
+  - component: {fileID: 2015901715295627629}
+  - component: {fileID: 5156586918522811223}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -252,3 +254,43 @@ MonoBehaviour:
   lookSpeed: 2
   defaultHeight: 2
   crouchHeight: 1
+  stamina: 100
+  staminaTime: 3
+  staminaRecovery: 2
+--- !u!114 &2015901715295627629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8266795405186358310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d40d4277e52f242f58492121e5af8bdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Inventory: {fileID: 0}
+  slot: {fileID: 0}
+  pref: {fileID: 3836735761471157533, guid: 8564e8ab91971478e92506badf8a2bb4, type: 3}
+  Vis: 0
+  d1: {fileID: 0}
+--- !u!114 &5156586918522811223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8266795405186358310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a1fd41cff151454a9edca8ed9740fca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireTypesCount: 0
+  rockTypesCount: 0
+  spellsCount: 0
+  randomDeck: 0
+  userHand: []
+  userDeck: []
+  userCardCollection: []
+  cardManager: {fileID: 0}
