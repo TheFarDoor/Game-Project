@@ -12,7 +12,7 @@ public class Card : ScriptableObject
         Earth,
         Max // a value to track end of enums
     };
-    
+
     [SerializeField] private int id; // card id
     [SerializeField] private Card_Type type; // card type
     [SerializeField] private string card_name; // card name
@@ -23,68 +23,47 @@ public class Card : ScriptableObject
     [SerializeField] bool used; // bool to track if card is used
     [SerializeField] GameObject model; // model for summon if card summons something
 
-    public int GetCardId(){
-        return this.id;
-    }
+    // Getter method for each private variable
+    public int Id => id;
+    public string CardName => card_name;
+    public string Description => description;
+    public int Damage => damage;
+    public int Defence => defence;
+    public int Cost => cost;
+    public bool Used => used;
+    public GameObject Model => model;
 
-    public void GetCardType(){
-        Debug.Log(this.type);
-    }
-
-    public void SetCardType(string type){
-        for (int i=0; i<(int)Card_Type.Max; i++){
-            if (((Card_Type)i).ToString().ToLower() == type.ToLower()){
-                this.type = (Card_Type)i;
-            }
+    public void SetCardType(string type)
+    {
+        if (Card_Type.TryParse(type, true, out Card_Type cardType))
+        {
+            this.type = cardType;
         }
-        Debug.Log("NO SUCH TYPE!");
+        else
+        {
+            Debug.LogError("No such type!");
+        }
     }
 
-    public string GetCardName(){
-        return this.card_name;
-    }
-
-    public string GetCardDescription(){
-        return this.description;
-    }
-
-    public int GetCardDamage(){
-        return this.damage;
-    }
-
-    public void SetCardDamage(int val){
+    public void SetCardDamage(int val)
+    {
         int newDamage = this.damage + val;
-        if (newDamage < 0){
-            this.SetCardDamage(0);
-        }
-        else if (newDamage > 100){
-            this.SetCardDamage(100);
-        }
+        this.damage = Mathf.Clamp(newDamage, 0, 10); // Clamps value between 0 and 100
     }
 
-    public int GetCardDefence(){
-        return this.defence;
-    }
-
-    public void SetCardDefence(int val){
+    public void SetCardDefence(int val)
+    {
         int newDefence = this.defence + val;
-        if (newDefence < 0){
-            this.SetCardDefence(0);
-        }
-        else if (val > 100){
-            this.SetCardDefence(100);
-        }
+        this.defence = Mathf.Clamp(newDefence, 0, 10); // Clamps value between 0 and 100
     }
 
-    public int GetCardCost(){
-        return this.cost;
+    public void UseCard()
+    {
+        this.used = true; // Mark card as used
     }
 
-    public bool GetCardUsedStatus(){
-        return this.used;
-    }
-
-    public GameObject GetCardModel(){
-        return this.model;
+    public void ResetCardUsage()
+    {
+        this.used = false; // Reset usage status for the next battle
     }
 }

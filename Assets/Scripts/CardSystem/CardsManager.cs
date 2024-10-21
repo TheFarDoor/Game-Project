@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,6 @@ public class CardsManager : MonoBehaviour
 
     public List<Card> allFireCards;
     public List<Card> allRockCards;
-
     public List<Card> allSpells;
 
     public void Awake() {
@@ -19,10 +19,18 @@ public class CardsManager : MonoBehaviour
     }
 
     private void LoadCard() {
-        // Loading all the cards from the Resources Folder
-        allFireCards = Resources.LoadAll<Card>("Cards/Fire").ToList();
-        allRockCards = Resources.LoadAll<Card>("Cards/Rock").ToList();
-        allSpells = Resources.LoadAll<Card>("Cards/Spell").ToList();
+
+        try{
+            // Loading all the cards from the Resources Folder
+            allFireCards = Resources.LoadAll<Card>("Cards/Fire").ToList();
+            allRockCards = Resources.LoadAll<Card>("Cards/Rock").ToList();
+            allSpells = Resources.LoadAll<Card>("Cards/Spell").ToList();
+        }
+        catch(Exception e)
+        {
+            return;
+        }
+
     }
 
     public List<Card> GetRandomCards(List<Card> listOfCards, int numOfCards){
@@ -33,7 +41,7 @@ public class CardsManager : MonoBehaviour
 
         // Get Random card from list and add it
         for (int i=0; i < numOfCards; i++){
-            int RandomIndex = Random.Range(0, listOfCards.Count);
+            int RandomIndex = UnityEngine.Random.Range(0, listOfCards.Count);
             tempCards.Add(listOfCards[RandomIndex]);
         }
 
