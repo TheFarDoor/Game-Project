@@ -63,7 +63,6 @@ public class Enemy : MonoBehaviour
             if (Vector3.Angle(transform.forward, playerDirection) < viewAngle/2){ // check if player is within view range 
                 float distanceToPlayer = Vector3.Distance(transform.position, playerTarget.position);
                 if(!Physics.Raycast(transform.position, playerDirection, distanceToPlayer, obstacleMask)){ // use raycast to make sure there is no obstacle in the way
-                    Debug.Log("Player Seen");
                     Debug.DrawRay(transform.position, playerDirection * distanceToPlayer, Color.red, 0.15f);
                     return playerTarget;
                 }

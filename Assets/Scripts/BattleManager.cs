@@ -51,7 +51,11 @@ public class BattleManager : MonoBehaviour
 
         // Assign a random person to start first
         playerTurn = (UnityEngine.Random.Range(0,2) == 0? true : false);
-        
+
+        // Switch Cameras
+        player.transform.Find("Main Camera").gameObject.SetActive(false); // disable player cam
+        Arena.transform.Find("Cam").gameObject.SetActive(true); // enable arena cam
+
         StartCoroutine(EndBattle());
     }
 
@@ -66,6 +70,10 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         enemy.GetComponent<Enemy>().inBattle = false;
         player.GetComponent<PlayerMovement>().enabled = true; // turn on player movement script to allow movement
+
+        // Switch Cameras
+        player.transform.Find("Main Camera").gameObject.SetActive(true); // enable player cam
+        Arena.transform.Find("Cam").gameObject.SetActive(false); // disable arena cam
 
         player = enemy = null; // reset references to gameobjects
     }
