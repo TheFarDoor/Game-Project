@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour
     [Header("References")]
     public NavMeshAgent agent;
     [SerializeField] private GameObject gameManager;
+    public GameObject assginedArena;
     
 
     public void Start(){
@@ -43,7 +44,7 @@ public class Enemy : MonoBehaviour
         while(true){
             yield return new WaitForSeconds(delay); 
             if (!inBattle){ // if the player is not already in a battle
-                if(CheckForPlayer() != null && !isDefeated){ // if there is a player in range and the player hasnt beaten this enenmy already
+                if(!isDefeated && CheckForPlayer() != null){ // if there is a player in range and the player hasnt beaten this enenmy already
                     // Load up a battle
                     Transform playerTransform = CheckForPlayer();
                     gameManager.GetComponent<BattleManager>().StartBattle(playerTransform, this.transform);
