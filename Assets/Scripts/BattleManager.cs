@@ -58,6 +58,9 @@ public class BattleManager : MonoBehaviour
 
         battle = true;
 
+        List<Card> list = this.transform.GetComponent<CardsManager>().GenerateRandomDeck(3, 2, 0);
+        this.transform.GetComponent<CardsManager>().DisplayCards(list);
+
         StartCoroutine(EndBattle());
     }
 

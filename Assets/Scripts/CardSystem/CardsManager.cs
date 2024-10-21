@@ -70,7 +70,7 @@ public class CardsManager : MonoBehaviour
             // Instantiate a new card UI
             GameObject cardUI = Instantiate(cardUIPrefab, cardParent);
 
-            // Get the UI components (you need to define a script to handle this, explained below)
+            // Get the UI components 
             CardUI cardUIComponent = cardUI.GetComponent<CardUI>();
             if (cardUIComponent != null)
             {

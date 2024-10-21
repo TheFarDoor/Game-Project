@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10436b922b49cc0438fffaac329f1be2, type: 3}
   m_Name: Small Rock
   m_EditorClassIdentifier: 
-  id: 0
+  id: 2
   type: 3
-  card_name: 
-  description: 
-  damage: 24
-  defence: 88
-  cost: 2
+  card_name: Small Rock
+  description: rok
+  damage: 0
+  defence: 2
+  cost: 0
   used: 0
   model: {fileID: 0}

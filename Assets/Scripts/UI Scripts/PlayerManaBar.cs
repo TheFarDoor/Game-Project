@@ -38,24 +38,6 @@ public class ManaSystem : MonoBehaviour
 
     }
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            currentMana--;
-            currentMana = Mathf.Clamp(currentMana, 0, maxMana);
-            manaBar.value = currentMana;
-            UpdateManaText();
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            currentMana++;
-            currentMana = Mathf.Clamp(currentMana, 0, maxMana);
-            manaBar.value = currentMana;
-            UpdateManaText();
-        }
-    }
-
     void UpdateManaText() // Updates the UI to change the current Mana count
     {
         manaText.text = "Mana: " + currentMana.ToString("F0") + " / " + maxMana.ToString("F0");

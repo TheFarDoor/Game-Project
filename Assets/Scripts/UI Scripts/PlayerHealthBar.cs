@@ -38,17 +38,6 @@ public class HealthSystem : MonoBehaviour
 
     }
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            currentHealth--;
-            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-            healthBar.value = currentHealth;
-            UpdateHealthText();
-        }
-    }
-
     void UpdateHealthText() // Update the Health UI to reflect current Health
     {
         healthText.text = "Health: " + currentHealth.ToString("F0") + " / " + maxHealth.ToString("F0");
