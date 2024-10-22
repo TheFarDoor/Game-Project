@@ -49,13 +49,14 @@ public class pickUp : MonoBehaviour
                 // Add the card to the player's User Card Collection
                 playerDeck.UserCardCollection.Add(card);
                 Debug.Log("Card added to user collection: " + card.name);
+
             }
             else
             {
                 Debug.Log("Player already has this card: " + card.name);
             }
 
-            Destroy(gameObject);
+            Destroy(transform.parent.gameObject);
         }
     }
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1133375070671951641}
   - component: {fileID: 6678865009072806338}
   - component: {fileID: 8591316844090534520}
+  - component: {fileID: 4646643835978779149}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -46,6 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b273a1084162b469fbdcb81d551972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  battleUIactive: 0
 --- !u!114 &6678865009072806338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,15 +78,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 097209630ad41e544aa2d53546660e1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTurn: 0
   battleOngoing: 0
   Arena: {fileID: 0}
   P_Health: 0
   P_Mana: 0
   E_Health: 0
   E_Mana: 0
+  StartingCardAmount: 5
   original_CardUIColor: {r: 0.36078432, g: 0.2509804, b: 0.2, a: 1}
   hoverd_CardUIColor: {r: 0.5294118, g: 0.30588236, b: 0.2, a: 1}
   selected_CardUIColor: {r: 0.5176471, g: 0.5764706, b: 0.0627451, a: 1}
   hoveredCard: {fileID: 0}
   selectedCard: {fileID: 0}
   selectedCardUI: {fileID: 0}
+  cardSelectionPhase: 0
+  cardPlacePhase: 0
+--- !u!114 &4646643835978779149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3955390170709009430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b7318a7bb4af4b7fa146c3f5ad2aeb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

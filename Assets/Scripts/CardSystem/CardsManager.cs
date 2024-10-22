@@ -16,6 +16,7 @@ public class CardsManager : MonoBehaviour
     public List<Card> allRockCards;
     public List<Card> allSpells;
 
+
     public void Awake() {
         LoadCard();
     }

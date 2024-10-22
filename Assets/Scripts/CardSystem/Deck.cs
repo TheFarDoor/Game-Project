@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Deck : MonoBehaviour
 {
+
     [Header("Random Deck")]
     [SerializeField] private int fireTypesCount; // number of fire types in this deck
     [SerializeField] private int rockTypesCount; // number of rock types in this deck
@@ -35,6 +37,7 @@ public class Deck : MonoBehaviour
             RandomizeDeck();
         }
     }
+
 
     public void RandomizeDeck(){
         userDeck = cardManager.GenerateRandomDeck(fireTypesCount, rockTypesCount, spellsCount); // uses the GenerateRandomDeck function to generate a deck with the number of each card type given
