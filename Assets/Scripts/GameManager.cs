@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     {   
         player = GameObject.Find("/Player");
         Battle_UI = GameObject.Find("/Canvas/BattleUI");
-        battle_manager = GameObject.Find("/Game Manager").GetComponent<BattleManager>();
+        battle_manager = this.GetComponent<BattleManager>();
 
         // Check if an instance already exists
         if (instance == null)
