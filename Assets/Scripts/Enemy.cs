@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour
     [Header("Details")]
     public string enemy_name;
     public string description;
+    public float e_Starting_health;
+    public float e_Starting_mana;
 
 
     [Header("Status")]

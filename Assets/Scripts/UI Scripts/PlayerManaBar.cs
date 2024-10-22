@@ -9,14 +9,21 @@ public class ManaSystem : MonoBehaviour
     private float currentMana = 5;  // Variable to track the current Mana
     public TextMeshProUGUI manaText;
 
+    public bool isInitialized;
+
+    public float CurrentMana => currentMana; // getter for current mana
+
     public void Initialize() // Instantiate the mana with the value in the slider
     {
-        manaText = GameObject.Find("/Canvas/BattleUI/Mana").GetComponent<TextMeshProUGUI>();
-        manaBar =  GameObject.Find("/Canvas/BattleUI/ManaBar").GetComponent<Slider>();
-        currentMana = maxMana;
-        manaBar.maxValue = maxMana;
-        manaBar.value = currentMana;
-        UpdateManaText();
+        if(!isInitialized){
+            manaText = GameObject.Find("/Canvas/BattleUI/Mana").GetComponent<TextMeshProUGUI>();
+            manaBar =  GameObject.Find("/Canvas/BattleUI/ManaBar").GetComponent<Slider>();
+            currentMana = maxMana;
+            manaBar.maxValue = maxMana;
+            manaBar.value = currentMana; 
+            UpdateManaText(); 
+            isInitialized = true;
+        }
     }
 
     public void RemoveMana(float manaCost) // Take damage and update the mana slider
