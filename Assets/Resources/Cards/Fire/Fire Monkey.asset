@@ -20,4 +20,4 @@ MonoBehaviour:
   defence: 2
   cost: 1
   used: 0
-  model: {fileID: 0}
+  model: {fileID: 7451762790753324346, guid: fbc62769d99c464418d12906223f22c2, type: 3}

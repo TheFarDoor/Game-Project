@@ -60,7 +60,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         // Assuming you have a sprite in the card model (modify as per your setup)
         if (card.Model != null)
         {
-            cardImage.sprite = card.Model.GetComponent<SpriteRenderer>().sprite;
+            
         }
     }
 
@@ -80,7 +80,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     }
 
     public void OnPointerClick(PointerEventData eventData){
-        if(!thisCardSelected){
+        if (battleManager.playerTurn && !thisCardSelected && eventData.button == PointerEventData.InputButton.Left){
             battleManager.UpdateSelectedCard(thisCard, this.GetComponent<Image>());
         }
     }

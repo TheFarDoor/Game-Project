@@ -105,7 +105,6 @@ GameObject:
   - component: {fileID: 817994128792328966}
   - component: {fileID: 7331416911039432396}
   - component: {fileID: 730961371546676554}
-  - component: {fileID: 5724434164768279885}
   - component: {fileID: 8504156924445825647}
   - component: {fileID: 5623442018339268014}
   - component: {fileID: 1568014161385896439}
@@ -232,18 +231,6 @@ MonoBehaviour:
   stamina: 100
   staminaTime: 3
   staminaRecovery: 2
---- !u!114 &5724434164768279885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8266795405186358310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abeca7e5d08ffab4795677d9949df9ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8504156924445825647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,4 +280,5 @@ MonoBehaviour:
   userHand: []
   userDeck: []
   userCardCollection: []
+  usedCardPile: []
   cardManager: {fileID: 0}

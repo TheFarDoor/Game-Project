@@ -5,6 +5,7 @@ using Microsoft.Unity.VisualStudio.Editor;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class BattleManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class BattleManager : MonoBehaviour
     private GameObject player;
     private GameObject enemy;
 
-    private bool playerTurn; // bool to  track if its the players turn or not
+    public bool playerTurn; // bool to  track if its the players turn or not
     public bool battleOngoing; // bool to track if battle is happening
 
     public GameObject Arena;
@@ -32,6 +33,8 @@ public class BattleManager : MonoBehaviour
     [Space(10)]
     public int E_Health;
     public int E_Mana;
+    [Space(10)]
+    public int StartingCardAmount = 5;
 
     [Header("Card UI Colors")]
     public Color original_CardUIColor;
@@ -42,10 +45,22 @@ public class BattleManager : MonoBehaviour
     public Card hoveredCard = null;
     public Card selectedCard;
     public UnityEngine.UI.Image selectedCardUI;
+    [Header("PlayTurnState")]
+    public bool cardSelectionPhase;
+    public bool cardPlacePhase;
 
     public void Update(){
         if(battleOngoing && Input.GetKeyDown(KeyCode.Q)){
             StartCoroutine(EndBattle());
+        }
+
+        if(battleOngoing){
+            if (playerTurn){
+                CheckClick();
+            }
+            else{
+                enemy.GetComponent<Enemy>();
+            } 
         }
     }
 
@@ -76,39 +91,57 @@ public class BattleManager : MonoBehaviour
         enemy.transform.SetPositionAndRotation(enemyBattlePos.position, enemyBattlePos.rotation);
 
         // Assign a random person to start first
-        playerTurn = UnityEngine.Random.Range(0,2) == 0? true : false;
+        playerTurn = UnityEngine.Random.Range(0,2) == 0;
 
         // Switch Cameras
         player.transform.Find("Main Camera").gameObject.SetActive(false); // disable player cam
         Arena.transform.Find("Cam").gameObject.SetActive(true); // enable arena cam
 
-        battleOngoing = true;
-
-        this.transform.GetComponent<CardsManager>().DisplayCards(player.GetComponent<Deck>().UserDeck);
-
         // Make cursor visible and free to move
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
-        TurnHandler();
+        player.GetComponent<Deck>().DrawCardsToHand(StartingCardAmount);
+        enemy.GetComponent<Deck>().DrawCardsToHand(StartingCardAmount);
+
+        this.transform.GetComponent<CardsManager>().DisplayCards(player.GetComponent<Deck>().UserHand);
+
+        battleOngoing = true;
+    }
+
+    private void CheckClick(){
+        if (Input.GetMouseButtonDown(0)){
+            if (!EventSystem.current.IsPointerOverGameObject()){
+                WhatWasClicked();
+            }
+        }
+        if (Input.GetMouseButtonDown(1)){
+            Debug.Log("right clicked");
+            if (!EventSystem.current.IsPointerOverGameObject()){
+                Debug.Log("Deselect Card");
+                UpdateSelectedCard(null, null);
+            }
+        }
+    }
+
+    private void WhatWasClicked(){
+        Ray ray = Arena.transform.Find("Cam").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray, out hit)){
+            Debug.Log("Clicked on object: " + hit.collider.gameObject.name);
+        }
     }
 
     // Set card that is selected by player
     public void UpdateSelectedCard(Card newSelectedCard, UnityEngine.UI.Image newSelectedCardUI){
         selectedCard = newSelectedCard;
-        if (selectedCardUI){
-            selectedCardUI.color = original_CardUIColor;
+        if (selectedCardUI){ // checking to make sure its not null before assingment of colour
+            selectedCardUI.color = original_CardUIColor; // reset old selected card to original colour
         }
         selectedCardUI = newSelectedCardUI;
-        selectedCardUI.color = selected_CardUIColor;
-    }
-
-    private void TurnHandler(){
-        if (playerTurn){
-            player.GetComponent<PlayerBattleLogic>().Start_P_Turn();
-        }
-        else{
-            enemy.GetComponent<Enemy>();
+        if (selectedCardUI){ // checking to make sure its not null before assingment of colour
+            selectedCardUI.color = selected_CardUIColor; // make new selected card the selected colour
         }
     }
 
@@ -140,7 +173,6 @@ public class BattleManager : MonoBehaviour
 
     void switchTurn() {
         playerTurn = !playerTurn;
-        TurnHandler();
     }
 
     public bool GameEndChecker(){ // return true if one person has lost all their hp
