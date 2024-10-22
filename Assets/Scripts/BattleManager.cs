@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-    public Transform playerBattlePos;
-    public Transform enemyBattlePos;
+    private Transform playerBattlePos;
+    private Transform enemyBattlePos;
 
     // variables to track postions and rotation prior to the battle
     private Vector3 previousPlayerPos;
@@ -23,6 +23,13 @@ public class BattleManager : MonoBehaviour
     public bool battle; // bool to track if battle is happening
 
     public GameObject Arena;
+
+    [Header("Battle Parameters")]
+    public int P_Health;
+    public int P_Mana;
+    [Space(10)]
+    public int E_Health;
+    public int E_Mana;
 
     public void StartBattle(Transform p, Transform e){ // p is player transform and e is enemy transform thats passed in
 
@@ -50,7 +57,7 @@ public class BattleManager : MonoBehaviour
         enemy.transform.SetPositionAndRotation(enemyBattlePos.position, enemyBattlePos.rotation);
 
         // Assign a random person to start first
-        playerTurn = (UnityEngine.Random.Range(0,2) == 0? true : false);
+        playerTurn = UnityEngine.Random.Range(0,2) == 0? true : false;
 
         // Switch Cameras
         player.transform.Find("Main Camera").gameObject.SetActive(false); // disable player cam
@@ -61,7 +68,17 @@ public class BattleManager : MonoBehaviour
         List<Card> list = this.transform.GetComponent<CardsManager>().GenerateRandomDeck(3, 2, 0);
         this.transform.GetComponent<CardsManager>().DisplayCards(list);
 
+        TurnHandler();
         StartCoroutine(EndBattle());
+    }
+
+    private void TurnHandler(){
+        if (playerTurn){
+            player.GetComponent<PlayerBattleLogic>().Start_P_Turn();
+        }
+        else{
+            enemy.GetComponent<Enemy>();
+        }
     }
 
     public IEnumerator EndBattle(){
@@ -87,5 +104,13 @@ public class BattleManager : MonoBehaviour
 
     void switchTurn() {
         playerTurn = !playerTurn;
+        TurnHandler();
+    }
+
+    public bool GameEndChecker(){ // return true if one person has lost all their hp
+        if (P_Health <= 0 || E_Health <= 0){
+            return true;
+        }
+        return false;
     }
 }
