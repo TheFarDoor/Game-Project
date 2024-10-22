@@ -322,6 +322,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 4646643835978779149, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -351,6 +355,22 @@ PrefabInstance:
       propertyPath: rockTypesCount
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1568014161385896439, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
+      propertyPath: userCardCollection.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1568014161385896439, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
+      propertyPath: 'userCardCollection.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d2674f388031a4d91af390527483728e, type: 2}
+    - target: {fileID: 1568014161385896439, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
+      propertyPath: 'userCardCollection.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a3af8585b81442242bb38c0b1d535924, type: 2}
+    - target: {fileID: 1568014161385896439, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
+      propertyPath: 'userCardCollection.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 17688903156d8c740940de41a3cc9945, type: 2}
     - target: {fileID: 7349123939646571626, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1
@@ -677,6 +697,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5275251937153499479, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
+      propertyPath: pref
+      value: 
+      objectReference: {fileID: 1126759391420411042, guid: b2f9ca26b4eae344fb5d85f398e9d3dd, type: 3}
     - target: {fileID: 6911392307453699921, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -762,7 +786,8 @@ PrefabInstance:
       value: Canvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2327177700420542984, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
