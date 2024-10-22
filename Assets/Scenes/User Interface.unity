@@ -189,9 +189,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8869849787097351528, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
+      propertyPath: enemy_name
+      value: Bob
+      objectReference: {fileID: 0}
+    - target: {fileID: 8869849787097351528, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
+      propertyPath: description
+      value: he is bob
+      objectReference: {fileID: 0}
+    - target: {fileID: 8869849787097351528, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
       propertyPath: assginedArena
       value: 
       objectReference: {fileID: 1633368169}
+    - target: {fileID: 8869849787097351528, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
+      propertyPath: e_Starting_mana
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8869849787097351528, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
+      propertyPath: e_Starting_health
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

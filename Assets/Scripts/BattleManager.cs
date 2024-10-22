@@ -28,11 +28,11 @@ public class BattleManager : MonoBehaviour
     public GameObject Arena;
 
     [Header("Battle Parameters")]
-    public int P_Health;
-    public int P_Mana;
+    public float P_Health;
+    public float P_Mana;
     [Space(10)]
-    public int E_Health;
-    public int E_Mana;
+    public float E_Health;
+    public float E_Mana;
     [Space(10)]
     public int StartingCardAmount = 5;
 
@@ -48,6 +48,8 @@ public class BattleManager : MonoBehaviour
     [Header("PlayTurnState")]
     public bool cardSelectionPhase;
     public bool cardPlacePhase;
+    [Header("Arena")]
+    public Vector3 spawnOffset;
 
     public void Update(){
         if(battleOngoing && Input.GetKeyDown(KeyCode.Q)){
@@ -56,6 +58,7 @@ public class BattleManager : MonoBehaviour
 
         if(battleOngoing){
             if (playerTurn){
+                MouseOverDetector();
                 CheckClick();
             }
             else{
@@ -91,7 +94,15 @@ public class BattleManager : MonoBehaviour
         enemy.transform.SetPositionAndRotation(enemyBattlePos.position, enemyBattlePos.rotation);
 
         // Assign a random person to start first
-        playerTurn = UnityEngine.Random.Range(0,2) == 0;
+        //playerTurn = UnityEngine.Random.Range(0,2) == 0;
+        playerTurn = true;
+
+        // Assign health and mana values
+        P_Health = player.GetComponent<HealthSystem>().CurrentHealth;
+        P_Mana = player.GetComponent<ManaSystem>().CurrentMana;
+
+        E_Health = enemy.GetComponent<Enemy>().e_Starting_health;
+        E_Health = enemy.GetComponent<Enemy>().e_Starting_mana;
 
         // Switch Cameras
         player.transform.Find("Main Camera").gameObject.SetActive(false); // disable player cam
@@ -101,36 +112,60 @@ public class BattleManager : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
+        // Draw cards to hand for each person
         player.GetComponent<Deck>().DrawCardsToHand(StartingCardAmount);
         enemy.GetComponent<Deck>().DrawCardsToHand(StartingCardAmount);
 
-        this.transform.GetComponent<CardsManager>().DisplayCards(player.GetComponent<Deck>().UserHand);
+
+        UpdateCardUI();
 
         battleOngoing = true;
     }
 
+    private void UpdateCardUI(){
+        this.transform.GetComponent<CardsManager>().DisplayCards(player.GetComponent<Deck>().UserHand);
+    }
+
     private void CheckClick(){
-        if (Input.GetMouseButtonDown(0)){
-            if (!EventSystem.current.IsPointerOverGameObject()){
-                WhatWasClicked();
-            }
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()){ // If you left click and are not over ui element
+            SummonMonster();
         }
-        if (Input.GetMouseButtonDown(1)){
-            Debug.Log("right clicked");
-            if (!EventSystem.current.IsPointerOverGameObject()){
-                Debug.Log("Deselect Card");
-                UpdateSelectedCard(null, null);
-            }
+        if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject()){ // If you right click and are not over a ui element then deselect card
+            UpdateSelectedCard(null, null);
         }
     }
 
-    private void WhatWasClicked(){
+    private void SummonMonster(){ // handles Monster Summoning
+        GameObject clickedObject = MouseOverDetector(); // Find out what mouse is currently hovering over
+        if(clickedObject && clickedObject.tag == "CardZone_P" && selectedCard){ // if mouse over valid object and a card is selected
+            if((P_Mana - selectedCard.Cost) > 0 && clickedObject.transform.childCount == 0){ // if player has enough mana for card and there isnt already a spawned monster
+                Deck deckScript = player.GetComponent<Deck>();
+                GameObject spawnedMosnter = GameObject.Instantiate(selectedCard.Model, clickedObject.transform.position + spawnOffset, clickedObject.transform.rotation);
+                spawnedMosnter.transform.parent = clickedObject.transform;
+
+                // Remove the card you used from the hand list and place it in the used cards list and update ui
+                Card usedCard = deckScript.UserHand.Find(card => card.Id == selectedCard.Id);
+                deckScript.UsedCardPile.Add(usedCard);
+                deckScript.UserHand.Remove(usedCard);
+                UpdateCardUI();
+
+                // Update Mana
+                P_Mana -= selectedCard.Cost; // update battleManager Tracker
+                player.GetComponent<ManaSystem>().RemoveMana(selectedCard.Cost); // Update val for ui
+            }
+            UpdateSelectedCard(null, null); // Deselect Card if there is already a spawed monster or lack of mana
+        }
+    }
+
+    private GameObject MouseOverDetector(){ // Use ray to find out what mouse is over and return gameObject if mouse over interactable
         Ray ray = Arena.transform.Find("Cam").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if(Physics.Raycast(ray, out hit)){
-            Debug.Log("Clicked on object: " + hit.collider.gameObject.name);
+        LayerMask arenaLayerMask = 1 << LayerMask.NameToLayer("Arena_Interact");
+        if(Physics.Raycast(ray, out hit, Mathf.Infinity, arenaLayerMask)){
+            return hit.collider.gameObject;
         }
+        return null;
     }
 
     // Set card that is selected by player

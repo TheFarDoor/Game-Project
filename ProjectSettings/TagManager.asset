@@ -6,6 +6,9 @@ TagManager:
   tags:
   - PlayerHealth
   - PlayerMana
+  - CardZone_P
+  - CardZone_E
+  - CardZone_N
   layers:
   - Default
   - TransparentFX
@@ -14,7 +17,7 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
+  - Arena_Interact
   - 
   - 
   - 

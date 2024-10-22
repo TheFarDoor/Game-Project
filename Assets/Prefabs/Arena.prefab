@@ -117,9 +117,9 @@ GameObject:
   - component: {fileID: 5029250071642195401}
   - component: {fileID: 1016792494189231075}
   - component: {fileID: 8996409478716608926}
-  m_Layer: 0
-  m_Name: A
-  m_TagString: Untagged
+  m_Layer: 7
+  m_Name: PA
+  m_TagString: CardZone_P
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -219,7 +219,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3051589412576447148}
-  m_Layer: 0
+  - component: {fileID: 8163585774508044491}
+  m_Layer: 7
   m_Name: PlayerPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,6 +242,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3831056634285369145}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!65 &8163585774508044491
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133495986138066375}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5, y: 3, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1363388798086035096
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,9 +275,9 @@ GameObject:
   - component: {fileID: 2132038368546094661}
   - component: {fileID: 5873981170208165973}
   - component: {fileID: 145437847638816672}
-  m_Layer: 0
-  m_Name: B
-  m_TagString: Untagged
+  m_Layer: 7
+  m_Name: EB
+  m_TagString: CardZone_E
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -358,9 +380,9 @@ GameObject:
   - component: {fileID: 2603130874262457657}
   - component: {fileID: 4240005433057313591}
   - component: {fileID: 3923480962797072151}
-  m_Layer: 0
-  m_Name: A
-  m_TagString: Untagged
+  m_Layer: 7
+  m_Name: EA
+  m_TagString: CardZone_E
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -494,7 +516,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1216886481451922516}
-  m_Layer: 0
+  - component: {fileID: 6775873291030287333}
+  m_Layer: 7
   m_Name: EnemyPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -516,6 +539,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3831056634285369145}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!65 &6775873291030287333
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4679287390374219738}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5, y: 3, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5270878072321409013
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,9 +606,9 @@ GameObject:
   - component: {fileID: 1871281322581955403}
   - component: {fileID: 1195808480576980655}
   - component: {fileID: 6959058042373539193}
-  m_Layer: 0
-  m_Name: C
-  m_TagString: Untagged
+  m_Layer: 7
+  m_Name: EC
+  m_TagString: CardZone_E
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -667,9 +711,9 @@ GameObject:
   - component: {fileID: 3389038529807329294}
   - component: {fileID: 5416322750245337761}
   - component: {fileID: 4619790966291799101}
-  m_Layer: 0
-  m_Name: C
-  m_TagString: Untagged
+  m_Layer: 7
+  m_Name: PC
+  m_TagString: CardZone_P
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -808,9 +852,9 @@ GameObject:
   - component: {fileID: 3933167148205656939}
   - component: {fileID: 2748136597719639877}
   - component: {fileID: 8685650768728653490}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Spell
-  m_TagString: Untagged
+  m_TagString: CardZone_N
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -913,9 +957,9 @@ GameObject:
   - component: {fileID: 6293399412049967336}
   - component: {fileID: 2702057832414256426}
   - component: {fileID: 3279346549231521199}
-  m_Layer: 0
-  m_Name: B
-  m_TagString: Untagged
+  m_Layer: 7
+  m_Name: PB
+  m_TagString: CardZone_P
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

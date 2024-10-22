@@ -10,14 +10,20 @@ public class HealthSystem : MonoBehaviour
     private float currentHealth = 20;  // Variable to track the current health
     public TextMeshProUGUI healthText;
 
+    public bool isInitialized = false;
+
+    public float CurrentHealth => currentHealth; // getter for current health
+
     public void Initialize() // Instantiate the health with the value in the slider
     {   
-        healthText = GameObject.Find("/Canvas/BattleUI/Health").GetComponent<TextMeshProUGUI>();
-        healthBar =  GameObject.Find("/Canvas/BattleUI/HealthBar").GetComponent<Slider>();
-        currentHealth = maxHealth; 
-        healthBar.maxValue = maxHealth;
-        healthBar.value = currentHealth;
-        UpdateHealthText();
+        if(!isInitialized){
+            healthText = GameObject.Find("/Canvas/BattleUI/Health").GetComponent<TextMeshProUGUI>();
+            healthBar =  GameObject.Find("/Canvas/BattleUI/HealthBar").GetComponent<Slider>();
+            currentHealth = maxHealth; 
+            healthBar.maxValue = maxHealth;
+            healthBar.value = currentHealth;
+            UpdateHealthText();
+        }
     }
     
 
