@@ -71,6 +71,11 @@ public class Enemy : MonoBehaviour
         return null;
     }
 
+    // CODE FOR BATTLE
+    public void Start_E_Turn(){
+        
+    }
+
     void OnDrawGizmos(){
         Gizmos.DrawWireSphere(transform.position, viewRadius);
         Gizmos.color = Color.red;
