@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   type: 0
-  card_name: Fire Monkey
+  cardName: Fire Monkey
   description: oo oo aa aa
   damage: 1
   defence: 2

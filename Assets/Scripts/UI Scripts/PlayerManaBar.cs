@@ -9,8 +9,10 @@ public class ManaSystem : MonoBehaviour
     private float currentMana = 5;  // Variable to track the current Mana
     public TextMeshProUGUI manaText;
 
-    void Start() // Instantiate the mana with the value in the slider
+    public void Initialize() // Instantiate the mana with the value in the slider
     {
+        manaText = GameObject.Find("/Canvas/BattleUI/Mana").GetComponent<TextMeshProUGUI>();
+        manaBar =  GameObject.Find("/Canvas/BattleUI/ManaBar").GetComponent<Slider>();
         currentMana = maxMana;
         manaBar.maxValue = maxMana;
         manaBar.value = currentMana;

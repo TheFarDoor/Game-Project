@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.AI;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -9,13 +10,16 @@ public class HealthSystem : MonoBehaviour
     private float currentHealth = 20;  // Variable to track the current health
     public TextMeshProUGUI healthText;
 
-    void Start() // Instantiate the health with the value in the slider
-    {
+    public void Initialize() // Instantiate the health with the value in the slider
+    {   
+        healthText = GameObject.Find("/Canvas/BattleUI/Health").GetComponent<TextMeshProUGUI>();
+        healthBar =  GameObject.Find("/Canvas/BattleUI/HealthBar").GetComponent<Slider>();
         currentHealth = maxHealth; 
         healthBar.maxValue = maxHealth;
         healthBar.value = currentHealth;
         UpdateHealthText();
     }
+    
 
     public void TakeDamage(float damage) // Take damage and update the health slider
     {

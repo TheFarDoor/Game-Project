@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "New_Card", menuName = "Card")]
 public class Card : ScriptableObject
@@ -15,7 +16,7 @@ public class Card : ScriptableObject
 
     [SerializeField] private int id; // card id
     [SerializeField] private Card_Type type; // card type
-    [SerializeField] private string card_name; // card name
+    [SerializeField] private string cardName; // card name
     [SerializeField] private string description; // card description
     [SerializeField] [Range(0,100)] private int damage; // card damage which can be between 0 - 100 
     [SerializeField] [Range(0,100)] private int defence; // card defence which can be between 0 - 100 
@@ -25,7 +26,7 @@ public class Card : ScriptableObject
 
     // Getter method for each private variable
     public int Id => id;
-    public string CardName => card_name;
+    public string CardName => cardName;
     public string Description => description;
     public int Damage => damage;
     public int Defence => defence;
@@ -33,16 +34,23 @@ public class Card : ScriptableObject
     public bool Used => used;
     public GameObject Model => model;
 
-    public void SetCardType(string type)
-    {
-        if (Card_Type.TryParse(type, true, out Card_Type cardType))
-        {
-            this.type = cardType;
-        }
-        else
-        {
-            Debug.LogError("No such type!");
-        }
+    public static Card CreateInstance(Card data){ // create new instance of template card
+
+        Card newCard = CreateInstance<Card>();
+
+        newCard.id = data.Id;
+        newCard.cardName = data.CardName;
+        newCard.description = data.Description;
+        newCard.damage = data.Damage;
+        newCard.defence = data.Defence;
+        newCard.cost = data.Cost;
+        newCard.model = data.Model;
+
+        return newCard;
+    }
+
+    public void OnEnable(){ // Called when a new card is created in the asset menu
+        cardName = name; // assign the file name as the cardName
     }
 
     public void SetCardDamage(int val)
@@ -65,5 +73,9 @@ public class Card : ScriptableObject
     public void ResetCardUsage()
     {
         this.used = false; // Reset usage status for the next battle
+    }
+
+    public void SetId(int val){
+        this.id = val;
     }
 }

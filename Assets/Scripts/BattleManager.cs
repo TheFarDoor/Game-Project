@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
@@ -20,7 +22,7 @@ public class BattleManager : MonoBehaviour
     private GameObject enemy;
 
     private bool playerTurn; // bool to  track if its the players turn or not
-    public bool battle; // bool to track if battle is happening
+    public bool battleOngoing; // bool to track if battle is happening
 
     public GameObject Arena;
 
@@ -31,6 +33,23 @@ public class BattleManager : MonoBehaviour
     public int E_Health;
     public int E_Mana;
 
+    [Header("Card UI Colors")]
+    public Color original_CardUIColor;
+    public Color hoverd_CardUIColor;
+    public Color selected_CardUIColor;
+
+    [Header("BattleUI handling")]
+    public Card hoveredCard = null;
+    public Card selectedCard;
+    public UnityEngine.UI.Image selectedCardUI;
+
+    public void Update(){
+        if(battleOngoing && Input.GetKeyDown(KeyCode.Q)){
+            StartCoroutine(EndBattle());
+        }
+    }
+
+    // Initialize start of battle
     public void StartBattle(Transform p, Transform e){ // p is player transform and e is enemy transform thats passed in
 
         // get player and enemy gameObject reference
@@ -63,13 +82,25 @@ public class BattleManager : MonoBehaviour
         player.transform.Find("Main Camera").gameObject.SetActive(false); // disable player cam
         Arena.transform.Find("Cam").gameObject.SetActive(true); // enable arena cam
 
-        battle = true;
+        battleOngoing = true;
 
-        List<Card> list = this.transform.GetComponent<CardsManager>().GenerateRandomDeck(3, 2, 0);
-        this.transform.GetComponent<CardsManager>().DisplayCards(list);
+        this.transform.GetComponent<CardsManager>().DisplayCards(player.GetComponent<Deck>().UserDeck);
+
+        // Make cursor visible and free to move
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
 
         TurnHandler();
-        StartCoroutine(EndBattle());
+    }
+
+    // Set card that is selected by player
+    public void UpdateSelectedCard(Card newSelectedCard, UnityEngine.UI.Image newSelectedCardUI){
+        selectedCard = newSelectedCard;
+        if (selectedCardUI){
+            selectedCardUI.color = original_CardUIColor;
+        }
+        selectedCardUI = newSelectedCardUI;
+        selectedCardUI.color = selected_CardUIColor;
     }
 
     private void TurnHandler(){
@@ -81,16 +112,17 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    // Handle the end of the battle
     public IEnumerator EndBattle(){
-        yield return new WaitForSeconds(10);
 
-        enemy.GetComponent<Enemy>().isDefeated = true;
+        enemy.GetComponent<Enemy>().isDefeated = true; // Make enemy defeated to true so you dont fight it start after you are sent back
 
+        // move enemy and player back to original positions
         enemy.transform.SetPositionAndRotation(previousEnemyPos, previousEnemyRot);
         player.transform.SetPositionAndRotation(previousPlayerPos, previousPlayerRot);
         
-        yield return new WaitForSeconds(0.3f);
-        enemy.GetComponent<Enemy>().inBattle = false;
+        yield return new WaitForSeconds(0.3f); // delay
+        enemy.GetComponent<Enemy>().inBattle = false; // make enemy aware its not in battle
         player.GetComponent<PlayerMovement>().enabled = true; // turn on player movement script to allow movement
 
         // Switch Cameras
@@ -98,8 +130,12 @@ public class BattleManager : MonoBehaviour
         Arena.transform.Find("Cam").gameObject.SetActive(false); // disable arena cam
 
         player = enemy = null; // reset references to gameobjects
-
-        battle = false;
+        
+        // Make cursor invisble and locked to middle
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        
+        battleOngoing = false;
     }
 
     void switchTurn() {

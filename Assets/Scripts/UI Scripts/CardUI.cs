@@ -1,11 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
+using JetBrains.Annotations;
 
-public class CardUI : MonoBehaviour
+public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+    [Header("References")]
     public Deck playerDeck;      // Reference to the player deck
+    public BattleManager battleManager;   // Reference to battle manager
 
+    [Header("Card UI References")]
     public Image cardImage;      // The image UI component for the card
     public TextMeshProUGUI cardNameText;    // Text UI component for card name
     public TextMeshProUGUI descriptionText; // Text UI component for card description
@@ -13,9 +18,27 @@ public class CardUI : MonoBehaviour
     public TextMeshProUGUI defenceText;     // Text UI component for card defence
     public TextMeshProUGUI costText;        // Text UI component for card cost
 
+
+    [Header("Card Data reference")]
     private Card thisCard;
 
     public Card ThisCard => thisCard;
+
+    [Header("Other")]
+    public bool thisCardSelected;
+
+    public void Awake(){
+        battleManager = GameObject.Find("/Game Manager").GetComponent<BattleManager>();
+    }  
+
+    public void Update(){
+        if (battleManager.selectedCard == thisCard){
+            thisCardSelected = true;
+        }
+        else{
+            thisCardSelected = false;
+        }
+    }
 
     public void SetCardData(Card card)
     {
@@ -40,4 +63,26 @@ public class CardUI : MonoBehaviour
             cardImage.sprite = card.Model.GetComponent<SpriteRenderer>().sprite;
         }
     }
+
+    public void OnPointerEnter(PointerEventData eventData){
+        battleManager.hoveredCard = thisCard;
+        if(!thisCardSelected){
+            this.GetComponent<Image>().color = battleManager.hoverd_CardUIColor;  
+        }
+        
+    }
+
+    public void OnPointerExit(PointerEventData eventData){
+        battleManager.hoveredCard = null;
+        if (!thisCardSelected){
+           this.GetComponent<Image>().color = battleManager.original_CardUIColor;  
+        }        
+    }
+
+    public void OnPointerClick(PointerEventData eventData){
+        if(!thisCardSelected){
+            battleManager.UpdateSelectedCard(thisCard, this.GetComponent<Image>());
+        }
+    }
+
 }
