@@ -120,6 +120,58 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &249436263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 249436265}
+  - component: {fileID: 249436264}
+  m_Layer: 8
+  m_Name: TreeSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &249436264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249436263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30104e43981d54570abddc60e910e4f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treePrefab: {fileID: 4165655778467942996, guid: 6a4227f2d40e446ba8ed0f06658fc6f1, type: 3}
+  treeCount: 50
+  radius: 50
+  offset: {x: 0, y: 1, z: 0}
+  minDistanceBetweenTrees: 2
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 256
+--- !u!4 &249436265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249436263}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 21.1, y: 15, z: 40.16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1006804565
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -533,7 +585,7 @@ GameObject:
   - component: {fileID: 1814968454}
   - component: {fileID: 1814968453}
   - component: {fileID: 1814968452}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -733,6 +785,14 @@ PrefabInstance:
       propertyPath: pref
       value: 
       objectReference: {fileID: 1126759391420411042, guid: b2f9ca26b4eae344fb5d85f398e9d3dd, type: 3}
+    - target: {fileID: 5275251937153499479, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
+      propertyPath: Inventory
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5275251937153499479, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
+      propertyPath: cardPrefab
+      value: 
+      objectReference: {fileID: 1126759391420411042, guid: b2f9ca26b4eae344fb5d85f398e9d3dd, type: 3}
     - target: {fileID: 6911392307453699921, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -839,3 +899,4 @@ SceneRoots:
   - {fileID: 1070849887}
   - {fileID: 1085342960}
   - {fileID: 1602926821}
+  - {fileID: 249436265}
