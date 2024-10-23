@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 using TMPro;
+using UnityEditor;
 
 public class BattleManager : MonoBehaviour
 {
@@ -75,7 +76,7 @@ public class BattleManager : MonoBehaviour
                 CheckClick();
             }
             else{
-                enemy.GetComponent<Enemy>();
+                enemy.GetComponent<Enemy>().Start_E_Turn();
             } 
         }
 
@@ -85,9 +86,9 @@ public class BattleManager : MonoBehaviour
     }
 
     // Initialize start of battle
-    public void StartBattle(Transform p, Transform e){ // p is player transform and e is enemy transform thats passed in
+    public IEnumerator StartBattle(Transform p, Transform e){ // p is player transform and e is enemy transform thats passed in
 
-        endTurnBtn.GetComponent<Button>().onClick.AddListener(switchTurn); // Assign switching turn to end turn button onclick
+        endTurnBtn.GetComponent<Button>().onClick.AddListener(SwitchTurn); // Assign switching turn to end turn button onclick
 
         // get player and enemy gameObject reference
         player = p.gameObject;
@@ -113,15 +114,14 @@ public class BattleManager : MonoBehaviour
         enemy.transform.SetPositionAndRotation(enemyBattlePos.position, enemyBattlePos.rotation);
 
         // Assign a random person to start first
-        //playerTurn = UnityEngine.Random.Range(0,2) == 0;
-        playerTurn = true;
+        playerTurn = UnityEngine.Random.Range(0,2) == 0;
 
         // Assign health and mana values
         P_Health = player.GetComponent<HealthSystem>().CurrentHealth;
         P_Mana = player.GetComponent<ManaSystem>().CurrentMana;
 
         E_Health = enemy.GetComponent<Enemy>().e_Starting_health;
-        E_Health = enemy.GetComponent<Enemy>().e_Starting_mana;
+        E_Mana = enemy.GetComponent<Enemy>().e_Starting_mana;
 
         // Switch Cameras
         player.transform.Find("Main Camera").gameObject.SetActive(false); // disable player cam
@@ -137,8 +137,10 @@ public class BattleManager : MonoBehaviour
 
 
         UpdateCardUI();
+        yield return new WaitUntil(() => enemy.GetComponent<Deck>().UserHand.Count > 0 && player.GetComponent<Deck>().UserHand.Count > 0);
         firstTurn = true;
         battleOngoing = true;
+
     }
 
     private void UpdateCardUI(){
@@ -147,15 +149,14 @@ public class BattleManager : MonoBehaviour
 
     private void CheckClick(){
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()){ // If you left click and are not over ui element
-            Debug.Log("Clicked");
             if(selectedCard && !selectedMonster){
-                Debug.Log("Clicked SM");
-                SummonMonster();    
+                PlayerSummonSelectedMonster();    
             }
             else{
-                Debug.Log("Clicked MA");
-                UpdateSelectedCard(null, null); // deselect any cardUI
-                MonsterSelectorAttack();    
+                if(!firstTurn){
+                    UpdateSelectedCard(null, null); // deselect any cardUI
+                    MonsterSelectorAttack();  
+                }
             }
         }
         if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject()){ // If you right click and are not over a ui element then deselect card
@@ -213,11 +214,13 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void SummonMonster(){ // handles Monster Summoning
+    private void PlayerSummonSelectedMonster(){ // handles Monster Summoning for player
         GameObject clickedObject = MouseOverDetector(); // Find out what mouse is currently hovering over and get gameObeject
         if(clickedObject && clickedObject.tag == "CardZone_P" && selectedCard){ // if mouse over valid object and a card is selected
             if((P_Mana - selectedCard.Cost) > 0 && clickedObject.transform.childCount == 0){ // if player has enough mana for card and there isnt already a spawned monster
                 Deck deckScript = player.GetComponent<Deck>();
+                StartCoroutine(SummonMonster(player, selectedCard, clickedObject.transform));
+
                 GameObject spawnedMosnter = GameObject.Instantiate(selectedCard.Model, clickedObject.transform.position + spawnOffset, clickedObject.transform.rotation);
                 spawnedMosnter.transform.parent = clickedObject.transform;
                 spawnedMosnter.tag = "SummonedMonster";
@@ -235,6 +238,34 @@ public class BattleManager : MonoBehaviour
             }
             UpdateSelectedCard(null, null); // Deselect Card if there is already a spawed monster or lack of mana
         }
+    }
+
+    public IEnumerator SummonMonster(GameObject user, Card cardToSpawn, Transform slotToSpawn){ // handles generic monster spawning
+        Deck deckScript = user.GetComponent<Deck>(); // Get user seck script
+
+        GameObject spawnedMosnter = GameObject.Instantiate(cardToSpawn.Model, slotToSpawn.transform.position + spawnOffset, slotToSpawn.rotation); // summon card model from card data
+        spawnedMosnter.transform.parent = slotToSpawn; // make model's parent the slot its spawned at
+        spawnedMosnter.tag = "SummonedMonster"; // assign monster tag
+        slotToSpawn.GetComponent<SummonedMonsterStats>().SetStats(cardToSpawn.Damage, cardToSpawn.Health); // Set stats
+
+        // Remove the card you used from the hand list and place it in the used cards list and update ui
+        Card usedCard = deckScript.UserHand.Find(card => card.Id == cardToSpawn.Id);
+        if(usedCard != null){
+            deckScript.UsedCardPile.Add(usedCard);
+            deckScript.UserHand.Remove(usedCard);
+        }
+        yield return new WaitForSeconds(0.2f);
+        UpdateCardUI();
+
+        // Update Mana
+        if(user.tag == "Player"){
+            P_Mana -= cardToSpawn.Cost; // update battleManager player mana tracker
+            player.GetComponent<ManaSystem>().RemoveMana(cardToSpawn.Cost); // Update val for ui    
+        }
+        else{
+            E_Mana -= cardToSpawn.Cost; // update battleManager player mana tracker
+        }
+        
     }
 
     private GameObject MouseOverDetector(){ // Use ray to find out what mouse is over and return gameObject if mouse over interactable
@@ -300,12 +331,24 @@ public class BattleManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    void switchTurn() {
-        playerTurn = !playerTurn;
+    public bool SlotOccupied(Transform zone){
+        return zone.childCount > 0;
+    }
+
+    public void SwitchTurn() {
+        if(playerTurn == true){ // if it is player turn then next turn is enemy so add mana to enemy
+            E_Mana += 1;
+            player.GetComponent<Deck>().DrawCardsToHand(1);
+        }
+        else{ // if not add mana to player
+            P_Mana += 1;
+            enemy.GetComponent<Deck>().DrawCardsToHand(1);
+        }
+        playerTurn = !playerTurn; // switch turn
+        if(firstTurn){firstTurn = false;} // if its the first turn and we switch then its no longer the first turn
     }
 
     public void GameEndChecker(){ // return true if one person has lost all their hp
-        Debug.Log("Checking");
         if (P_Health <= 0 || E_Health <= 0){
             StartCoroutine(EndBattle());
         }

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8869849787097351528}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -128,6 +128,7 @@ MonoBehaviour:
   userHand: []
   userDeck: []
   userCardCollection: []
+  usedCardPile: []
   cardManager: {fileID: 0}
 --- !u!114 &8869849787097351528
 MonoBehaviour:
@@ -143,6 +144,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy_name: 
   description: 
+  e_Starting_health: 20
+  e_Starting_mana: 5
   isDefeated: 0
   inBattle: 0
   viewRadius: 4.51

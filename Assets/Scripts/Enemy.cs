@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour
                 if(!isDefeated && CheckForPlayer() != null){ // if there is a player in range and the player hasnt beaten this enenmy already
                     // Load up a battle
                     Transform playerTransform = CheckForPlayer();
-                    gameManager.GetComponent<BattleManager>().StartBattle(playerTransform, this.transform);
+                    StartCoroutine(gameManager.GetComponent<BattleManager>().StartBattle(playerTransform, this.transform));
                 }    
             }
         }
@@ -75,7 +75,25 @@ public class Enemy : MonoBehaviour
 
     // CODE FOR BATTLE
     public void Start_E_Turn(){
-        
+        BattleManager battleManager = gameManager.transform.GetComponent<BattleManager>();
+        Deck deck = this.GetComponent<Deck>();
+        if(deck.UserHand.Count == 0){ // if enemy hand empty
+            battleManager.SwitchTurn();
+        }
+        else{
+            Transform eZone = assginedArena.transform.Find("Zones/EZone");
+            foreach(Card card in deck.UserHand){
+                if(battleManager.E_Mana > deck.UserHand[0].Cost){
+                    foreach(Transform slot in eZone){
+                        if(!battleManager.SlotOccupied(slot)){
+                            StartCoroutine(battleManager.SummonMonster(this.gameObject, deck.UserHand[0], slot));
+                            battleManager.SwitchTurn();
+                        }
+                    }  
+                }   
+            }
+            battleManager.SwitchTurn();  
+        }
     }
 
     void OnDrawGizmos(){

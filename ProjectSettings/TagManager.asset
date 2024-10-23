@@ -12,6 +12,7 @@ TagManager:
   - SummonedMonster
   - Arena_EZone
   - Arena_PZone
+  - Enemy
   layers:
   - Default
   - TransparentFX
