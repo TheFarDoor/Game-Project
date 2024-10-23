@@ -58,4 +58,8 @@ public class TreeSpawner : MonoBehaviour
         }
         return true;  // No overlaps, position is valid
     }
+
+    void OnDrawGizmos(){
+        Gizmos.DrawWireSphere(transform.position, radius);
+    }
 }
