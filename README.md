@@ -1,1 +1,3 @@
-Navigate to https://github.com/TheFarDoor/Game-Project/settings/pages for static website.
+Navigate to https://thefardoor.github.io/Game-Prototype/ for WebGL build of game.
+
+Welcome to Elemental Clash!!!
