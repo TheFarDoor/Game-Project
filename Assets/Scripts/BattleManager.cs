@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 using TMPro;
 using UnityEditor;
+using UnityEngine.Networking;
 
 public class BattleManager : MonoBehaviour
 {
@@ -52,13 +53,25 @@ public class BattleManager : MonoBehaviour
     [Space(10)]
     public GameObject selectedMonster;
     public bool monstersFighting;
+    [Header("TextReferences")]
+    public TextMeshProUGUI turnT;
+    public TextMeshProUGUI SMT;
+    public TextMeshProUGUI SCT;
+    public TextMeshProUGUI TT;
+    public TextMeshProUGUI eHP;
+    private float starteHP;
 
 
     [Header("Arena")]
     public Vector3 spawnOffset;
 
-    public void Start(){
+    public void Start(){ // Get references
         endTurnBtn = GameObject.Find("/Canvas/BattleUI/End Turn");
+        turnT = GameObject.Find("/Canvas/BattleUI/TutorialTextHolder/TurnText").GetComponent<TextMeshProUGUI>();
+        SMT = GameObject.Find("/Canvas/BattleUI/TutorialTextHolder/SelectedM").GetComponent<TextMeshProUGUI>();
+        SCT = GameObject.Find("/Canvas/BattleUI/TutorialTextHolder/SelectedC").GetComponent<TextMeshProUGUI>();
+        TT = GameObject.Find("/Canvas/BattleUI/TutorialTextHolder/ToolTip").GetComponent<TextMeshProUGUI>();
+        eHP = GameObject.Find("/Canvas/BattleUI/TutorialTextHolder/EHP").GetComponent<TextMeshProUGUI>();
     }
 
     public void Update(){
@@ -83,8 +96,19 @@ public class BattleManager : MonoBehaviour
         if(battleOngoing){
             GameEndChecker();  
         }
+
+        HandleBattleText();
     }
 
+    public void HandleBattleText(){
+        turnT.text = "Turn: " + (playerTurn? "player": "enemy");
+        SMT.text = "Selected Monster: " + (selectedMonster? selectedMonster.name: "None");
+        SCT.text = "Selected Card: "  + (selectedCard? selectedCard.name: "None");
+        if(firstTurn){
+            TT.text = "Tip: You cannot attack on your first turn after summoning!";   
+        }
+        eHP.text = starteHP != 0? "Enemy Hp: " + E_Health + "/" + starteHP: "Loading Enemy Hp";
+    }
     // Initialize start of battle
     public IEnumerator StartBattle(Transform p, Transform e){ // p is player transform and e is enemy transform thats passed in
 
@@ -93,6 +117,10 @@ public class BattleManager : MonoBehaviour
         // get player and enemy gameObject reference
         player = p.gameObject;
         enemy = e.gameObject;
+
+        if(player.GetComponent<Deck>().UserDeck.Count == 0){
+            player.GetComponent<Deck>().UserDeck.AddRange(GameObject.Find("Game Manager").GetComponent<CardsManager>().GenerateRandomDeck(3, 2, 0));
+        }
 
         // get arena postions
         Arena = enemy.GetComponent<Enemy>().assginedArena;
@@ -122,6 +150,7 @@ public class BattleManager : MonoBehaviour
 
         E_Health = enemy.GetComponent<Enemy>().e_Starting_health;
         E_Mana = enemy.GetComponent<Enemy>().e_Starting_mana;
+        starteHP = E_Health;
 
         // Switch Cameras
         player.transform.Find("Main Camera").gameObject.SetActive(false); // disable player cam
@@ -206,6 +235,7 @@ public class BattleManager : MonoBehaviour
                 GameEndChecker();
             }
             else{
+                TT.text = "Tip: Click on a friendly monster and then click on an enemy monster to attack!";
                 selectedMonster = null;
             }
         }
@@ -236,8 +266,10 @@ public class BattleManager : MonoBehaviour
                 P_Mana -= selectedCard.Cost; // update battleManager Tracker
                 player.GetComponent<ManaSystem>().RemoveMana(selectedCard.Cost); // Update val for ui
             }
+            TT.text = "Tip: You dont have enough mana or there is already a monster!";
             UpdateSelectedCard(null, null); // Deselect Card if there is already a spawed monster or lack of mana
         }
+        TT.text = "Tip: Select a card to summon!";
     }
 
     public IEnumerator SummonMonster(GameObject user, Card cardToSpawn, Transform slotToSpawn){ // handles generic monster spawning
@@ -265,7 +297,8 @@ public class BattleManager : MonoBehaviour
         else{
             E_Mana -= cardToSpawn.Cost; // update battleManager player mana tracker
         }
-        
+
+        TT.text = "Tip: Click on a friendly monster and then click on an enemy monster to attack!";
     }
 
     private GameObject MouseOverDetector(){ // Use ray to find out what mouse is over and return gameObject if mouse over interactable

@@ -47,7 +47,7 @@ public class pickUp : MonoBehaviour
             if (!playerDeck.UserCardCollection.Contains(card))
             {
                 // Add the card to the player's User Card Collection
-                playerDeck.UserCardCollection.Add(card);
+                playerDeck.UserDeck.Add(card);
                 Debug.Log("Card added to user collection: " + card.name);
 
             }

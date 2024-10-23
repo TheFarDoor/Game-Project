@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 1, z: 20}
+  m_LocalScale: {x: 50, y: 1, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3831056634285369145}
@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 8163585774508044491}
   m_Layer: 7
   m_Name: PlayerPos
-  m_TagString: Untagged
+  m_TagString: Arena_PZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -564,7 +564,7 @@ GameObject:
   - component: {fileID: 6775873291030287333}
   m_Layer: 7
   m_Name: EnemyPos
-  m_TagString: Untagged
+  m_TagString: Arena_EZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
