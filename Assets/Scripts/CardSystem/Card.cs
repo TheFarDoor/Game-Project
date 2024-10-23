@@ -19,7 +19,7 @@ public class Card : ScriptableObject
     [SerializeField] private string cardName; // card name
     [SerializeField] private string description; // card description
     [SerializeField] [Range(0,100)] private int damage; // card damage which can be between 0 - 100 
-    [SerializeField] [Range(0,100)] private int defence; // card defence which can be between 0 - 100 
+    [SerializeField] [Range(0,100)] private int health; // card defence which can be between 0 - 100 
     [SerializeField] private int cost; // cost to use card
     [SerializeField] bool used; // bool to track if card is used
     [SerializeField] GameObject model; // model for summon if card summons something
@@ -29,7 +29,7 @@ public class Card : ScriptableObject
     public string CardName => cardName;
     public string Description => description;
     public int Damage => damage;
-    public int Defence => defence;
+    public int Health => health;
     public int Cost => cost;
     public bool Used => used;
     public GameObject Model => model;
@@ -42,7 +42,7 @@ public class Card : ScriptableObject
         newCard.cardName = data.CardName;
         newCard.description = data.Description;
         newCard.damage = data.Damage;
-        newCard.defence = data.Defence;
+        newCard.health = data.Health;
         newCard.cost = data.Cost;
         newCard.model = data.Model;
 
@@ -61,8 +61,8 @@ public class Card : ScriptableObject
 
     public void SetCardDefence(int val)
     {
-        int newDefence = this.defence + val;
-        this.defence = Mathf.Clamp(newDefence, 0, 10); // Clamps value between 0 and 100
+        int newDefence = this.health + val;
+        this.health = Mathf.Clamp(newDefence, 0, 10); // Clamps value between 0 and 100
     }
 
     public void UseCard()

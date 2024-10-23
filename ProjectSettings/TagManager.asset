@@ -9,6 +9,9 @@ TagManager:
   - CardZone_P
   - CardZone_E
   - CardZone_N
+  - SummonedMonster
+  - Arena_EZone
+  - Arena_PZone
   layers:
   - Default
   - TransparentFX
