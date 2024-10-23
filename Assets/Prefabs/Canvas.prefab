@@ -1879,7 +1879,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Inventory: {fileID: 0}
   DeckList: {fileID: 0}
-  cardPrefab: {fileID: 0}
+  cardPrefab: {fileID: 1126759391420411042, guid: b2f9ca26b4eae344fb5d85f398e9d3dd, type: 3}
   Vis: 0
   playerDeck: {fileID: 0}
   cardText: {fileID: 0}

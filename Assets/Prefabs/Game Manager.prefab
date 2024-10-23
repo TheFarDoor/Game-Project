@@ -1,5 +1,73 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2553403350715023870
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 207157825694168825}
+  - component: {fileID: 4311943464928156041}
+  - component: {fileID: 3132671199634560755}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &207157825694168825
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2553403350715023870}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1531872186945724497}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4311943464928156041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2553403350715023870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!114 &3132671199634560755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2553403350715023870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
 --- !u!1 &3955390170709009430
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,7 +100,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 207157825694168825}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1133375070671951641
@@ -78,8 +147,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 097209630ad41e544aa2d53546660e1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firstTurn: 0
   playerTurn: 0
   battleOngoing: 0
+  endTurnBtn: {fileID: 0}
   Arena: {fileID: 0}
   P_Health: 0
   P_Mana: 0
@@ -92,8 +163,9 @@ MonoBehaviour:
   hoveredCard: {fileID: 0}
   selectedCard: {fileID: 0}
   selectedCardUI: {fileID: 0}
-  cardSelectionPhase: 0
-  cardPlacePhase: 0
+  selectedMonster: {fileID: 0}
+  monstersFighting: 0
+  spawnOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &4646643835978779149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,3 +178,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b7318a7bb4af4b7fa146c3f5ad2aeb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardCollectText: {fileID: 0}

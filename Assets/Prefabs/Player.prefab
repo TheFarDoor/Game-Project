@@ -246,6 +246,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   maxHealth: 20
   healthText: {fileID: 0}
+  isInitialized: 0
 --- !u!114 &5623442018339268014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,6 +262,7 @@ MonoBehaviour:
   manaBar: {fileID: 0}
   maxMana: 5
   manaText: {fileID: 0}
+  isInitialized: 0
 --- !u!114 &1568014161385896439
 MonoBehaviour:
   m_ObjectHideFlags: 0
