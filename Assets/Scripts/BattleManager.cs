@@ -53,6 +53,7 @@ public class BattleManager : MonoBehaviour
     [Space(10)]
     public GameObject selectedMonster;
     public bool monstersFighting;
+
     [Header("TextReferences")]
     public TextMeshProUGUI turnT;
     public TextMeshProUGUI SMT;
@@ -250,21 +251,6 @@ public class BattleManager : MonoBehaviour
             if((P_Mana - selectedCard.Cost) > 0 && clickedObject.transform.childCount == 0){ // if player has enough mana for card and there isnt already a spawned monster
                 Deck deckScript = player.GetComponent<Deck>();
                 StartCoroutine(SummonMonster(player, selectedCard, clickedObject.transform));
-
-                GameObject spawnedMosnter = GameObject.Instantiate(selectedCard.Model, clickedObject.transform.position + spawnOffset, clickedObject.transform.rotation);
-                spawnedMosnter.transform.parent = clickedObject.transform;
-                spawnedMosnter.tag = "SummonedMonster";
-                clickedObject.GetComponent<SummonedMonsterStats>().SetStats(selectedCard.Damage, selectedCard.Health);
-
-                // Remove the card you used from the hand list and place it in the used cards list and update ui
-                Card usedCard = deckScript.UserHand.Find(card => card.Id == selectedCard.Id);
-                deckScript.UsedCardPile.Add(usedCard);
-                deckScript.UserHand.Remove(usedCard);
-                UpdateCardUI();
-
-                // Update Mana
-                P_Mana -= selectedCard.Cost; // update battleManager Tracker
-                player.GetComponent<ManaSystem>().RemoveMana(selectedCard.Cost); // Update val for ui
             }
             TT.text = "Tip: You dont have enough mana or there is already a monster!";
             UpdateSelectedCard(null, null); // Deselect Card if there is already a spawed monster or lack of mana
