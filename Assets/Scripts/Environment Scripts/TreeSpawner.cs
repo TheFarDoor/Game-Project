@@ -25,7 +25,7 @@ public class TreeSpawner : MonoBehaviour
         {
             // Generate a random position inside the circle
             Vector2 randomPoint = Random.insideUnitCircle * radius;
-            Vector3 treePosition = new Vector3(randomPoint.x, 100f, randomPoint.y); // Start raycast from a high Y position
+            Vector3 treePosition = this.transform.position + new Vector3(randomPoint.x, 100f, randomPoint.y); // Start raycast from a high Y position
 
             // Perform raycast to find the ground on the terrain layer
             if (Physics.Raycast(treePosition, Vector3.down, out RaycastHit hit, Mathf.Infinity, terrainLayer))

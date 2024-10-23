@@ -29,5 +29,14 @@ public class ObjectiveManager : MonoBehaviour
         if(GameObject.Find("Enemy").GetComponent<Enemy>().isDefeated){
             defeatBossText.color = Color.green;
         }
+
+        if(GameObject.Find("Enemy").GetComponent<Enemy>().isDefeated && GameObject.Find("PickUpHolder").transform.childCount == 0){
+            StartCoroutine(DelayEnd());
+        }
+    }
+
+    IEnumerator DelayEnd(){
+        yield return new WaitForSeconds(5);
+        Application.Quit();
     }
 }

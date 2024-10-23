@@ -132,6 +132,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PickUp (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7626213740121648717, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
+      propertyPath: card
+      value: 
+      objectReference: {fileID: 11400000, guid: a3af8585b81442242bb38c0b1d535924, type: 2}
     - target: {fileID: 9215093476402173344, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11
@@ -251,6 +255,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PickUp (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 7626213740121648717, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
+      propertyPath: card
+      value: 
+      objectReference: {fileID: 11400000, guid: 5a44b445e1704d34082306d7b35c70e8, type: 2}
     - target: {fileID: 9215093476402173344, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.4
@@ -348,6 +356,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 155041560606707247, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
+      propertyPath: randomDeck
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4282222881259157643, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
       propertyPath: m_Name
       value: Enemy
@@ -392,6 +404,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8869849787097351528, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
+      propertyPath: assginedArena
+      value: 
+      objectReference: {fileID: 1393011004}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -409,6 +425,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PickUp (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 7626213740121648717, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
+      propertyPath: card
+      value: 
+      objectReference: {fileID: 11400000, guid: 5a44b445e1704d34082306d7b35c70e8, type: 2}
     - target: {fileID: 9215093476402173344, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.4
@@ -471,6 +491,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PickUp (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 7626213740121648717, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
+      propertyPath: card
+      value: 
+      objectReference: {fileID: 11400000, guid: d2674f388031a4d91af390527483728e, type: 2}
     - target: {fileID: 9215093476402173344, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10
@@ -533,6 +557,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PickUp
       objectReference: {fileID: 0}
+    - target: {fileID: 7626213740121648717, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
+      propertyPath: card
+      value: 
+      objectReference: {fileID: 11400000, guid: a3af8585b81442242bb38c0b1d535924, type: 2}
     - target: {fileID: 9215093476402173344, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.8
@@ -582,6 +610,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 9215093476402173344, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
   m_PrefabInstance: {fileID: 1219397583}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1261100037
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3831056634285369145, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -55.79773
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831056634285369145, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831056634285369145, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 73.98082
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831056634285369145, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831056634285369145, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831056634285369145, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831056634285369145, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831056634285369145, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831056634285369145, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831056634285369145, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6861885771078513983, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+      propertyPath: m_Name
+      value: Arena
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+--- !u!1 &1393011004 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6861885771078513983, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+  m_PrefabInstance: {fileID: 1261100037}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1439343155
 PrefabInstance:
@@ -700,6 +790,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PickUp (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7626213740121648717, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
+      propertyPath: card
+      value: 
+      objectReference: {fileID: 11400000, guid: d2674f388031a4d91af390527483728e, type: 2}
     - target: {fileID: 9215093476402173344, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.6
@@ -837,7 +931,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treePrefab: {fileID: 4165655778467942996, guid: 6a4227f2d40e446ba8ed0f06658fc6f1, type: 3}
-  treeCount: 50
+  treeCount: 200
   radius: 100
   offset: {x: 0, y: 1, z: 0}
   minDistanceBetweenTrees: 2
@@ -853,7 +947,7 @@ Transform:
   m_GameObject: {fileID: 1694274548}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 194.93655, y: 180.56973, z: 113.3}
+  m_LocalPosition: {x: 194.93655, y: 0, z: 113.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -964,6 +1058,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PickUp (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 7626213740121648717, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
+      propertyPath: card
+      value: 
+      objectReference: {fileID: 11400000, guid: d2674f388031a4d91af390527483728e, type: 2}
     - target: {fileID: 9215093476402173344, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.4
@@ -1026,6 +1124,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PickUp (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7626213740121648717, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
+      propertyPath: card
+      value: 
+      objectReference: {fileID: 11400000, guid: d2674f388031a4d91af390527483728e, type: 2}
     - target: {fileID: 9215093476402173344, guid: e43e92bcea88a4bf2a2342890ea5485d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.4
@@ -1182,3 +1284,4 @@ SceneRoots:
   - {fileID: 1135935166}
   - {fileID: 1610797468}
   - {fileID: 1439343155}
+  - {fileID: 1261100037}
