@@ -1,58 +1,93 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 
 public class DeckBuilder : MonoBehaviour
 {
     public GameObject Inventory;
-    public GameObject pref;
+    public GameObject DeckList;
+    public GameObject cardPrefab; // Prefab for the card UI
     public bool Vis;
-    public Deck d1;
-    public TMP_Text cardText;
-    // Start is called before the first frame update
+    public Deck playerDeck;
+    public TextMeshProUGUI cardText;
+
     void Start()
     {
+        DeckList = this.transform.Find("IHolder/DeckList").gameObject;
         Inventory = this.transform.Find("IHolder/Inventory").gameObject;
 
-        Inventory.SetActive(false); // Set the inventory canvas to false when loading up the game so its not visible
-        d1 = GameObject.Find("/Player").GetComponent<Deck>(); //Get the deck
+        DeckList.SetActive(false);
+        Inventory.SetActive(false);
 
+        playerDeck = GameObject.Find("/Player").GetComponent<Deck>(); // Get the player's deck
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B)) //Condition so when they press B the inventory loads
+        if (Input.GetKeyDown(KeyCode.B)) // Open inventory with the 'B' key
         {
-            if (Vis == true)
+            if (Vis)
             {
                 Vis = false;
-                Inventory.SetActive(Vis); //If it is already visible and the button is pressed make it not visible by setting it to false
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                DeckList.SetActive(Vis);
+                Inventory.SetActive(Vis);
             }
-            else if (Vis == false)
+            else
             {
                 Vis = true;
-                Inventory.SetActive(Vis);//Make the inventory visible
-                ViewCards(); //Call the ViewCards function below
+                DeckList.SetActive(Vis);
+                Inventory.SetActive(Vis);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                ViewCards(playerDeck.UserCardCollection, Inventory.transform, true); // Show cards in inventory
+                ViewCards(playerDeck.UserDeck, DeckList.transform, false); // Show cards in deck
             }
         }
-
-
     }
-    void ViewCards()
+
+    // View cards in the UI (Inventory or Deck)
+    void ViewCards(List<Card> listCard, Transform container, bool isInventory)
     {
-        foreach (Transform slot in Inventory.transform)
+        foreach (Transform slot in container.transform)
         {
-            Destroy(slot.gameObject); //Loop through each slot in the inventory canvas and destroy it
+            Destroy(slot.gameObject); // Clear the current UI
         }
-        for (int i = 0; i < d1.UserCardCollection.Count; i++) //Loop through all of user cards
+
+        foreach (var card in listCard)
         {
-            GameObject newPre = Instantiate(pref, Inventory.transform);//Create the new prefab using a card sprite and inventory canvas
-            cardText = newPre.transform.GetChild(0).gameObject.GetComponent<TMP_Text>(); //Get the text component of the prefab
-            cardText.text = d1.UserCardCollection[i].ToString(); //Change the text on the prefab to information got from the user card collection deck
+            GameObject newCardUI = Instantiate(cardPrefab, container); // Create card UI prefab
+            DeckUICard deckUICard = newCardUI.GetComponent<DeckUICard>();
+            if (deckUICard != null)
+            {
+                deckUICard.SetCardData(card, isInventory, this); // Set card data and interaction type (inventory or deck)
+            }
         }
+    }
+
+    // Add card from inventory to deck
+    public void AddCardToDeck(Card card)
+    {
+        playerDeck.UserDeck.Add(card);
+        playerDeck.UserCardCollection.Remove(card);
+        UpdateUI();
+    }
+
+    // Remove card from deck and return it to inventory
+    public void RemoveCardFromDeck(Card card)
+    {
+        playerDeck.UserDeck.Remove(card);
+        playerDeck.UserCardCollection.Add(card);
+        UpdateUI();
+    }
+
+    // Refresh UI when cards are added/removed
+    void UpdateUI()
+    {
+        ViewCards(playerDeck.UserCardCollection, Inventory.transform, true);
+        ViewCards(playerDeck.UserDeck, DeckList.transform, false);
     }
 }
-

@@ -1634,7 +1634,7 @@ GameObject:
   - component: {fileID: 613842108761575307}
   - component: {fileID: 420268572808272919}
   m_Layer: 5
-  m_Name: InveList
+  m_Name: DeckList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1878,7 +1878,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Inventory: {fileID: 0}
-  pref: {fileID: 1126759391420411042, guid: b2f9ca26b4eae344fb5d85f398e9d3dd, type: 3}
+  DeckList: {fileID: 0}
+  cardPrefab: {fileID: 0}
   Vis: 0
-  d1: {fileID: 0}
+  playerDeck: {fileID: 0}
   cardText: {fileID: 0}
