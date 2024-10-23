@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
+using TMPro;
 
 public class BattleManager : MonoBehaviour
 {
@@ -22,8 +22,11 @@ public class BattleManager : MonoBehaviour
     private GameObject player;
     private GameObject enemy;
 
+    [Header("Battle Status")]
+    public bool firstTurn; 
     public bool playerTurn; // bool to  track if its the players turn or not
     public bool battleOngoing; // bool to track if battle is happening
+    public GameObject endTurnBtn;
 
     public GameObject Arena;
 
@@ -41,23 +44,33 @@ public class BattleManager : MonoBehaviour
     public Color hoverd_CardUIColor;
     public Color selected_CardUIColor;
 
-    [Header("BattleUI handling")]
+    [Header("Battle handling")]
     public Card hoveredCard = null;
     public Card selectedCard;
     public UnityEngine.UI.Image selectedCardUI;
-    [Header("PlayTurnState")]
-    public bool cardSelectionPhase;
-    public bool cardPlacePhase;
+    [Space(10)]
+    public GameObject selectedMonster;
+    public bool monstersFighting;
+
+
     [Header("Arena")]
     public Vector3 spawnOffset;
+
+    public void Start(){
+        endTurnBtn = GameObject.Find("/Canvas/BattleUI/End Turn");
+    }
 
     public void Update(){
         if(battleOngoing && Input.GetKeyDown(KeyCode.Q)){
             StartCoroutine(EndBattle());
         }
 
+        if (endTurnBtn){
+            endTurnBtn.SetActive(playerTurn);
+        }
+        
         if(battleOngoing){
-            if (playerTurn){
+            if (playerTurn && !monstersFighting){
                 MouseOverDetector();
                 CheckClick();
             }
@@ -65,10 +78,16 @@ public class BattleManager : MonoBehaviour
                 enemy.GetComponent<Enemy>();
             } 
         }
+
+        if(battleOngoing){
+            GameEndChecker();  
+        }
     }
 
     // Initialize start of battle
     public void StartBattle(Transform p, Transform e){ // p is player transform and e is enemy transform thats passed in
+
+        endTurnBtn.GetComponent<Button>().onClick.AddListener(switchTurn); // Assign switching turn to end turn button onclick
 
         // get player and enemy gameObject reference
         player = p.gameObject;
@@ -118,7 +137,7 @@ public class BattleManager : MonoBehaviour
 
 
         UpdateCardUI();
-
+        firstTurn = true;
         battleOngoing = true;
     }
 
@@ -128,20 +147,81 @@ public class BattleManager : MonoBehaviour
 
     private void CheckClick(){
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()){ // If you left click and are not over ui element
-            SummonMonster();
+            Debug.Log("Clicked");
+            if(selectedCard && !selectedMonster){
+                Debug.Log("Clicked SM");
+                SummonMonster();    
+            }
+            else{
+                Debug.Log("Clicked MA");
+                UpdateSelectedCard(null, null); // deselect any cardUI
+                MonsterSelectorAttack();    
+            }
         }
         if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject()){ // If you right click and are not over a ui element then deselect card
             UpdateSelectedCard(null, null);
         }
     }
 
+    public void MonsterFight(GameObject monster1, GameObject monster2){ // calculates the battles results between monsters and returns a tuple that states if monsters died
+        monstersFighting = true;
+        SummonedMonsterStats m1_Stats = monster1.transform.parent.GetComponent<SummonedMonsterStats>();
+        SummonedMonsterStats m2_Stats = monster2.transform.parent.GetComponent<SummonedMonsterStats>();
+
+        m2_Stats.health -= m1_Stats.atk;
+        m1_Stats.health -= m2_Stats.atk;
+        if (m1_Stats.health <= 0){
+            MonsterDead(monster1);
+        }
+        if (m2_Stats.health <= 0){
+            MonsterDead(monster2);
+        }
+        monstersFighting = false;
+    }
+
+    public void MonsterDead(GameObject deadMonster){
+        deadMonster.transform.parent.GetComponent<SummonedMonsterStats>().Reset();
+        Destroy(deadMonster);
+    }
+
+    private void MonsterSelectorAttack(){
+        GameObject clickedObject = MouseOverDetector(); // Find out what mouse is currently hovering over and get gameObject
+        if(clickedObject){ // if a interactible section of the arena is clicked
+            if((clickedObject.tag == "CardZone_P" && clickedObject.transform.childCount !=0 ) || clickedObject.tag == "SummonedMonster"){ // if the player clicks on a friendly summoned monster or the zone on which a friendly monster is summoned
+                selectedMonster = clickedObject.tag == "CardZone_P"? clickedObject.transform.GetChild(0).gameObject: clickedObject; // set player selected monster to the one clicked
+            }
+            else if(clickedObject.tag == "CardZone_E" && clickedObject.transform.childCount !=0 && selectedMonster){
+                GameObject monsterToAttack = clickedObject.tag == "CardZone_E"? clickedObject.transform.GetChild(0).gameObject: clickedObject; // set enemy monster to attack that player clicks
+                MonsterFight(selectedMonster, monsterToAttack);
+            }
+            else if(clickedObject.tag == "Arena_EZone" && selectedMonster){ // if you click on the enemy with a selected monster
+                Transform enemyMonsterZone = Arena.transform.Find("Zones/EZone");
+                for (int i=0; i < enemyMonsterZone.childCount; i++){ // loop through all the monster zones
+                    if(enemyMonsterZone.GetChild(i).childCount != 0){ // if a zone contains a monster return as you cant directly attack the enemy
+                        return;
+                    }
+                }
+                E_Health -= selectedMonster.transform.parent.GetComponent<SummonedMonsterStats>().atk;
+                GameEndChecker();
+            }
+            else{
+                selectedMonster = null;
+            }
+        }
+        else{
+            selectedMonster = null;
+        }
+    }
+
     private void SummonMonster(){ // handles Monster Summoning
-        GameObject clickedObject = MouseOverDetector(); // Find out what mouse is currently hovering over
+        GameObject clickedObject = MouseOverDetector(); // Find out what mouse is currently hovering over and get gameObeject
         if(clickedObject && clickedObject.tag == "CardZone_P" && selectedCard){ // if mouse over valid object and a card is selected
             if((P_Mana - selectedCard.Cost) > 0 && clickedObject.transform.childCount == 0){ // if player has enough mana for card and there isnt already a spawned monster
                 Deck deckScript = player.GetComponent<Deck>();
                 GameObject spawnedMosnter = GameObject.Instantiate(selectedCard.Model, clickedObject.transform.position + spawnOffset, clickedObject.transform.rotation);
                 spawnedMosnter.transform.parent = clickedObject.transform;
+                spawnedMosnter.tag = "SummonedMonster";
+                clickedObject.GetComponent<SummonedMonsterStats>().SetStats(selectedCard.Damage, selectedCard.Health);
 
                 // Remove the card you used from the hand list and place it in the used cards list and update ui
                 Card usedCard = deckScript.UserHand.Find(card => card.Id == selectedCard.Id);
@@ -180,8 +260,21 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    void ClearBoard(){
+        Transform Zones = Arena.transform.Find("Zones");
+        foreach(Transform zone in Zones){
+            foreach(Transform slot in zone){
+                if(slot.childCount != 0){
+                    Destroy(slot.GetChild(0).gameObject);
+                }
+            }
+        }
+    }
+
     // Handle the end of the battle
     public IEnumerator EndBattle(){
+
+        battleOngoing = false;
 
         enemy.GetComponent<Enemy>().isDefeated = true; // Make enemy defeated to true so you dont fight it start after you are sent back
 
@@ -193,6 +286,9 @@ public class BattleManager : MonoBehaviour
         enemy.GetComponent<Enemy>().inBattle = false; // make enemy aware its not in battle
         player.GetComponent<PlayerMovement>().enabled = true; // turn on player movement script to allow movement
 
+        // Clear the Board
+        ClearBoard();
+
         // Switch Cameras
         player.transform.Find("Main Camera").gameObject.SetActive(true); // enable player cam
         Arena.transform.Find("Cam").gameObject.SetActive(false); // disable arena cam
@@ -202,18 +298,16 @@ public class BattleManager : MonoBehaviour
         // Make cursor invisble and locked to middle
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        
-        battleOngoing = false;
     }
 
     void switchTurn() {
         playerTurn = !playerTurn;
     }
 
-    public bool GameEndChecker(){ // return true if one person has lost all their hp
+    public void GameEndChecker(){ // return true if one person has lost all their hp
+        Debug.Log("Checking");
         if (P_Health <= 0 || E_Health <= 0){
-            return true;
+            StartCoroutine(EndBattle());
         }
-        return false;
     }
 }

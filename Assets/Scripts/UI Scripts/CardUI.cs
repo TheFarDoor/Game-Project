@@ -54,7 +54,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         cardNameText.text = card.CardName;
         descriptionText.text = card.Description;
         damageText.text = "DMG: " + card.Damage.ToString();
-        defenceText.text = "DEF: " + card.Defence.ToString();
+        defenceText.text = "DEF: " + card.Health.ToString();
         costText.text = "MANA: " + card.Cost.ToString();
 
         // Assuming you have a sprite in the card model (modify as per your setup)
@@ -82,6 +82,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public void OnPointerClick(PointerEventData eventData){
         if (battleManager.playerTurn && !thisCardSelected && eventData.button == PointerEventData.InputButton.Left){
             battleManager.UpdateSelectedCard(thisCard, this.GetComponent<Image>());
+            battleManager.selectedMonster = null;
         }
     }
 

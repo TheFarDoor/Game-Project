@@ -117,6 +117,7 @@ GameObject:
   - component: {fileID: 5029250071642195401}
   - component: {fileID: 1016792494189231075}
   - component: {fileID: 8996409478716608926}
+  - component: {fileID: 5520795338964539855}
   m_Layer: 7
   m_Name: PA
   m_TagString: CardZone_P
@@ -210,6 +211,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5520795338964539855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781327736834332293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 993459cde0d61214cb78a0e4cd6240b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  atk: 0
+  health: 0
 --- !u!1 &1133495986138066375
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,6 +290,7 @@ GameObject:
   - component: {fileID: 2132038368546094661}
   - component: {fileID: 5873981170208165973}
   - component: {fileID: 145437847638816672}
+  - component: {fileID: 5690444595097767004}
   m_Layer: 7
   m_Name: EB
   m_TagString: CardZone_E
@@ -368,6 +384,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5690444595097767004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1363388798086035096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 993459cde0d61214cb78a0e4cd6240b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  atk: 0
+  health: 0
 --- !u!1 &3281542301546738845
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,6 +410,7 @@ GameObject:
   - component: {fileID: 2603130874262457657}
   - component: {fileID: 4240005433057313591}
   - component: {fileID: 3923480962797072151}
+  - component: {fileID: 1306524626305085523}
   m_Layer: 7
   m_Name: EA
   m_TagString: CardZone_E
@@ -473,6 +504,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1306524626305085523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3281542301546738845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 993459cde0d61214cb78a0e4cd6240b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  atk: 0
+  health: 0
 --- !u!1 &4406850218157155013
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,6 +651,7 @@ GameObject:
   - component: {fileID: 1871281322581955403}
   - component: {fileID: 1195808480576980655}
   - component: {fileID: 6959058042373539193}
+  - component: {fileID: 6903984158284789441}
   m_Layer: 7
   m_Name: EC
   m_TagString: CardZone_E
@@ -699,6 +745,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6903984158284789441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5539790546458781918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 993459cde0d61214cb78a0e4cd6240b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  atk: 0
+  health: 0
 --- !u!1 &6233984866414935615
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,6 +771,7 @@ GameObject:
   - component: {fileID: 3389038529807329294}
   - component: {fileID: 5416322750245337761}
   - component: {fileID: 4619790966291799101}
+  - component: {fileID: 8152010184590028440}
   m_Layer: 7
   m_Name: PC
   m_TagString: CardZone_P
@@ -804,6 +865,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8152010184590028440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6233984866414935615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 993459cde0d61214cb78a0e4cd6240b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  atk: 0
+  health: 0
 --- !u!1 &6861885771078513983
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,6 +1032,7 @@ GameObject:
   - component: {fileID: 6293399412049967336}
   - component: {fileID: 2702057832414256426}
   - component: {fileID: 3279346549231521199}
+  - component: {fileID: 8554500606401579853}
   m_Layer: 7
   m_Name: PB
   m_TagString: CardZone_P
@@ -1050,6 +1126,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8554500606401579853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8201714114275288492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 993459cde0d61214cb78a0e4cd6240b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  atk: 0
+  health: 0
 --- !u!1 &8900116186448414385
 GameObject:
   m_ObjectHideFlags: 0
