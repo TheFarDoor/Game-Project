@@ -361,6 +361,7 @@ public class BattleManager : MonoBehaviour
         }
         else{ // if not add mana to player
             P_Mana += 1;
+            player.GetComponent<ManaSystem>().RecoverMana(1);
             enemy.GetComponent<Deck>().DrawCardsToHand(1);
         }
         playerTurn = !playerTurn; // switch turn
