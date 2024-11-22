@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CardsManager : MonoBehaviour
 {
+    public static CardsManager Instance; // Instance of the CardsManager
+
     [Header("BattleUI")]
     public GameObject cardUIPrefab;  // Reference to your card UI prefab
     public Transform cardParent;     // Parent object (like a Panel or Canvas) to hold the cards
@@ -18,27 +19,33 @@ public class CardsManager : MonoBehaviour
 
 
     public void Awake() {
-        LoadCard();
+        if (Instance == null){
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else{
+            Destroy(gameObject);
+        }
+
+        LoadCards();
     }
 
     public void Start(){
-        GameObject canvas = GameObject.Find("/Canvas");
+        GameObject canvas = GameObject.Find("/Canvas-Cam");
         cardParent = canvas.transform.Find("BattleUI/CardContainer").transform;
     }
 
-    private void LoadCard() {
-
+    private void LoadCards() {
         try{
             // Loading all the cards from the Resources Folder
             allFireCards = Resources.LoadAll<Card>("Cards/Fire").ToList();
             allRockCards = Resources.LoadAll<Card>("Cards/Rock").ToList();
             allSpells = Resources.LoadAll<Card>("Cards/Spell").ToList();
         }
-        catch(Exception e)
+        catch(Exception)
         {
             return;
         }
-
     }
 
     public List<Card> GetRandomCards(List<Card> listOfCards, int numOfCards, int IdTracker){

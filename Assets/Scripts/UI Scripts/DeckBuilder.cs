@@ -10,7 +10,7 @@ public class DeckBuilder : MonoBehaviour
     public GameObject DeckList;
     public GameObject cardPrefab; // Prefab for the card UI
     public bool Vis;
-    public Deck playerDeck;
+    public Deck_Orig playerDeck;
     public TextMeshProUGUI cardText;
 
     void Start()
@@ -21,7 +21,7 @@ public class DeckBuilder : MonoBehaviour
         DeckList.SetActive(false);
         Inventory.SetActive(false);
 
-        playerDeck = GameObject.Find("/Player").GetComponent<Deck>(); // Get the player's deck
+        playerDeck = GameObject.Find("/Player").GetComponent<Deck_Orig>(); // Get the player's deck
     }
 
     void Update()

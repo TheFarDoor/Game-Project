@@ -1,17 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "New_Card", menuName = "Card")]
 public class Card : ScriptableObject
 {
-    private enum Card_Type{
+    [SerializeField] private enum Card_Type{
         Fire,
         Water,
         Air,
         Earth,
-        Max // a value to track end of enums
     };
 
     [SerializeField] private int id; // card id
@@ -21,8 +19,8 @@ public class Card : ScriptableObject
     [SerializeField] [Range(0,100)] private int damage; // card damage which can be between 0 - 100 
     [SerializeField] [Range(0,100)] private int health; // card defence which can be between 0 - 100 
     [SerializeField] private int cost; // cost to use card
-    [SerializeField] bool used; // bool to track if card is used
-    [SerializeField] GameObject model; // model for summon if card summons something
+    [SerializeField] private bool used; // bool to track if card is used
+    [SerializeField] private GameObject model; // model for summon if card summons something
 
     // Getter method for each private variable
     public int Id => id;

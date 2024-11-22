@@ -7,7 +7,7 @@ using UnityEngine.AI;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Enemy : MonoBehaviour
+public class Enemy2 : MonoBehaviour
 {
     [Header("Details")]
     public string enemy_name;
@@ -18,7 +18,9 @@ public class Enemy : MonoBehaviour
 
     [Header("Status")]
     public bool isDefeated = false; // Bool to track if player has beaten this enemy
-    public bool inBattle;
+    public bool seekBattle; // is the enemy looking to battle
+    public float coolDownTime; // tracks the cooldown period
+
 
     [Header("FOV Settings")]
     [Range(1, 10)]
@@ -45,11 +47,11 @@ public class Enemy : MonoBehaviour
         // code below runs every x seconds where x is the delay given
         while(true){
             yield return new WaitForSeconds(delay); 
-            if (!inBattle){ // if the player is not already in a battle
+            if (seekBattle){ // if the enemy is looking for 
                 if(!isDefeated && CheckForPlayer() != null){ // if there is a player in range and the player hasnt beaten this enenmy already
                     // Load up a battle
                     Transform playerTransform = CheckForPlayer();
-                    StartCoroutine(gameManager.GetComponent<BattleManager>().StartBattle(playerTransform, this.transform));
+                    StartCoroutine(gameManager.GetComponent<BattleManager>().InitializeBattle(playerTransform, this.transform));
                 }    
             }
         }
@@ -75,8 +77,8 @@ public class Enemy : MonoBehaviour
 
     // CODE FOR BATTLE
     public void Start_E_Turn(){
-        BattleManager battleManager = gameManager.transform.GetComponent<BattleManager>();
-        Deck deck = this.GetComponent<Deck>();
+        BM battleManager = gameManager.transform.GetComponent<BM>();
+        Deck_Orig deck = this.GetComponent<Deck_Orig>();
         if(deck.UserHand.Count == 0){ // if enemy hand empty
             battleManager.SwitchTurn();
         }

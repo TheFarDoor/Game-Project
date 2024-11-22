@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class Deck : MonoBehaviour
+public class Deck_Orig : MonoBehaviour
 {
 
     [Header("Random Deck")]

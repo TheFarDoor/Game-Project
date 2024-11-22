@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 622657863279040705}
   - component: {fileID: 5331545851043735552}
   - component: {fileID: 155041560606707247}
-  - component: {fileID: 8869849787097351528}
+  - component: {fileID: 664655430391343953}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -130,7 +130,7 @@ MonoBehaviour:
   userCardCollection: []
   usedCardPile: []
   cardManager: {fileID: 0}
---- !u!114 &8869849787097351528
+--- !u!114 &664655430391343953
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,24 +139,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 4282222881259157643}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e3cd1b6df3e5e246a92f78a5f75a92c, type: 3}
+  m_Script: {fileID: 11500000, guid: 7baae8489fab67a44953589962936259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemy_name: 
-  description: 
-  e_Starting_health: 20
-  e_Starting_mana: 5
-  isDefeated: 0
-  inBattle: 0
-  viewRadius: 4.51
-  viewAngle: 55.3
+  enemy_description: 
+  e_Starting_health: 0
+  e_Starting_mana: 0
+  viewRadius: 5
+  viewAngle: 40
   playerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
-  decisionDelay: 0.2
-  agent: {fileID: 0}
+  decisionDelay: 0.733
+  isDefeated: 0
+  seekBattle: 0
+  coolDownTime: 0
   gameManager: {fileID: 0}
   assginedArena: {fileID: 0}

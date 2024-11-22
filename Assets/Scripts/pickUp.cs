@@ -6,7 +6,7 @@ public class pickUp : MonoBehaviour
 {
     public Card card;
 
-    private Deck playerDeck;
+    private Deck_Orig playerDeck;
 
     public float rotationSpeed = 50f;
     public float heightRotation = 0.25f;
@@ -17,7 +17,7 @@ public class pickUp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerDeck = GameObject.FindWithTag("Player").GetComponent<Deck>();
+        playerDeck = GameObject.FindWithTag("Player").GetComponent<Deck_Orig>();
         startPosition = transform.position; // initial position of the model/card
     }
 

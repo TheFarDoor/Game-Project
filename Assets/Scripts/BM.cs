@@ -9,7 +9,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine.Networking;
 
-public class BattleManager : MonoBehaviour
+public class BM : MonoBehaviour
 {
     private Transform playerBattlePos;
     private Transform enemyBattlePos;
@@ -90,7 +90,7 @@ public class BattleManager : MonoBehaviour
                 CheckClick();
             }
             else{
-                enemy.GetComponent<Enemy>().Start_E_Turn();
+                
             } 
         }
 
@@ -110,6 +110,7 @@ public class BattleManager : MonoBehaviour
         }
         eHP.text = starteHP != 0? "Enemy Hp: " + E_Health + "/" + starteHP: "Loading Enemy Hp";
     }
+
     // Initialize start of battle
     public IEnumerator StartBattle(Transform p, Transform e){ // p is player transform and e is enemy transform thats passed in
 
@@ -119,12 +120,11 @@ public class BattleManager : MonoBehaviour
         player = p.gameObject;
         enemy = e.gameObject;
 
-        if(player.GetComponent<Deck>().UserDeck.Count == 0){
-            player.GetComponent<Deck>().UserDeck.AddRange(GameObject.Find("Game Manager").GetComponent<CardsManager>().GenerateRandomDeck(3, 2, 0));
+        if(player.GetComponent<Deck_Orig>().UserDeck.Count == 0){
+            player.GetComponent<Deck_Orig>().UserDeck.AddRange(GameObject.Find("Game Manager").GetComponent<CardsManager>().GenerateRandomDeck(3, 2, 0));
         }
 
         // get arena postions
-        Arena = enemy.GetComponent<Enemy>().assginedArena;
         playerBattlePos = Arena.transform.Find("PlayerPos");
         enemyBattlePos = Arena.transform.Find("EnemyPos");
 
@@ -135,7 +135,6 @@ public class BattleManager : MonoBehaviour
         previousEnemyPos = enemy.transform.position;
         previousEnemyRot = enemy.transform.rotation;
 
-        enemy.GetComponent<Enemy>().inBattle = true;
         player.GetComponent<PlayerMovement>().enabled = false; // turn off player movement script to stop movement
 
         // Move players to battle area
@@ -144,10 +143,6 @@ public class BattleManager : MonoBehaviour
 
         // Assign a random person to start first
         playerTurn = UnityEngine.Random.Range(0,2) == 0;
-
-        // Assign health and mana values
-        P_Health = player.GetComponent<HealthSystem>().CurrentHealth;
-        P_Mana = player.GetComponent<ManaSystem>().CurrentMana;
 
         E_Health = enemy.GetComponent<Enemy>().e_Starting_health;
         E_Mana = enemy.GetComponent<Enemy>().e_Starting_mana;
@@ -162,19 +157,19 @@ public class BattleManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
 
         // Draw cards to hand for each person
-        player.GetComponent<Deck>().DrawCardsToHand(StartingCardAmount);
-        enemy.GetComponent<Deck>().DrawCardsToHand(StartingCardAmount);
+        player.GetComponent<Deck_Orig>().DrawCardsToHand(StartingCardAmount);
+        enemy.GetComponent<Deck_Orig>().DrawCardsToHand(StartingCardAmount);
 
 
         UpdateCardUI();
-        yield return new WaitUntil(() => enemy.GetComponent<Deck>().UserHand.Count > 0 && player.GetComponent<Deck>().UserHand.Count > 0);
+        yield return new WaitUntil(() => enemy.GetComponent<Deck_Orig>().UserHand.Count > 0 && player.GetComponent<Deck_Orig>().UserHand.Count > 0);
         firstTurn = true;
         battleOngoing = true;
 
     }
 
     private void UpdateCardUI(){
-        this.transform.GetComponent<CardsManager>().DisplayCards(player.GetComponent<Deck>().UserHand);
+        this.transform.GetComponent<CardsManager>().DisplayCards(player.GetComponent<Deck_Orig>().UserHand);
     }
 
     private void CheckClick(){
@@ -249,7 +244,7 @@ public class BattleManager : MonoBehaviour
         GameObject clickedObject = MouseOverDetector(); // Find out what mouse is currently hovering over and get gameObeject
         if(clickedObject && clickedObject.tag == "CardZone_P" && selectedCard){ // if mouse over valid object and a card is selected
             if((P_Mana - selectedCard.Cost) > 0 && clickedObject.transform.childCount == 0){ // if player has enough mana for card and there isnt already a spawned monster
-                Deck deckScript = player.GetComponent<Deck>();
+                Deck_Orig deckScript = player.GetComponent<Deck_Orig>();
                 StartCoroutine(SummonMonster(player, selectedCard, clickedObject.transform));
             }
             TT.text = "Tip: You dont have enough mana or there is already a monster!";
@@ -259,7 +254,7 @@ public class BattleManager : MonoBehaviour
     }
 
     public IEnumerator SummonMonster(GameObject user, Card cardToSpawn, Transform slotToSpawn){ // handles generic monster spawning
-        Deck deckScript = user.GetComponent<Deck>(); // Get user seck script
+        Deck_Orig deckScript = user.GetComponent<Deck_Orig>(); // Get user seck script
 
         GameObject spawnedMosnter = GameObject.Instantiate(cardToSpawn.Model, slotToSpawn.transform.position + spawnOffset, slotToSpawn.rotation); // summon card model from card data
         spawnedMosnter.transform.parent = slotToSpawn; // make model's parent the slot its spawned at
@@ -278,7 +273,7 @@ public class BattleManager : MonoBehaviour
         // Update Mana
         if(user.tag == "Player"){
             P_Mana -= cardToSpawn.Cost; // update battleManager player mana tracker
-            player.GetComponent<ManaSystem>().RemoveMana(cardToSpawn.Cost); // Update val for ui    
+            // update mana ui based on coast 
         }
         else{
             E_Mana -= cardToSpawn.Cost; // update battleManager player mana tracker
@@ -326,14 +321,12 @@ public class BattleManager : MonoBehaviour
 
         battleOngoing = false;
 
-        enemy.GetComponent<Enemy>().isDefeated = true; // Make enemy defeated to true so you dont fight it start after you are sent back
-
         // move enemy and player back to original positions
         enemy.transform.SetPositionAndRotation(previousEnemyPos, previousEnemyRot);
         player.transform.SetPositionAndRotation(previousPlayerPos, previousPlayerRot);
         
         yield return new WaitForSeconds(0.3f); // delay
-        enemy.GetComponent<Enemy>().inBattle = false; // make enemy aware its not in battle
+        
         player.GetComponent<PlayerMovement>().enabled = true; // turn on player movement script to allow movement
 
         // Clear the Board
@@ -357,12 +350,12 @@ public class BattleManager : MonoBehaviour
     public void SwitchTurn() {
         if(playerTurn == true){ // if it is player turn then next turn is enemy so add mana to enemy
             E_Mana += 1;
-            player.GetComponent<Deck>().DrawCardsToHand(1);
+            player.GetComponent<Deck_Orig>().DrawCardsToHand(1);
         }
         else{ // if not add mana to player
             P_Mana += 1;
-            player.GetComponent<ManaSystem>().RecoverMana(1);
-            enemy.GetComponent<Deck>().DrawCardsToHand(1);
+            // add mana at the end of the turn
+            enemy.GetComponent<Deck_Orig>().DrawCardsToHand(1);
         }
         playerTurn = !playerTurn; // switch turn
         if(firstTurn){firstTurn = false;} // if its the first turn and we switch then its no longer the first turn

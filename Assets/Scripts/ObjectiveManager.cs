@@ -12,8 +12,8 @@ public class ObjectiveManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cardCollectText = GameObject.Find("/Canvas/NormalUI/CollectCards").GetComponent<TextMeshProUGUI>();
-        defeatBossText = GameObject.Find("/Canvas/NormalUI/KillTheBoss").GetComponent<TextMeshProUGUI>();
+        cardCollectText = GameObject.Find("/Canvas-Cam/NormalUI/CollectCards").GetComponent<TextMeshProUGUI>();
+        defeatBossText = GameObject.Find("/Canvas-Cam/NormalUI/KillTheBoss").GetComponent<TextMeshProUGUI>();
         cardCollectText.text = "Find and collect Cards";
         defeatBossText.text = "Find the Red Enemy in the forestand defeat him";
     }
@@ -24,14 +24,6 @@ public class ObjectiveManager : MonoBehaviour
         if (GameObject.Find("PickUpHolder").transform.childCount == 0)
         {
             cardCollectText.color = Color.green;
-        }
-
-        if(GameObject.Find("Enemy").GetComponent<Enemy>().isDefeated){
-            defeatBossText.color = Color.green;
-        }
-
-        if(GameObject.Find("Enemy").GetComponent<Enemy>().isDefeated && GameObject.Find("PickUpHolder").transform.childCount == 0){
-            StartCoroutine(DelayEnd());
         }
     }
 

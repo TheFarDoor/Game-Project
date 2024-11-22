@@ -7,32 +7,26 @@ using JetBrains.Annotations;
 public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [Header("References")]
-    public Deck playerDeck;      // Reference to the player deck
-    public BattleManager battleManager;   // Reference to battle manager
+    public Deck_Orig playerDeck; // Reference to the player deck
 
     [Header("Card UI References")]
-    public Image cardImage;      // The image UI component for the card
-    public TextMeshProUGUI cardNameText;    // Text UI component for card name
+    public Image cardImage; // The image UI component for the card
+    public TextMeshProUGUI cardNameText; // Text UI component for card name
     public TextMeshProUGUI descriptionText; // Text UI component for card description
-    public TextMeshProUGUI damageText;      // Text UI component for card damage
-    public TextMeshProUGUI defenceText;     // Text UI component for card defence
-    public TextMeshProUGUI costText;        // Text UI component for card cost
+    public TextMeshProUGUI damageText; // Text UI component for card damage
+    public TextMeshProUGUI defenceText; // Text UI component for card defence
+    public TextMeshProUGUI costText; // Text UI component for card cost
 
 
     [Header("Card Data reference")]
-    private Card thisCard;
-
-    public Card ThisCard => thisCard;
+    public Card cardData;
 
     [Header("Other")]
-    public bool thisCardSelected;
-
-    public void Awake(){
-        battleManager = GameObject.Find("/Game Manager").GetComponent<BattleManager>();
-    }  
+    public bool thisCardSelected; // bool to track if the card 
+    public Vector3 defaultScale = new Vector3(1, 1, 1);
 
     public void Update(){
-        if (battleManager.selectedCard == thisCard){
+        if (BattleManager.Instance.selectedCard == this){
             thisCardSelected = true;
         }
         else{
@@ -42,7 +36,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     public void SetCardData(Card card)
     {
-        thisCard = card;
+        cardData = card;
 
         cardNameText = this.transform.Find("CardPanel/MonsterName").GetComponent<TextMeshProUGUI>();
         descriptionText = this.transform.Find("CardPanel/MonsterDesc").GetComponent<TextMeshProUGUI>();
@@ -62,28 +56,31 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         {
             
         }
+
+        // assign default colour
+        this.GetComponent<Image>().color = BattleManager.Instance.default_CardUIColour;
     }
 
     public void OnPointerEnter(PointerEventData eventData){
-        battleManager.hoveredCard = thisCard;
         if(!thisCardSelected){
-            this.GetComponent<Image>().color = battleManager.hoverd_CardUIColor;  
+            this.GetComponent<Image>().color = BattleManager.Instance.hovered_CardUIColour;
+            this.transform.localScale = defaultScale * BattleManager.Instance.cardUIHoverScale;
         }
-        
     }
 
     public void OnPointerExit(PointerEventData eventData){
-        battleManager.hoveredCard = null;
         if (!thisCardSelected){
-           this.GetComponent<Image>().color = battleManager.original_CardUIColor;  
+           this.GetComponent<Image>().color = BattleManager.Instance.default_CardUIColour;
+           this.transform.localScale = defaultScale;  
         }        
     }
 
     public void OnPointerClick(PointerEventData eventData){
-        if (battleManager.playerTurn && !thisCardSelected && eventData.button == PointerEventData.InputButton.Left){
-            battleManager.UpdateSelectedCard(thisCard, this.GetComponent<Image>());
-            battleManager.selectedMonster = null;
+        Debug.Log("Clicked on a card ui");
+        if (BattleManager.Instance.currentTurn == BattleManager.Turn.Player && !thisCardSelected && eventData.button == PointerEventData.InputButton.Left){
+            this.GetComponent<Image>().color = BattleManager.Instance.selected_CardUIColour;
+            this.transform.localScale = defaultScale * BattleManager.Instance.cardUIHoverScale;
+            BattleManager.Instance.UpdateSelectedCard(this); // tell battleManager that this card is selected
         }
     }
-
 }
