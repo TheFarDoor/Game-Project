@@ -169,16 +169,39 @@ MonoBehaviour:
   Arena: {fileID: 0}
   Arena_playerPosition: {fileID: 0}
   Arena_enemyPosition: {fileID: 0}
-  StartingCardAmount: 5
-  playerDeck: {fileID: 0}
+  playerCardZoneTag: CardZone_P
+  enemyCardZoneTag: CardZone_E
+  Arena_playerCardSlots: {fileID: 0}
+  Arena_enemyCardSlots: {fileID: 0}
+  startingCardAmount: 3
+  cardDrawDelay: 0.1
+  playerDeck:
+  - {fileID: 0}
   playerHand: []
   playerUsedCard: []
-  enemyDeck: {fileID: 0}
+  enemyDeck:
+  - {fileID: 0}
   enemyHand: []
   enemyUsedCard: []
+  healthBar: {fileID: 0}
+  healthText: {fileID: 0}
+  manaBar: {fileID: 0}
+  manaText: {fileID: 0}
+  P_maxHp: 20
   P_Health: 0
+  P_maxMana: 5
   P_Mana: 0
+  E_maxHp: 0
   E_Health: 0
+  E_maxMana: 0
   E_Mana: 0
   selectedCard: {fileID: 0}
   selectedMonster: {fileID: 0}
+  mainCam: {fileID: 0}
+  arenaCam: {fileID: 0}
+  cardUIHolder: {fileID: 0}
+  cardUIHoverScale: 1.1
+  default_CardUIColour: {r: 0.15178537, g: 1, b: 0, a: 1}
+  hovered_CardUIColour: {r: 1, g: 0.627451, b: 0, a: 1}
+  selected_CardUIColour: {r: 1, g: 0.018811034, b: 0, a: 1}
+  attackLerpSpeed: 0.1

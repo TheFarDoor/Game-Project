@@ -84,15 +84,17 @@ public class CardsManager : MonoBehaviour
         }
 
         foreach (Card card in cards)
-        {
-            // Instantiate a new card UI
-            GameObject cardUI = Instantiate(cardUIPrefab, cardParent);
+        {  
+            if (card != null){
+                // Instantiate a new card UI
+                GameObject cardUI = Instantiate(cardUIPrefab, cardParent);
 
-            // Get the UI components 
-            CardUI cardUIComponent = cardUI.GetComponent<CardUI>();
-            if (cardUIComponent != null)
-            {
-                cardUIComponent.SetCardData(card); // Pass the card data to the UI
+                // Get the UI components 
+                CardUI cardUIComponent = cardUI.GetComponent<CardUI>();
+                if (cardUIComponent != null)
+                {
+                    cardUIComponent.SetCardData(card); // Pass the card data to the UI
+                } 
             }
         }
     }

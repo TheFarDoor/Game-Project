@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1785842214115074490}
   - component: {fileID: 622657863279040705}
   - component: {fileID: 5331545851043735552}
-  - component: {fileID: 155041560606707247}
   - component: {fileID: 664655430391343953}
+  - component: {fileID: 1673512832401872523}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -109,27 +109,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &155041560606707247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4282222881259157643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a1fd41cff151454a9edca8ed9740fca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireTypesCount: 5
-  rockTypesCount: 3
-  spellsCount: 2
-  randomDeck: 0
-  userHand: []
-  userDeck: []
-  userCardCollection: []
-  usedCardPile: []
-  cardManager: {fileID: 0}
 --- !u!114 &664655430391343953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,19 +123,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy_name: 
   enemy_description: 
-  e_Starting_health: 0
-  e_Starting_mana: 0
+  e_Starting_health: 20
+  e_Starting_mana: 5
   viewRadius: 5
   viewAngle: 40
   playerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
   decisionDelay: 0.733
-  isDefeated: 0
-  seekBattle: 0
-  coolDownTime: 0
-  gameManager: {fileID: 0}
-  assginedArena: {fileID: 0}
+  hasBeenDefeated: 0
+  assignedArena: {fileID: 0}
+--- !u!114 &1673512832401872523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4282222881259157643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 573393023d10adc499b19f0268959267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomDeck: 1
+  fireTypeCount: 5
+  rockTypeCount: 5
+  spellTypeCount: 0
+  deckList: []
+  collectionList: []

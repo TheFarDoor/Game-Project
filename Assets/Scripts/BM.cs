@@ -190,23 +190,9 @@ public class BM : MonoBehaviour
     }
 
     public void MonsterFight(GameObject monster1, GameObject monster2){ // calculates the battles results between monsters and returns a tuple that states if monsters died
-        monstersFighting = true;
-        SummonedMonsterStats m1_Stats = monster1.transform.parent.GetComponent<SummonedMonsterStats>();
-        SummonedMonsterStats m2_Stats = monster2.transform.parent.GetComponent<SummonedMonsterStats>();
-
-        m2_Stats.health -= m1_Stats.atk;
-        m1_Stats.health -= m2_Stats.atk;
-        if (m1_Stats.health <= 0){
-            MonsterDead(monster1);
-        }
-        if (m2_Stats.health <= 0){
-            MonsterDead(monster2);
-        }
-        monstersFighting = false;
     }
 
     public void MonsterDead(GameObject deadMonster){
-        deadMonster.transform.parent.GetComponent<SummonedMonsterStats>().Reset();
         Destroy(deadMonster);
     }
 
@@ -227,7 +213,6 @@ public class BM : MonoBehaviour
                         return;
                     }
                 }
-                E_Health -= selectedMonster.transform.parent.GetComponent<SummonedMonsterStats>().atk;
                 GameEndChecker();
             }
             else{
@@ -259,7 +244,6 @@ public class BM : MonoBehaviour
         GameObject spawnedMosnter = GameObject.Instantiate(cardToSpawn.Model, slotToSpawn.transform.position + spawnOffset, slotToSpawn.rotation); // summon card model from card data
         spawnedMosnter.transform.parent = slotToSpawn; // make model's parent the slot its spawned at
         spawnedMosnter.tag = "SummonedMonster"; // assign monster tag
-        slotToSpawn.GetComponent<SummonedMonsterStats>().SetStats(cardToSpawn.Damage, cardToSpawn.Health); // Set stats
 
         // Remove the card you used from the hand list and place it in the used cards list and update ui
         Card usedCard = deckScript.UserHand.Find(card => card.Id == cardToSpawn.Id);

@@ -80,7 +80,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         if (BattleManager.Instance.currentTurn == BattleManager.Turn.Player && !thisCardSelected && eventData.button == PointerEventData.InputButton.Left){
             this.GetComponent<Image>().color = BattleManager.Instance.selected_CardUIColour;
             this.transform.localScale = defaultScale * BattleManager.Instance.cardUIHoverScale;
-            BattleManager.Instance.UpdateSelectedCard(this); // tell battleManager that this card is selected
+            BattleManager.Instance.UpdateSelectedCardAndMonster(this, null); // tell battleManager that this card is selected
         }
     }
 }

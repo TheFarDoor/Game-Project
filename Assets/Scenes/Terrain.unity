@@ -194,34 +194,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 657847550512282853, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
-      propertyPath: fireTypeCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 657847550512282853, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
-      propertyPath: rockTypeCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 657847550512282853, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
-      propertyPath: spellTypeCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1568014161385896439, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
-      propertyPath: randomDeck
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1568014161385896439, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
-      propertyPath: spellsCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1568014161385896439, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
-      propertyPath: fireTypesCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1568014161385896439, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
-      propertyPath: rockTypesCount
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7349123939646571626, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
       propertyPath: m_LocalPosition.x
       value: 196.75
@@ -266,9 +238,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8504156924445825647, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
-    - {fileID: 5623442018339268014, guid: c9a3179bb86d1514db7a60c04b823509, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -386,42 +356,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 155041560606707247, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
-      propertyPath: randomDeck
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 664655430391343953, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
-      propertyPath: fovWidth
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 664655430391343953, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
-      propertyPath: fovHeight
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 664655430391343953, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
-      propertyPath: verticalRays
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 664655430391343953, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
       propertyPath: assignedArena
       value: 
       objectReference: {fileID: 1393011004}
-    - target: {fileID: 664655430391343953, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
-      propertyPath: horizontalRays
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 664655430391343953, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
-      propertyPath: e_Starting_mana
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 664655430391343953, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
-      propertyPath: e_Starting_health
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 664655430391343953, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
-      propertyPath: playerMask.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
     - target: {fileID: 4282222881259157643, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
       propertyPath: m_Name
       value: Enemy
@@ -466,10 +404,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8869849787097351528, guid: 51fbe7955d32196409b4a07eb261e104, type: 3}
-      propertyPath: assginedArena
-      value: 
-      objectReference: {fileID: 1393011004}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -743,6 +677,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 215880530931929948, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
+      propertyPath: m_WholeNumbers
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3711510480689088618, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -959,80 +897,12 @@ PrefabInstance:
       value: Game Manager
       objectReference: {fileID: 0}
     - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: P_maxHp
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: P_maxMana
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: cardUIHoverScale
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: default_CardUIColour.a
+      propertyPath: attackLerpSpeed
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: default_CardUIColour.b
+      propertyPath: enemyDeck.Array.size
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: default_CardUIColour.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: default_CardUIColour.r
-      value: 0.15178537
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: hovered_CardUIColour.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: hovered_CardUIColour.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: hovered_CardUIColour.g
-      value: 0.627451
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: hovered_CardUIColour.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: original_CardUIColour.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: original_CardUIColour.b
-      value: 0.4477572
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: original_CardUIColour.g
-      value: 0.63746125
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: original_CardUIColour.r
-      value: 0.8113208
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: selected_CardUIColour.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: selected_CardUIColour.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: selected_CardUIColour.g
-      value: 0.018811034
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: selected_CardUIColour.r
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
