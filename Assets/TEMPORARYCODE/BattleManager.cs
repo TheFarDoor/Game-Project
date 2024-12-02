@@ -5,6 +5,9 @@ using UnityEngine;
 using TMPro;
 using System;
 using System.Threading;
+using UnityEditor;
+using UnityEngine.AI;
+using UnityEngine.TextCore.Text;
 
 
 public class BattleManager : MonoBehaviour
@@ -96,6 +99,7 @@ public class BattleManager : MonoBehaviour
     [Header("Cameras"), Space(20)]
     public Camera mainCam; // main player camera
     public Camera arenaCam; // arena camera
+    [Range(1, 5)] public float arenaCamSpeed = 2.0f; // arena camera rotate speed
 
     [Header("Card UI"), Space(20)]
     public Transform cardUIHolder;
@@ -129,8 +133,8 @@ public class BattleManager : MonoBehaviour
     void Update()
     {   
         // TESTING !!!!!! TEMP CODE !!!!!!!!!!!!
-        if(Input.GetKeyDown(KeyCode.Q)){StartCoroutine(EndBattle());} 
-        if(Input.GetKeyDown(KeyCode.E)){RemoveMana(1.0f, true);} 
+        if(Input.GetKeyDown(KeyCode.F)){EndBattle();} 
+        if(Input.GetKeyDown(KeyCode.G)){RemoveMana(1.0f, true);} 
         if(Input.GetKeyDown(KeyCode.R)){RemoveHealth(1.0f, true);}
         if(Input.GetKeyDown(KeyCode.T)){ManaRegen(1.0f, true);}
         if(Input.GetKeyDown(KeyCode.Y)){SwitchTurn();}
@@ -152,9 +156,10 @@ public class BattleManager : MonoBehaviour
 
                 if(I_clickedObject.transform.parent.tag == playerCardZoneTag){
                     I_clickedObject = I_clickedObject.transform.parent.gameObject;
-                    if(I_clickedObject.transform.childCount == 2){
-                        if(I_clickedObject.GetComponent<MonsterStatus>().canAttack == true){
-                            UpdateSelectedCardAndMonster(null, I_clickedObject.transform.GetChild(1).gameObject);
+                    if(I_clickedObject.transform.childCount == 3){
+                        MonsterStatus monstStatus = I_clickedObject.GetComponent<MonsterStatus>();
+                        if(monstStatus.canAttack == true && monstStatus.attack > 0){
+                            UpdateSelectedCardAndMonster(null, I_clickedObject.transform.GetChild(2).gameObject);
                         }
                     }
                 }
@@ -168,7 +173,7 @@ public class BattleManager : MonoBehaviour
                 }
 
                 if(C_clickedObject.transform.parent.tag == playerCardZoneTag){
-                    if(C_clickedObject.transform.parent.childCount == 1){
+                    if(C_clickedObject.transform.parent.childCount == 2){
                         Transform CardSlot = C_clickedObject.transform.parent;
                         PlaceOrUseCard(selectedCard.cardData, CardSlot, true);
                     }
@@ -183,7 +188,7 @@ public class BattleManager : MonoBehaviour
                 }
 
                 if (M_clickedObject.transform.parent.tag == enemyCardZoneTag){
-                    M_clickedObject = transform.parent.transform.GetChild(1).gameObject;
+                    M_clickedObject = M_clickedObject.transform.parent.gameObject;
                     StartCoroutine(AttackWithMonster(selectedMonster, M_clickedObject));
                 }
 
@@ -192,7 +197,11 @@ public class BattleManager : MonoBehaviour
     }
 
     public IEnumerator AttackWithMonster(GameObject attackingMonster, GameObject enemyMonster){
+        if (currentBattleState == BattleState.Attacking) yield break; // prevent coroutine running twice
+
         SetBattleState(BattleState.Attacking);
+
+        enemyMonster = enemyMonster.transform.GetChild(2).gameObject;
 
         Vector3 startPos = attackingMonster.transform.position; // attacking monster start position
         Vector3 startForwardVec = attackingMonster.transform.forward; // attacking monster starting forward direction
@@ -207,6 +216,8 @@ public class BattleManager : MonoBehaviour
         yield return StartCoroutine(RotateTowards(attackingMonster, startPos + (startForwardVec * 20f), 0.1f));
 
         attackingMonster.transform.parent.GetComponent<MonsterStatus>().UpdateAttackBool(false);
+
+        DestroyDeadMonster(attackingMonster, enemyMonster);
 
         // remove selections and set state to idle
         UpdateSelectedCardAndMonster(null, null);
@@ -223,10 +234,12 @@ public class BattleManager : MonoBehaviour
             t += (movingToAttack? 1: -1) * Time.deltaTime * attackLerpSpeed; // increment the t value based on time and rotation speed. The direction of the movement is based on the bool.
             t = Mathf.Clamp01(t); // ensure t stays between 0 and 1
 
-            objAttacking.transform.position = Vector3.Lerp(attkStartPos, enemyMonster.transform.position, t);
+            Vector3 attkEndPos = attkStartPos + ((enemyMonster.transform.position - attkStartPos).normalized * (enemyMonster.transform.position - attkStartPos).magnitude * 0.9f);
+            objAttacking.transform.position = Vector3.Lerp(attkStartPos, attkEndPos, t);
             
 
             if (t > 0.99f && movingToAttack){
+                MonsterAttkCalculation(objAttacking, enemyMonster);
                 movingToAttack = false;
             }
 
@@ -241,7 +254,6 @@ public class BattleManager : MonoBehaviour
     }
 
     public IEnumerator RotateTowards(GameObject objToRot, Vector3 targetVec, float rotSpeed){
-        Debug.Log("ROTATING: " + objToRot.name + " towards " + targetVec);
         Quaternion targetRotation = Quaternion.LookRotation((targetVec - objToRot.transform.position).normalized); // Get the target rotation (look towards the target direction)
         Debug.DrawRay(objToRot.transform.position, (targetVec - objToRot.transform.position).normalized * 1000f, Color.red, 2f);
 
@@ -265,19 +277,49 @@ public class BattleManager : MonoBehaviour
 
         // Make sure it faces exactly the target direction after the loop
         objToRot.transform.rotation = targetRotation;
-        Debug.Log("DONE ROTATION");
     }
 
-    public void PlaceOrUseCard(Card cardToUse, Transform cardSlot, bool ForPlayer){
+    public void MonsterAttkCalculation(GameObject attkMonst, GameObject defMonst){
+        MonsterStatus Astats = attkMonst.transform.parent.GetComponent<MonsterStatus>();
+        MonsterStatus Dstats = defMonst.transform.parent.GetComponent<MonsterStatus>();
+
+        int D_HP = Dstats.health - Astats.attack;
+        int A_HP = Astats.health - Dstats.attack;
+
+        if(D_HP <= 0){
+            defMonst.GetComponent<MeshRenderer>().enabled = false;
+            Dstats.ClearStats();
+        }
+        else{
+            Dstats.UpdateStats(Dstats.monstName, Dstats.attack, D_HP);
+        }
+
+        if(A_HP <= 0){
+            attkMonst.GetComponent<MeshRenderer>().enabled = false;
+            Astats.ClearStats();
+        }
+        else{
+            Astats.UpdateStats(Astats.monstName, Astats.attack, A_HP);
+        }
+    }
+
+    public void DestroyDeadMonster(GameObject attkMonst, GameObject defMonst){
+        MonsterStatus monA = attkMonst.transform.parent.GetComponent<MonsterStatus>();
+        MonsterStatus monB = defMonst.transform.parent.GetComponent<MonsterStatus>();
+
+        if(monA.health <= 0){Destroy(attkMonst);}
+        if(monB.health <= 0){Destroy(defMonst);}
+    }
+
+    public bool PlaceOrUseCard(Card cardToUse, Transform cardSlot, bool ForPlayer){
         if (RemoveMana(cardToUse.Cost, ForPlayer)){ // check if there is enough mana and remove mana based on card cost
             SetBattleState(BattleState.Placing);
             // Spawn model or place card
             GameObject placedCard = Instantiate(cardToUse.Model, cardSlot.GetChild(0).position + new Vector3(0, GetObjectHeight(cardToUse.Model) * 1.1f, 0), cardSlot.rotation);
             placedCard.transform.SetParent(cardSlot.transform, worldPositionStays: true); // assign placed card to slot
-            Debug.Log("Placed Card:  " + cardToUse.name + "  for cost:  " + cardToUse.Cost + "  when I had mana: " + (ForPlayer? P_Mana: E_Mana));
+
             // update text for monster stats on arena
-            Debug.Log(cardSlot.parent.name + "  --  " +cardSlot.name);
-            cardSlot.GetComponent<MonsterStatus>().UpdateStats(cardToUse.Damage, cardToUse.Health);
+            cardSlot.GetComponent<MonsterStatus>().UpdateStats(cardToUse.CardName, cardToUse.Damage, cardToUse.Health);
             cardSlot.GetComponent<MonsterStatus>().UpdateAttackBool(firstTurn? false: true);
 
             // loop through user
@@ -297,12 +339,21 @@ public class BattleManager : MonoBehaviour
                     }
                 }    
             }
+
+            if (ForPlayer){
+            UpdateSelectedCardAndMonster(null, null);
+            SetBattleState(BattleState.Idle);
+            }
+
+            return true;
         }
 
         if (ForPlayer){
             UpdateSelectedCardAndMonster(null, null);
             SetBattleState(BattleState.Idle);
         }
+
+        return false;
     }
 
     private float GetObjectHeight(GameObject obj)
@@ -327,7 +378,6 @@ public class BattleManager : MonoBehaviour
 
     public GameObject CheckMouseClick(){ // check what is clicked when mouse is clicked
         if(Input.GetMouseButtonDown(0)){ // left click
-            Debug.Log("LEFT CLICK");
             Ray ray = arenaCam.ScreenPointToRay(Input.mousePosition); // ray aimed at where mouse if pointing
             RaycastHit hit; // store information from raycast hit
 
@@ -338,7 +388,6 @@ public class BattleManager : MonoBehaviour
             return null; // return null is nothing is hit  
         }
         else if(Input.GetMouseButtonDown(1)){ // if right click then deselect card and/or monster
-            Debug.Log("RIGHT CLICK");
             UpdateSelectedCardAndMonster(null, null);
             SetBattleState(BattleState.Idle); // update current battle state as nothing is selected
             return  null; // return null as the right click was to deselect card and/or monster
@@ -385,7 +434,8 @@ public class BattleManager : MonoBehaviour
                 Debug.Log("Switchting to enemy Turn");
                 currentTurn = Turn.Enemy;
                 ManaRegen(1.0f, false);
-                DrawCards(1, false);
+                StartCoroutine(DrawCards(1, false));
+                ResetMonsterAttackBools(false);
                 StartCoroutine(EnemyBattleLogic());
                 break;
 
@@ -393,7 +443,8 @@ public class BattleManager : MonoBehaviour
                 Debug.Log("Switchting to player Turn");
                 currentTurn = Turn.Player;
                 ManaRegen(1.0f, true);
-                DrawCards(1, true);
+                StartCoroutine(DrawCards(1, true));
+                ResetMonsterAttackBools(true);
                 SetBattleState(BattleState.Idle);
                 break;
         }
@@ -401,7 +452,7 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator InitializeBattle(Transform p, Transform e){
         if (currentBattleState == BattleState.Initializing) yield break; // prevent coroutine running twice
-
+        Debug.Log("INITIALIZING BATTLE");
         GameManager.Instance.SetState(GameManager.GameState.InBattle);
         SetBattleState(BattleState.Initializing); // set battle state to initializing
 
@@ -468,18 +519,22 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public IEnumerator EndBattle(){
-        enemy.GetComponent<Enemy>().hasBeenDefeated = true;
-
+    public void EndBattle(){
+        if (currentBattleState == BattleState.BattleEnd) return; // prevent coroutine from running twice
+        
         SetBattleState(BattleState.BattleEnd); // set battlestate to battleend
 
+        StopAllCoroutines();
+
+        enemy.GetComponent<Enemy>().hasBeenDefeated = true;
+
         // Enable player movement and move the player + enemy back to their original positions prior to battle
+        Debug.DrawLine(previousPlayerPosition, previousPlayerPosition + Vector3.up * 10f, Color.magenta, Mathf.Infinity);
+        player.GetComponent<CharacterController>().enabled = false;
         player.transform.SetPositionAndRotation(previousPlayerPosition, previousPlayerRotation);
-        Debug.Log("Teleporting Player");
+        player.GetComponent<CharacterController>().enabled = true;
         enemy.transform.SetPositionAndRotation(previousEnemyPosition, previousEnemyRotation);
-        Debug.Log("Teleporting Enemy");
         player.GetComponent<PlayerMovement>().enabled = true; // enable player movement
-        Debug.Log("Ended Battle");
 
         GameManager.Instance.SetState(GameManager.GameState.Exploring);
 
@@ -491,8 +546,6 @@ public class BattleManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         
-        yield return new WaitUntil(() => Vector3.Distance(player.transform.position, previousPlayerPosition) < 0.01f && Vector3.Distance(enemy.transform.position, previousEnemyPosition) < 0.01f); // wait until player and enemy are moved
-
         // Reset References (these cant be set to null)
         previousPlayerPosition = Vector3.zero;
         previousPlayerRotation = Quaternion.identity;
@@ -537,16 +590,98 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    public void ResetMonsterAttackBools(bool forPlayer){
+        Transform slotsHolder = Arena.transform.Find("Zones");
+
+        switch(forPlayer){
+            case true:
+                slotsHolder = slotsHolder.Find("PZone");
+                foreach(Transform slot in slotsHolder){
+                    MonsterStatus monstStat = slot.GetComponent<MonsterStatus>();
+                    if(slot.childCount == 3 && monstStat.canAttack == false){
+                        monstStat.canAttack = true;
+                    }
+                }
+                return;
+
+            case false:
+                slotsHolder = slotsHolder.Find("EZone");
+                foreach(Transform slot in slotsHolder){
+                    MonsterStatus monstStat = slot.GetComponent<MonsterStatus>();
+                    if(slot.childCount == 3 && monstStat.canAttack == false){
+                        monstStat.canAttack = true;
+                    }
+                }
+                return;
+        }
+    }
+
+    public bool CheckSlotsForMonsters(bool forPlayer){ // check if slots are currently empty
+        Transform slotsHolder = Arena.transform.Find("Zones");
+
+        switch(forPlayer){
+            case true:
+                slotsHolder = slotsHolder.Find("PZone");
+                foreach(Transform slot in slotsHolder){
+                    if(slot.childCount == 3){
+                        return false;
+                    }
+                }
+                return true;
+
+            case false:
+                slotsHolder = slotsHolder.Find("EZone");
+                foreach(Transform slot in slotsHolder){
+                    if(slot.childCount == 3){
+                        return false;
+                    }
+                }
+                return true;
+        }
+    }
+
+
     // ENEMY BATTLE code
     public IEnumerator EnemyBattleLogic(){
         if (currentBattleState == BattleState.EnemyTurn) yield break; // prevent coroutine running twice
 
         SetBattleState(BattleState.EnemyTurn);
-        
-        Debug.Log("ENEMY THINKING");
-        yield return new WaitForSeconds(2f);
 
+        Transform eZone = Arena.transform.Find("Zones/EZone");
+
+        bool slotsFull = true;
+        foreach (Transform slot in eZone){
+            if(slot.childCount == 2){
+                slotsFull = false;
+                break;
+            }
+        }
+
+        if(slotsFull) yield break; // if slots are fulls
+
+        float timer = 0;
+        int cardIndex = 0;
+        while(cardIndex < enemyHand.Count){
+            if(timer > 20){break;}
+            Card card = enemyHand[cardIndex];
+            bool placedCard = false;
+            foreach (Transform slot in eZone){
+                if(slot.childCount == 2){
+                    if(PlaceOrUseCard(card, slot, false)){
+                        placedCard = true;
+                    }
+                    break;
+                }
+            }
+            
+            cardIndex = (placedCard? 0: cardIndex++);
+            timer ++;
+        }
+
+        yield return new WaitForSeconds(3f);
+        Debug.Log("EndingTurn");
         SwitchTurn();
+        Debug.Log("EndedTurn");
     }
 
 
@@ -644,3 +779,5 @@ public class BattleManager : MonoBehaviour
         healthText.text = "Health: " + P_Health.ToString("F0") + " / " + P_maxHp.ToString("F0"); // update health text
     }
 }
+
+    

@@ -897,10 +897,6 @@ PrefabInstance:
       value: Game Manager
       objectReference: {fileID: 0}
     - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
-      propertyPath: attackLerpSpeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
       propertyPath: enemyDeck.Array.size
       value: 0
       objectReference: {fileID: 0}

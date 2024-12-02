@@ -3,28 +3,44 @@ using TMPro;
 
 public class MonsterStatus : MonoBehaviour
 {
-    public TextMeshProUGUI monsterStatText;
-    public float attack;
-    public float health;
+    public TextMeshPro monsterStatText;
+    public int attack;
+    public int health;
+    public string monstName;
     public bool canAttack;
     
 
-    void Awake()
+    void Start()
     {
-        int slotIndex = this.transform.GetSiblingIndex(); // get index of slot in container
-        bool playerSlot = (this.tag == BattleManager.Instance.playerCardZoneTag); // bool to track if slot is for player
-        monsterStatText = this.transform.parent.parent.parent.Find("Canvas-Arena/PlacedCardStats/"+(playerSlot? "Player": "Enemy")).GetChild(slotIndex).GetComponent<TextMeshProUGUI>(); // Get text reference for relevant slot
+        monsterStatText = this.transform.GetChild(1).GetComponent<TextMeshPro>(); // Get text reference for relevant slot
+        Debug.Log(monsterStatText == null);
+        Debug.Log(this.transform.GetChild(1).name + "\n\n");
     }
 
-    public void UpdateStats(float atk, float hp){
-        monsterStatText.text = "Attack:  " + atk.ToString("F0") + "\n" + "Health:  " + hp.ToString("F0");
+    public void UpdateStats(string name, int atk, int hp){
+        monsterStatText.text = name + "\n" + "Attack:  " + atk.ToString("F0") + "\n" + "Health:  " + hp.ToString("F0");
         attack = atk;
         health = hp;
+        monstName = name;
+    }
+
+    void Update(){
+        if(monsterStatText != null){
+            if(canAttack){
+            monsterStatText.color = Color.green;
+            }
+            else{
+                monsterStatText.color = Color.red;
+            }
+        }
+        
     }
 
     public void ClearStats(){
+        Debug.Log("Clearing " + this.name + " stats");
         monsterStatText.text = "";
         attack = health = -1;
+        monstName = "";
     }
 
     public void UpdateAttackBool(bool val){

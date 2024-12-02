@@ -21,6 +21,9 @@ public class GameManager : MonoBehaviour
     public GameObject worldUI;
     public GameObject battleUI;
 
+    [Header("Enemy AI"), Space(10)]
+    [Range(0, 2.0f)]public float enemySearchDelay = 0.2f;
+
     private void Awake(){ // ensuring there is only one gameobjects with the gamemanager script at any given time
         if (Instance == null){
             Instance = this;

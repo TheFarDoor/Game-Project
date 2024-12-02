@@ -1,10 +1,10 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+
     [Header("Details")]
     public string enemy_name;
     public string enemy_description;
@@ -20,17 +20,26 @@ public class Enemy : MonoBehaviour
 
     [Header("Status"), Space(10)]
     public bool hasBeenDefeated = false; // boolean to track if player has beaten this enemy
+    public bool hasSeenPlayer = false; // track if player is seen
 
     [Header("Arena"), Space(10)]
     public GameObject assignedArena;
 
+    public void Start(){
+        StartCoroutine(PlayerChecker());
+    }
 
-    public void Update(){
-        if(!hasBeenDefeated && CheckForPlayer() != null){ // if there is a player in range and the player hasnt beaten this enenmy already
-            // Load up a battle
+    public IEnumerator PlayerChecker(){
+        while(hasBeenDefeated == false && hasSeenPlayer == false){
+            yield return new WaitForSeconds(GameManager.Instance.enemySearchDelay);
+
             Transform playerTransform = CheckForPlayer();
-            StartCoroutine(GameManager.Instance.GetComponent<BattleManager>().InitializeBattle(playerTransform, this.transform));
-        }   
+            if(playerTransform != false){
+                if(BattleManager.Instance != null){Debug.Log("Got batlte manger");}
+                hasSeenPlayer = true;
+                StartCoroutine(BattleManager.Instance.InitializeBattle(playerTransform, this.transform));
+            }
+        }
     }
 
     private Transform CheckForPlayer(){

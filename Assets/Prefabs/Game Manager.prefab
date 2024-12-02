@@ -151,6 +151,7 @@ MonoBehaviour:
   inventoryUI: {fileID: 0}
   worldUI: {fileID: 0}
   battleUI: {fileID: 0}
+  enemySearchDelay: 0.2
 --- !u!114 &8345704999082227121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,11 +179,11 @@ MonoBehaviour:
   playerDeck:
   - {fileID: 0}
   playerHand: []
-  playerUsedCard: []
+  playerUsedCards: []
   enemyDeck:
   - {fileID: 0}
   enemyHand: []
-  enemyUsedCard: []
+  enemyUsedCards: []
   healthBar: {fileID: 0}
   healthText: {fileID: 0}
   manaBar: {fileID: 0}
@@ -199,9 +200,10 @@ MonoBehaviour:
   selectedMonster: {fileID: 0}
   mainCam: {fileID: 0}
   arenaCam: {fileID: 0}
+  arenaCamSpeed: 2
   cardUIHolder: {fileID: 0}
   cardUIHoverScale: 1.1
   default_CardUIColour: {r: 0.15178537, g: 1, b: 0, a: 1}
   hovered_CardUIColour: {r: 1, g: 0.627451, b: 0, a: 1}
   selected_CardUIColour: {r: 1, g: 0.018811034, b: 0, a: 1}
-  attackLerpSpeed: 0.1
+  attackLerpSpeed: 1

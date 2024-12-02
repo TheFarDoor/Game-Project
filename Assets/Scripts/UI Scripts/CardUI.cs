@@ -76,7 +76,6 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     }
 
     public void OnPointerClick(PointerEventData eventData){
-        Debug.Log("Clicked on a card ui");
         if (BattleManager.Instance.currentTurn == BattleManager.Turn.Player && !thisCardSelected && eventData.button == PointerEventData.InputButton.Left){
             this.GetComponent<Image>().color = BattleManager.Instance.selected_CardUIColour;
             this.transform.localScale = defaultScale * BattleManager.Instance.cardUIHoverScale;
