@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [Header("References")]
-    public Deck_Orig playerDeck; // Reference to the player deck
+    public Deck playerDeck; // Reference to the player deck
 
     [Header("Card UI References")]
     public Image cardImage; // The image UI component for the card

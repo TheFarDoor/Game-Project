@@ -6,7 +6,7 @@ public class pickUp : MonoBehaviour
 {
     public Card card;
 
-    private Deck_Orig playerDeck;
+    private Deck playerDeck;
 
     public float rotationSpeed = 50f;
     public float heightRotation = 0.25f;
@@ -17,7 +17,7 @@ public class pickUp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerDeck = GameObject.FindWithTag("Player").GetComponent<Deck_Orig>();
+        playerDeck = GameObject.FindWithTag("Player").GetComponent<Deck>();
         startPosition = transform.position; // initial position of the model/card
     }
 
@@ -44,10 +44,10 @@ public class pickUp : MonoBehaviour
                 return;  // Exit if no card assigned
             }
             // Checks if player already has this card
-            if (!playerDeck.UserCardCollection.Contains(card))
+            if (!playerDeck.collectionList.Contains(card))
             {
                 // Add the card to the player's User Card Collection
-                playerDeck.UserDeck.Add(card);
+                playerDeck.deckList.Add(card);
                 Debug.Log("Card added to user collection: " + card.name);
 
             }
