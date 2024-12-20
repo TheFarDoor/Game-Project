@@ -2,9 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
-using JetBrains.Annotations;
+using System.Collections.Generic;
+using System;
 
-public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [Header("References")]
     public Deck playerDeck; // Reference to the player deck
@@ -17,6 +18,10 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public TextMeshProUGUI defenceText; // Text UI component for card defence
     public TextMeshProUGUI costText; // Text UI component for card cost
 
+    [Header("Dragging")]
+    public Vector3 originalPositionPreDrag;
+    public List<Vector3> playerCardSlots = new List<Vector3>();
+
 
     [Header("Card Data reference")]
     public Card cardData;
@@ -25,12 +30,24 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public bool thisCardSelected; // bool to track if the card 
     public Vector3 defaultScale = new Vector3(1, 1, 1);
 
+
+    RaycastHit hit; // store information from raycast hit
+    Vector3 snapTo = Vector3.zero;
+    Transform snappedSlot = null;
+
+
     public void Update(){
         if (BattleManager.Instance.selectedCard == this){
             thisCardSelected = true;
         }
         else{
             thisCardSelected = false;
+        }
+
+        if (playerCardSlots.Count <= 0){
+            foreach(Transform slot in BattleManager.Instance.Arena_playerCardSlots){
+                playerCardSlots.Add(slot.position);
+            }
         }
     }
 
@@ -62,14 +79,14 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     }
 
     public void OnPointerEnter(PointerEventData eventData){
-        if(!thisCardSelected){
+        if(!thisCardSelected && !BattleManager.Instance.draggingCard){
             this.GetComponent<Image>().color = BattleManager.Instance.hovered_CardUIColour;
             this.transform.localScale = defaultScale * BattleManager.Instance.cardUIHoverScale;
         }
     }
 
     public void OnPointerExit(PointerEventData eventData){
-        if (!thisCardSelected){
+        if (!thisCardSelected && !BattleManager.Instance.draggingCard){
            this.GetComponent<Image>().color = BattleManager.Instance.default_CardUIColour;
            this.transform.localScale = defaultScale;  
         }        
@@ -81,5 +98,80 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             this.transform.localScale = defaultScale * BattleManager.Instance.cardUIHoverScale;
             BattleManager.Instance.UpdateSelectedCardAndMonster(this, null); // tell battleManager that this card is selected
         }
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (BattleManager.Instance.currentTurn == BattleManager.Turn.Player){
+            originalPositionPreDrag = this.transform.position;
+            BattleManager.Instance.UpdateSelectedCardAndMonster(this, null);
+            this.GetComponent<Image>().color = BattleManager.Instance.selected_CardUIColour;
+            this.transform.localScale = defaultScale * BattleManager.Instance.cardUIHoverScale;
+            BattleManager.Instance.draggingCard = true;
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (BattleManager.Instance.currentTurn == BattleManager.Turn.Player){
+            this.transform.position = Input.mousePosition;
+
+            Ray ray = BattleManager.Instance.Arena.transform.Find("Cam").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition); // ray aimed at where mouse if pointing
+            Physics.Raycast(ray, out hit); // Cast ray
+
+            int lm_arena = 1 << LayerMask.NameToLayer("Arena_Interact"); // get layermask of specific layer
+            Collider[] slotsNearby = Physics.OverlapSphere(hit.point, BattleManager.Instance.dragSnapDistance, lm_arena); // physics spear to get overlaping colliders
+
+            List<Collider> pSlotsNearMouse = new List<Collider>();
+            
+            foreach(Collider col in slotsNearby){
+                if(col.CompareTag(BattleManager.Instance.playerCardZoneTag) && col.transform.parent.childCount !<= 2){
+                    pSlotsNearMouse.Add(col);
+                }
+            }
+
+            if(pSlotsNearMouse.Count != 0){
+                float closestDistance = -1.0f;
+                int closestSlotIndex = 0;
+                for(int i=0; i<pSlotsNearMouse.Count; i++){
+                    float dist = Vector3.Distance(hit.point, pSlotsNearMouse[i].transform.position);
+                    if(closestDistance < 0){closestDistance = dist; closestSlotIndex = i;}
+                    if(dist < closestDistance){closestDistance = dist; closestSlotIndex = i;}
+                }
+
+                snapTo = BattleManager.Instance.Arena.transform.Find("Cam").GetComponent<Camera>().WorldToScreenPoint(slotsNearby[closestSlotIndex].transform.position);
+                snappedSlot = slotsNearby[closestSlotIndex].transform;
+
+                if(this.transform.position != snapTo){
+                    this.transform.position = snapTo;
+                    return;
+                }
+            }
+
+            this.transform.position = Input.mousePosition;
+            snapTo = Vector3.zero;
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {   
+        if (BattleManager.Instance.currentTurn == BattleManager.Turn.Player){
+            if(snappedSlot != null){
+                Debug.Log(snappedSlot.name);
+                BattleManager.Instance.PlaceOrUseCard(BattleManager.Instance.selectedCard.cardData, snappedSlot.parent, true);
+            }
+            else{
+                this.transform.position = originalPositionPreDrag;
+                BattleManager.Instance.UpdateSelectedCardAndMonster(null, null);
+                BattleManager.Instance.draggingCard = false;
+                this.GetComponent<Image>().color = BattleManager.Instance.default_CardUIColour;
+                this.transform.localScale = defaultScale;   
+            }  
+        }
+    }
+
+    public void OnDrawGizmos(){
+        if(hit.point == null){return;}
+        Gizmos.DrawWireSphere(hit.point, BattleManager.Instance.dragSnapDistance);
     }
 }

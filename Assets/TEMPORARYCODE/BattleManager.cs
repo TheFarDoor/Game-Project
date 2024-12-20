@@ -4,10 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using System;
-using System.Threading;
-using UnityEditor;
-using UnityEngine.AI;
-using UnityEngine.TextCore.Text;
+
 
 
 public class BattleManager : MonoBehaviour
@@ -62,6 +59,9 @@ public class BattleManager : MonoBehaviour
     public Transform Arena_playerCardSlots;
     public Transform Arena_enemyCardSlots;
 
+    [Space(10)]
+    public List<int[]> slotOccupations = new List<int[]>(2);
+
 
     [Header("Decks/Card Data"), Space(20)] // Cards List information below which includes a deck, the hand and used cards for the player and enemy
     public int startingCardAmount = 5;
@@ -91,6 +91,8 @@ public class BattleManager : MonoBehaviour
     public float E_Health; // current enemy health
     public float E_maxMana; //  max enemy Mana
     public float E_Mana; // current enemy mana
+    [Space(8)]
+    public float sliderLerpTime = 0.05f;
 
     [Header("Selected Items"), Space(20)]
     public CardUI selectedCard;
@@ -107,6 +109,10 @@ public class BattleManager : MonoBehaviour
     public Color default_CardUIColour; // normal Card UI colour
     public Color hovered_CardUIColour; // card colour when hovered
     public Color selected_CardUIColour; // card colour when selected
+    [Space(8)]
+    public float dragSnapDistance = 0.5f;
+    public bool draggingCard = false;
+    public float cardSnapLerpTime = 0.25f;
 
     [Header("Animation Durations"), Space(20)]
     [Range(0.5f,2)] public float attackLerpSpeed = 1.0f;
@@ -135,7 +141,7 @@ public class BattleManager : MonoBehaviour
         // TESTING !!!!!! TEMP CODE !!!!!!!!!!!!
         if(Input.GetKeyDown(KeyCode.F)){EndBattle();} 
         if(Input.GetKeyDown(KeyCode.G)){RemoveMana(1.0f, true);} 
-        if(Input.GetKeyDown(KeyCode.R)){RemoveHealth(1.0f, true);}
+        if(Input.GetKeyDown(KeyCode.R)){RemoveHealth(5.0f, true);}
         if(Input.GetKeyDown(KeyCode.T)){ManaRegen(1.0f, true);}
         if(Input.GetKeyDown(KeyCode.Y)){SwitchTurn();}
 
@@ -431,12 +437,14 @@ public class BattleManager : MonoBehaviour
         if(firstTurn){firstTurn = false;}
         switch(currentTurn){
             case Turn.Player:
+                UpdateSelectedCardAndMonster(null, null); // deselect any select items
                 Debug.Log("Switchting to enemy Turn");
                 currentTurn = Turn.Enemy;
                 ManaRegen(1.0f, false);
                 StartCoroutine(DrawCards(1, false));
                 ResetMonsterAttackBools(false);
                 StartCoroutine(EnemyBattleLogic());
+                Debug.Log("Completed switch to enemy Turn");
                 break;
 
             case Turn.Enemy:
@@ -446,6 +454,7 @@ public class BattleManager : MonoBehaviour
                 StartCoroutine(DrawCards(1, true));
                 ResetMonsterAttackBools(true);
                 SetBattleState(BattleState.Idle);
+                Debug.Log("Completed switch to player Turn");
                 break;
         }
     }
@@ -710,8 +719,8 @@ public class BattleManager : MonoBehaviour
                     Debug.Log("Player Not enough Mana");
                     return false;
                 }
-
-                manaBar.value = P_Mana = potential_PMana; 
+                StartCoroutine(ResourceSliderLerp(manaBar, potential_PMana));
+                P_Mana = potential_PMana; 
                 UpdateManaHealthText();
                 return true;
 
@@ -730,12 +739,14 @@ public class BattleManager : MonoBehaviour
         switch(IsThisForPlayer){
             case true:
                 if((P_Mana + manaToRegen) > P_maxMana){
-                    manaBar.value = P_Mana = P_maxMana; 
+                    StartCoroutine(ResourceSliderLerp(manaBar, P_maxMana));
+                    P_Mana = P_maxMana; 
                     UpdateManaHealthText();
                     break;
                 }
 
-                manaBar.value = P_Mana = (P_Mana + manaToRegen);
+                StartCoroutine(ResourceSliderLerp(manaBar, P_Mana + manaToRegen));
+                P_Mana = (P_Mana + manaToRegen);
                 UpdateManaHealthText();
                 break;
 
@@ -754,18 +765,18 @@ public class BattleManager : MonoBehaviour
         switch(IsThisForPlayer){
             case true: // this is to update player mana
                 float potential_PHealth = P_Health - damageTaken;
-                if (potential_PHealth < 0){ // check if health will go below 0
+                if (potential_PHealth <= 0){ // check if health will go below 0
                     EndBattle(); // handle game end
                     break;
                 }
-
-                healthBar.value = P_Health = potential_PHealth; 
+                StartCoroutine(ResourceSliderLerp(healthBar, potential_PHealth));
+                P_Health = potential_PHealth; 
                 UpdateManaHealthText();
                 break;
 
             case false: // this is to update enemy mana
                 float potential_EHealth = E_Health - damageTaken;
-                if (potential_EHealth < 0){ // check if there is enough mana to use
+                if (potential_EHealth <= 0){ // check if there is enough mana to use
                     EndBattle(); // handle game end
                     break;
                 }
@@ -775,8 +786,18 @@ public class BattleManager : MonoBehaviour
     }
 
     public void UpdateManaHealthText(){
-        manaText.text = "Mana: " + P_Mana.ToString("F0") + " / " + P_maxMana.ToString("F0"); // update mana text
-        healthText.text = "Health: " + P_Health.ToString("F0") + " / " + P_maxHp.ToString("F0"); // update health text
+        manaText.text =  P_Mana.ToString("F0") + " / " + P_maxMana.ToString("F0"); // update mana text
+        healthText.text =  P_Health.ToString("F0") + " / " + P_maxHp.ToString("F0"); // update health text
+    }
+
+    public IEnumerator ResourceSliderLerp(Slider rSlider, float newValue){
+        float timer = 0f;
+        float startValue = rSlider.value;
+        while(rSlider.value != newValue){
+            timer += Time.deltaTime;
+            rSlider.value = Mathf.SmoothStep(startValue, newValue, timer/sliderLerpTime);
+            yield return null;
+        }
     }
 }
 

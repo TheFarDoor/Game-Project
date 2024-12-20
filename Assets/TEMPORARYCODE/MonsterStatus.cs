@@ -13,8 +13,6 @@ public class MonsterStatus : MonoBehaviour
     void Start()
     {
         monsterStatText = this.transform.GetChild(1).GetComponent<TextMeshPro>(); // Get text reference for relevant slot
-        Debug.Log(monsterStatText == null);
-        Debug.Log(this.transform.GetChild(1).name + "\n\n");
     }
 
     public void UpdateStats(string name, int atk, int hp){

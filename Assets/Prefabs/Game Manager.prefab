@@ -180,8 +180,7 @@ MonoBehaviour:
   - {fileID: 0}
   playerHand: []
   playerUsedCards: []
-  enemyDeck:
-  - {fileID: 0}
+  enemyDeck: []
   enemyHand: []
   enemyUsedCards: []
   healthBar: {fileID: 0}
@@ -196,6 +195,7 @@ MonoBehaviour:
   E_Health: 0
   E_maxMana: 0
   E_Mana: 0
+  sliderLerpTime: 0.35
   selectedCard: {fileID: 0}
   selectedMonster: {fileID: 0}
   mainCam: {fileID: 0}
@@ -206,4 +206,7 @@ MonoBehaviour:
   default_CardUIColour: {r: 0.15178537, g: 1, b: 0, a: 1}
   hovered_CardUIColour: {r: 1, g: 0.627451, b: 0, a: 1}
   selected_CardUIColour: {r: 1, g: 0.018811034, b: 0, a: 1}
+  dragSnapDistance: 0.5
+  draggingCard: 0
+  cardSnapLerpTime: 0.25
   attackLerpSpeed: 1

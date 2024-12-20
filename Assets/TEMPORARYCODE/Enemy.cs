@@ -35,7 +35,6 @@ public class Enemy : MonoBehaviour
 
             Transform playerTransform = CheckForPlayer();
             if(playerTransform != false){
-                if(BattleManager.Instance != null){Debug.Log("Got batlte manger");}
                 hasSeenPlayer = true;
                 StartCoroutine(BattleManager.Instance.InitializeBattle(playerTransform, this.transform));
             }
