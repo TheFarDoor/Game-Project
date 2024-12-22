@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571336, b: 0.3069219, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -930,11 +930,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30104e43981d54570abddc60e910e4f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treePrefab: {fileID: 4165655778467942996, guid: 6a4227f2d40e446ba8ed0f06658fc6f1, type: 3}
-  treeCount: 200
+  treePrefab: {fileID: 191266, guid: c44bd9bdc114d4a60932c0087d9d1732, type: 3}
+  treeCount: 250
   radius: 100
-  offset: {x: 0, y: 1, z: 0}
-  minDistanceBetweenTrees: 2
+  offset: {x: 0, y: 0, z: 0}
+  minDistanceBetweenTrees: 1
   terrainLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -947,8 +947,8 @@ Transform:
   m_GameObject: {fileID: 1694274548}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 194.93655, y: 0, z: 113.3}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 233.4, y: 0, z: 127.7}
+  m_LocalScale: {x: 0.31490177, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
