@@ -21,6 +21,8 @@ public class PlayerInputHandler : MonoBehaviour
     private float cameraHeight = 2f; // Height above player
     private float cameraDistance = 3f; // Distance behind the player
 
+    private float terrainY = 1f; // Y position of terrain
+
     private void Awake()
     {
         controls = new InputActions();
@@ -68,11 +70,12 @@ public class PlayerInputHandler : MonoBehaviour
         {
             verticalVelocity += gravity * Time.deltaTime;
         }
+
         transform.Translate(Vector3.up * verticalVelocity * Time.deltaTime, Space.World);
 
-        if (transform.position.y <= 0)
+        if (transform.position.y <= terrainY)
         {
-            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+            transform.position = new Vector3(transform.position.x, terrainY, transform.position.z);
             verticalVelocity = 0f;
             isGrounded = true;
         }
