@@ -55,11 +55,15 @@ public class GameManager : MonoBehaviour
                 worldUI.SetActive(true);
                 battleUI.SetActive(false);
                 inventoryUI.SetActive(false);
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
                 break;
             case GameState.InBattle:
                 worldUI.SetActive(false);
                 battleUI.SetActive(true);
                 inventoryUI.SetActive(false);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 break;
             case GameState.GameOver:
                 worldUI.SetActive(false);

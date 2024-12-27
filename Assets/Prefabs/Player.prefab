@@ -104,7 +104,6 @@ GameObject:
   - component: {fileID: 1587442579367150487}
   - component: {fileID: 817994128792328966}
   - component: {fileID: 7331416911039432396}
-  - component: {fileID: 730961371546676554}
   - component: {fileID: 657847550512282853}
   m_Layer: 6
   m_Name: Player
@@ -205,30 +204,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &730961371546676554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8266795405186358310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc0eba75b5f724f37a9a1149c2811995, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCamera: {fileID: 7546166658306939347}
-  walkSpeed: 6
-  runSpeed: 10
-  crouchSpeed: 2
-  jumpPower: 4
-  gravity: 11
-  lookSpeed: 2
-  defaultHeight: 2
-  crouchHeight: 1
-  stamina: 100
-  staminaTime: 3
-  staminaRecovery: 2
 --- !u!114 &657847550512282853
 MonoBehaviour:
   m_ObjectHideFlags: 0
