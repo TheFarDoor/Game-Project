@@ -44,10 +44,10 @@ public class pickUp : MonoBehaviour
                 return;  // Exit if no card assigned
             }
             // Checks if player already has this card
-            if (!playerDeck.UserCardCollection.Contains(card))
+            if (!playerDeck.collectionList.Contains(card))
             {
                 // Add the card to the player's User Card Collection
-                playerDeck.UserDeck.Add(card);
+                playerDeck.deckList.Add(card);
                 Debug.Log("Card added to user collection: " + card.name);
 
             }

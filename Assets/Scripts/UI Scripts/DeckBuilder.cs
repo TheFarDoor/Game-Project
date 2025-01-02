@@ -43,8 +43,8 @@ public class DeckBuilder : MonoBehaviour
                 Inventory.SetActive(Vis);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
-                ViewCards(playerDeck.UserCardCollection, Inventory.transform, true); // Show cards in inventory
-                ViewCards(playerDeck.UserDeck, DeckList.transform, false); // Show cards in deck
+                ViewCards(playerDeck.collectionList, Inventory.transform, true); // Show cards in inventory
+                ViewCards(playerDeck.deckList, DeckList.transform, false); // Show cards in deck
             }
         }
     }
@@ -71,23 +71,23 @@ public class DeckBuilder : MonoBehaviour
     // Add card from inventory to deck
     public void AddCardToDeck(Card card)
     {
-        playerDeck.UserDeck.Add(card);
-        playerDeck.UserCardCollection.Remove(card);
+        playerDeck.deckList.Add(card);
+        playerDeck.collectionList.Remove(card);
         UpdateUI();
     }
 
     // Remove card from deck and return it to inventory
     public void RemoveCardFromDeck(Card card)
     {
-        playerDeck.UserDeck.Remove(card);
-        playerDeck.UserCardCollection.Add(card);
+        playerDeck.deckList.Remove(card);
+        playerDeck.collectionList.Add(card);
         UpdateUI();
     }
 
     // Refresh UI when cards are added/removed
     void UpdateUI()
     {
-        ViewCards(playerDeck.UserCardCollection, Inventory.transform, true);
-        ViewCards(playerDeck.UserDeck, DeckList.transform, false);
+        ViewCards(playerDeck.collectionList, Inventory.transform, true);
+        ViewCards(playerDeck.deckList, DeckList.transform, false);
     }
 }

@@ -13,6 +13,7 @@ TagManager:
   - Arena_EZone
   - Arena_PZone
   - Enemy
+  - Ground
   layers:
   - Default
   - TransparentFX

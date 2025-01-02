@@ -17,7 +17,7 @@ MonoBehaviour:
   cardName: Small Rock
   description: rok
   damage: 0
-  defence: 2
-  cost: 0
+  health: 3
+  cost: 1
   used: 0
   model: {fileID: 4144672630141274611, guid: 4a6e5b57125269b46b38d54d3de48d6c, type: 3}

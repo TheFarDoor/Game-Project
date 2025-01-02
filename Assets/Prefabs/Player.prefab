@@ -104,10 +104,7 @@ GameObject:
   - component: {fileID: 1587442579367150487}
   - component: {fileID: 817994128792328966}
   - component: {fileID: 7331416911039432396}
-  - component: {fileID: 730961371546676554}
-  - component: {fileID: 8504156924445825647}
-  - component: {fileID: 5623442018339268014}
-  - component: {fileID: 1568014161385896439}
+  - component: {fileID: 657847550512282853}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -123,7 +120,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8266795405186358310}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -207,7 +204,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &730961371546676554
+--- !u!114 &657847550512282853
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -216,71 +213,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8266795405186358310}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc0eba75b5f724f37a9a1149c2811995, type: 3}
+  m_Script: {fileID: 11500000, guid: 573393023d10adc499b19f0268959267, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 7546166658306939347}
-  walkSpeed: 6
-  runSpeed: 10
-  crouchSpeed: 2
-  jumpPower: 4
-  gravity: 11
-  lookSpeed: 2
-  defaultHeight: 2
-  crouchHeight: 1
-  stamina: 100
-  staminaTime: 3
-  staminaRecovery: 2
---- !u!114 &8504156924445825647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8266795405186358310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93025e3a3ff7a4961a693e21b2486ffc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 0}
-  maxHealth: 20
-  healthText: {fileID: 0}
-  isInitialized: 0
---- !u!114 &5623442018339268014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8266795405186358310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11269571b96f34364820b89c17493c7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  manaBar: {fileID: 0}
-  maxMana: 5
-  manaText: {fileID: 0}
-  isInitialized: 0
---- !u!114 &1568014161385896439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8266795405186358310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a1fd41cff151454a9edca8ed9740fca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireTypesCount: 0
-  rockTypesCount: 0
-  spellsCount: 0
-  randomDeck: 0
-  userHand: []
-  userDeck: []
-  userCardCollection: []
-  usedCardPile: []
-  cardManager: {fileID: 0}
+  randomDeck: 1
+  fireTypeCount: 5
+  rockTypeCount: 5
+  spellTypeCount: 0
+  deckList: []
+  collectionList: []
