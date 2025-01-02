@@ -24,15 +24,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Interact",
-                    "type": "Button",
-                    "id": "87f049ef-20a9-4264-9c1e-d7d95b80c4ce",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Jump",
                     "type": "Button",
                     "id": "3377a5f1-cba6-49e3-be95-9e269a1aca00",
@@ -45,6 +36,15 @@
                     "name": "Run",
                     "type": "Button",
                     "id": "62280dc4-350a-432f-9f5d-8c8ec6d52681",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interaction",
+                    "type": "Button",
+                    "id": "8c828221-dd09-43e8-bddd-7c544172d05a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -142,17 +142,6 @@
                 },
                 {
                     "name": "",
-                    "id": "0c8db6e5-eb70-4100-a2d3-db4d37356a28",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4f4495c9-3252-46da-82e3-35b7a429e282",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -170,6 +159,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a73ce57d-700f-483d-8886-02c815fdbb80",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interaction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
