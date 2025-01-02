@@ -147,10 +147,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 9103914391247255033}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d206687ddc7a4ee39627f3739f128e7, type: 3}
+  m_Script: {fileID: 11500000, guid: 21771d2b385ee40e8932cd51b30f4e11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   card: {fileID: 0}
   rotationSpeed: 50
   heightRotation: 0.25
   heightRotationSpeed: 1.5
+  interactTextPrefab: {fileID: 0}
