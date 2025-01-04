@@ -32,6 +32,10 @@ public class PlayerInputHandler : MonoBehaviour
     private CharacterController characterController;
     private Animator animator;
 
+    // Inventory UI reference
+    public GameObject inventoryPanel;
+    private bool isInventoryOpen = false; // Make inventory UI not visible at launch
+
     private void Awake()
     {
         InitializeInputActions();
@@ -39,22 +43,30 @@ public class PlayerInputHandler : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    private void Start()
+    {
+        LockCursor(); // Lock the cursor at the start of the game
+    }
+
     private void OnEnable() => controls.Player.Enable();
     private void OnDisable() => controls.Player.Disable();
 
     private void Update()
     {
-        CheckSlope();
-        if (slopeAngle > characterController.slopeLimit && isGrounded)
+        if (!isInventoryOpen)
         {
-            HandleSliding();
+            CheckSlope();
+            if (slopeAngle > characterController.slopeLimit && isGrounded)
+            {
+                HandleSliding();
+            }
+            else
+            {
+                HandleMovement();
+            }
+            RotatePlayer();
+            ApplyJump();
         }
-        else
-        {
-            HandleMovement();
-        }
-        RotatePlayer();
-        ApplyJump();
     }
 
     private void InitializeInputActions()
@@ -69,6 +81,8 @@ public class PlayerInputHandler : MonoBehaviour
 
         controls.Player.Run.performed += ctx => isRunning = ctx.ReadValueAsButton();
         controls.Player.Run.canceled += ctx => isRunning = false;
+
+        controls.Player.Inventory.performed += ctx => ToggleInventory();
 
         controls.Player.Jump.performed += ctx => TriggerJump();
     }
@@ -155,5 +169,32 @@ public class PlayerInputHandler : MonoBehaviour
 
         verticalVelocity += gravity * Time.deltaTime;
         slideDirection.y = verticalVelocity;
+    }
+
+    private void ToggleInventory()
+    {
+        isInventoryOpen = !isInventoryOpen;
+        inventoryPanel.SetActive(isInventoryOpen);
+
+        if (isInventoryOpen)
+        {
+            UnlockCursor();
+        }
+        else
+        {
+            LockCursor();
+        }
+    }
+
+    private void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked; // Locks the cursor
+        Cursor.visible = false;                  // Hides the cursor
+    }
+
+    private void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;  // Unlocks the cursor
+        Cursor.visible = true;                   // Shows the cursor
     }
 }
