@@ -5,13 +5,11 @@ using UnityEngine;
 using TMPro;
 using System;
 
-
-
 public class BattleManager : MonoBehaviour
 {
     public enum Turn{
-        Player,
-        Enemy,
+        A,
+        B,
     }
 
     public enum BattleState{ // possible battle states
@@ -24,8 +22,7 @@ public class BattleManager : MonoBehaviour
         CardSelected, // a card is selected
         MonsterSelected, // a monster is selected
         Idle, // nothing is happening/selected
-        EnemyTurn, // its the enemies turn
-        BattleEnd, // End of the BattleEnd
+        EndingBattle, // End of the BattleEnd
     }
 
     // VARIABLES
@@ -34,8 +31,8 @@ public class BattleManager : MonoBehaviour
     public BattleState currentBattleState; // tracks current battle state
 
     [Header("Player + Enemy Ref"), Space(20)] // reference to player and enemy
-    GameObject player;
-    GameObject enemy;
+    GameObject A;
+    GameObject B;
 
     [Header("Turn Tracking"), Space(20)]
     public Turn currentTurn; // tracks whos turn it is
@@ -43,37 +40,37 @@ public class BattleManager : MonoBehaviour
 
     [Header("Arena + Position References"), Space(20)]
     public GameObject Arena; // reference to the Arena which the battle will take place on
-    public Transform Arena_playerPosition; // playerPosition on the arena
-    public Transform Arena_enemyPosition; // enemyPosition on the arena
+    public Transform Arena_A_Position; // playerPosition on the arena
+    public Transform Arena_B_Position; // enemyPosition on the arena
 
     // Stores position + rotation data of the player and enemy prior to being moved to the arena for battle
-    private Vector3 previousPlayerPosition;
-    private Quaternion previousPlayerRotation;
-    private Vector3 previousEnemyPosition;
-    private Quaternion previousEnemyRotation;
+    private Vector3 previous_A_Position;
+    private Quaternion previous_A_Rotation;
+    private Vector3 previous_B_Position;
+    private Quaternion previous_B_Rotation;
 
     [Header("Arena Card zones"), Space(20)]
-    public string playerCardZoneTag = "CardZone_P"; // player card slots
-    public string enemyCardZoneTag = "CardZone_E"; // enemy card slots
+    public string A_CardzoneTag = "A CardZone"; // player card slots
+    public string B_CardzoneTag = "B CardZone"; // enemy card slots
 
-    public Transform Arena_playerCardSlots;
-    public Transform Arena_enemyCardSlots;
+    public Transform Arena_A_CardSlots;
+    public Transform Arena_B_CardSlots;
 
     [Space(10)]
-    public List<int[]> slotOccupations = new List<int[]>(2);
+    
 
 
     [Header("Decks/Card Data"), Space(20)] // Cards List information below which includes a deck, the hand and used cards for the player and enemy
     public int startingCardAmount = 5;
     public float cardDrawDelay = 0.1f;
     [Space(8)]
-    public List<Card> playerDeck;
-    public List<Card> playerHand;
-    public List<Card> playerUsedCards;
+    public List<Card> A_Deck;
+    public List<Card> A_Hand;
+    public List<Card> A_Used;
     [Space(8)]
-    public List<Card> enemyDeck;
-    public List<Card> enemyHand;
-    public List<Card> enemyUsedCards;
+    public List<Card> B_Deck;
+    public List<Card> B_Hand;
+    public List<Card> B_Used;
 
     [Header("HP + Mana"), Space(20)]
     // Mana and Health bar references
@@ -82,21 +79,24 @@ public class BattleManager : MonoBehaviour
     public Slider manaBar;
     public TextMeshProUGUI manaText;
     [Space(8)]
-    public float P_maxHp; // max player Health
-    public float P_Health; // current player health
-    public float P_maxMana; // max player Mana
-    public float P_Mana; // current player mana
+    public float A_maxHp; // max player Health
+    public float A_Health; // current player health
+    public float A_maxMana; // max player Mana
+    public float A_Mana; // current player mana
     [Space(5)]
-    public float E_maxHp; // max enemy Health
-    public float E_Health; // current enemy health
-    public float E_maxMana; //  max enemy Mana
-    public float E_Mana; // current enemy mana
+    public float B_maxHp; // max enemy Health
+    public float B_Health; // current enemy health
+    public float B_maxMana; //  max enemy Mana
+    public float B_Mana; // current enemy mana
     [Space(8)]
     public float sliderLerpTime = 0.05f;
 
     [Header("Selected Items"), Space(20)]
-    public CardUI selectedCard;
-    public GameObject selectedMonster;
+    public CardUI A_selectedCard;
+    public GameObject A_selectedMonster;
+    
+    public CardUI B_selectedCard;
+    public GameObject B_selectedMonster;
 
     [Header("Cameras"), Space(20)]
     public Camera mainCam; // main player camera
@@ -160,7 +160,7 @@ public class BattleManager : MonoBehaviour
                     return;
                 }
 
-                if(I_clickedObject.transform.parent.tag == playerCardZoneTag){
+                if(I_clickedObject.transform.parent.tag == A_CardzoneTag){
                     I_clickedObject = I_clickedObject.transform.parent.gameObject;
                     if(I_clickedObject.transform.childCount == 3){
                         MonsterStatus monstStatus = I_clickedObject.GetComponent<MonsterStatus>();
@@ -178,10 +178,10 @@ public class BattleManager : MonoBehaviour
                     return;
                 }
 
-                if(C_clickedObject.transform.parent.tag == playerCardZoneTag){
+                if(C_clickedObject.transform.parent.tag == A_CardzoneTag){
                     if(C_clickedObject.transform.parent.childCount == 2){
                         Transform CardSlot = C_clickedObject.transform.parent;
-                        PlaceOrUseCard(selectedCard.cardData, CardSlot, true);
+                        PlaceOrUseCard(A_selectedCard.cardData, CardSlot, true);
                     }
                 }   
                 break;
@@ -193,9 +193,9 @@ public class BattleManager : MonoBehaviour
                     return;
                 }
 
-                if (M_clickedObject.transform.parent.tag == enemyCardZoneTag){
+                if (M_clickedObject.transform.parent.tag == B_CardzoneTag){
                     M_clickedObject = M_clickedObject.transform.parent.gameObject;
-                    StartCoroutine(AttackWithMonster(selectedMonster, M_clickedObject));
+                    StartCoroutine(AttackWithMonster(A_selectedMonster, M_clickedObject));
                 }
 
                 break;
@@ -230,7 +230,7 @@ public class BattleManager : MonoBehaviour
         SetBattleState(BattleState.Idle);
     }
 
-    public IEnumerator MonsterAttkLerp(GameObject objAttacking, GameObject enemyMonster, Vector3 attkStartPos){
+    public IEnumerator MonsterAttkLerp(GameObject monstAttacking, GameObject monstDefending, Vector3 attkStartPos){
         
         bool movingToAttack = true; // bool to track if monster is moving to attack for moving back from attack
         bool attackComplete = false; // bool to track if attack is complete
@@ -240,12 +240,12 @@ public class BattleManager : MonoBehaviour
             t += (movingToAttack? 1: -1) * Time.deltaTime * attackLerpSpeed; // increment the t value based on time and rotation speed. The direction of the movement is based on the bool.
             t = Mathf.Clamp01(t); // ensure t stays between 0 and 1
 
-            Vector3 attkEndPos = attkStartPos + ((enemyMonster.transform.position - attkStartPos).normalized * (enemyMonster.transform.position - attkStartPos).magnitude * 0.9f);
-            objAttacking.transform.position = Vector3.Lerp(attkStartPos, attkEndPos, t);
+            Vector3 attkEndPos = attkStartPos + ((monstDefending.transform.position - attkStartPos).normalized * (monstDefending.transform.position - attkStartPos).magnitude * 0.9f);
+            monstAttacking.transform.position = Vector3.Lerp(attkStartPos, attkEndPos, t);
             
 
             if (t > 0.99f && movingToAttack){
-                MonsterAttkCalculation(objAttacking, enemyMonster);
+                MonsterAttkCalculation(monstAttacking, monstDefending);
                 movingToAttack = false;
             }
 
@@ -256,7 +256,7 @@ public class BattleManager : MonoBehaviour
             yield return null;
         }
 
-        objAttacking.transform.position = attkStartPos;
+        monstAttacking.transform.position = attkStartPos;
     }
 
     public IEnumerator RotateTowards(GameObject objToRot, Vector3 targetVec, float rotSpeed){
@@ -329,10 +329,10 @@ public class BattleManager : MonoBehaviour
             cardSlot.GetComponent<MonsterStatus>().UpdateAttackBool(firstTurn? false: true);
 
             // loop through user
-            foreach (Card card in (ForPlayer? playerHand: enemyHand)){
+            foreach (Card card in (ForPlayer? A_Hand: B_Hand)){
                 if(card == cardToUse){
-                    (ForPlayer? playerUsedCards: enemyUsedCards).Add(card);
-                    (ForPlayer? playerHand: enemyHand).Remove(card);
+                    (ForPlayer? A_Used: B_Used).Add(card);
+                    (ForPlayer? A_Hand: B_Hand).Remove(card);
                     break;
                 }
             }
@@ -405,17 +405,17 @@ public class BattleManager : MonoBehaviour
     public void UpdateSelectedCardAndMonster(CardUI clickedCard, GameObject clickedMonster){
 
         // reset old ui card if one was selected before
-        if (selectedCard != null){
-            selectedCard.gameObject.GetComponent<Image>().color = default_CardUIColour;
-            selectedCard.gameObject.transform.localScale = selectedCard.defaultScale;
-            selectedCard.GetComponent<CardUI>().thisCardSelected = false;
+        if (A_selectedCard != null){
+            A_selectedCard.gameObject.GetComponent<Image>().color = default_CardUIColour;
+            A_selectedCard.gameObject.transform.localScale = A_selectedCard.defaultScale;
+            A_selectedCard.GetComponent<CardUI>().thisCardSelected = false;
         }
 
         // update selected card with new clicked card or selected monster with new clicked monster
-        selectedCard = clickedCard; // assign selected card
-        selectedMonster = clickedMonster; // assign selectedMonster
+        A_selectedCard = clickedCard; // assign selected card
+        A_selectedMonster = clickedMonster; // assign selectedMonster
 
-        switch((selectedCard == null, selectedMonster == null)){// update battle state
+        switch((A_selectedCard == null, A_selectedMonster == null)){// update battle state
             case (false, true): // card selected
                 SetBattleState(BattleState.CardSelected); 
                 break;
@@ -436,10 +436,10 @@ public class BattleManager : MonoBehaviour
         SetBattleState(BattleState.SwitchingTurn);
         if(firstTurn){firstTurn = false;}
         switch(currentTurn){
-            case Turn.Player:
+            case Turn.A:
                 UpdateSelectedCardAndMonster(null, null); // deselect any select items
                 Debug.Log("Switchting to enemy Turn");
-                currentTurn = Turn.Enemy;
+                currentTurn = Turn.B;
                 ManaRegen(1.0f, false);
                 StartCoroutine(DrawCards(1, false));
                 ResetMonsterAttackBools(false);
@@ -447,9 +447,9 @@ public class BattleManager : MonoBehaviour
                 Debug.Log("Completed switch to enemy Turn");
                 break;
 
-            case Turn.Enemy:
+            case Turn.B:
                 Debug.Log("Switchting to player Turn");
-                currentTurn = Turn.Player;
+                currentTurn = Turn.A;
                 ManaRegen(1.0f, true);
                 StartCoroutine(DrawCards(1, true));
                 ResetMonsterAttackBools(true);
@@ -474,29 +474,29 @@ public class BattleManager : MonoBehaviour
         cardUIHolder = GameObject.Find("/Canvas-Cam/BattleUI/CardContainer").transform;
 
         // Set References
-        player = p.gameObject;
-        enemy = e.gameObject;
+        A = p.gameObject;
+        B = e.gameObject;
 
-        Arena = enemy.GetComponent<Enemy>().assignedArena; // get arena assigned to enemy
+        Arena = B.GetComponent<Enemy>().assignedArena; // get arena assigned to enemy
         arenaCam = Arena.transform.Find("Cam").GetComponent<Camera>(); // get arena camera
-        Arena_playerPosition = Arena.transform.Find("PlayerPos"); // get arena position for player
-        Arena_enemyPosition = Arena.transform.Find("EnemyPos"); // get arena position for enemy
-        Arena_playerCardSlots = Arena.transform.Find("Zones/PZone"); // player placeable card zones
-        Arena_enemyCardSlots = Arena.transform.Find("Zones/EZone"); // enemy placeable card zones
+        Arena_A_Position = Arena.transform.Find("PlayerPos"); // get arena position for player
+        Arena_B_Position = Arena.transform.Find("EnemyPos"); // get arena position for enemy
+        Arena_A_CardSlots = Arena.transform.Find("Zones/PZone"); // player placeable card zones
+        Arena_B_CardSlots = Arena.transform.Find("Zones/EZone"); // enemy placeable card zones
 
         
-        previousPlayerPosition = player.transform.position; // save player position prior to battle
-        previousPlayerRotation = player.transform.rotation; // save player rotation prior to battle
-        previousEnemyPosition = enemy.transform.position; // save enemy position prior to battle
-        previousEnemyRotation = enemy.transform.rotation; // save enemy rotation prior to battle
+        previous_A_Position = A.transform.position; // save player position prior to battle
+        previous_A_Rotation = A.transform.rotation; // save player rotation prior to battle
+        previous_B_Position = B.transform.position; // save enemy position prior to battle
+        previous_B_Rotation = B.transform.rotation; // save enemy rotation prior to battle
 
         // Stop player movement and move the player + enemy to the arena
-        player.GetComponent<PlayerMovement>().enabled = false; // turn off player movement script to stop movement
-        player.transform.SetPositionAndRotation(Arena_playerPosition.position, Arena_playerPosition.rotation);
-        enemy.transform.SetPositionAndRotation(Arena_enemyPosition.position, Arena_enemyPosition.rotation);
+        A.GetComponent<PlayerMovement>().enabled = false; // turn off player movement script to stop movement
+        A.transform.SetPositionAndRotation(Arena_A_Position.position, Arena_A_Position.rotation);
+        B.transform.SetPositionAndRotation(Arena_B_Position.position, Arena_B_Position.rotation);
 
         // Initialize HP and Mana
-        InitializeHealthAndMana(enemy.GetComponent<Enemy>().e_Starting_health, enemy.GetComponent<Enemy>().e_Starting_mana);
+        InitializeHealthAndMana(B.GetComponent<Enemy>().e_Starting_health, B.GetComponent<Enemy>().e_Starting_mana);
 
         // Switch Cameras
         mainCam.gameObject.SetActive(false); // disable player cam
@@ -507,43 +507,43 @@ public class BattleManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
 
         // Set up decks
-        playerDeck = new List<Card>(player.GetComponent<Deck>().deckList); // copy playerdeck
-        enemyDeck = new List<Card>(enemy.GetComponent<Deck>().deckList); // copy enemydeck
+        A_Deck = new List<Card>(A.GetComponent<Deck>().deckList); // copy playerdeck
+        B_Deck = new List<Card>(B.GetComponent<Deck>().deckList); // copy enemydeck
         yield return StartCoroutine(DrawCards(startingCardAmount, false)); // draw cards for enemy at start
         yield return StartCoroutine(DrawCards(startingCardAmount, true)); // draw cards for player at start
-        this.transform.GetComponent<CardsManager>().DisplayCards(playerHand); // refresh card ui
+        this.transform.GetComponent<CardsManager>().DisplayCards(A_Hand); // refresh card ui
 
         firstTurn = true; // set first turn to true so a attack cant happen on the first turn
 
-        currentTurn = UnityEngine.Random.Range(0,2) == 0? Turn.Player : Turn.Enemy; // Select a random character to start by selecting a random number between 0 or 1
+        currentTurn = UnityEngine.Random.Range(0,2) == 0? Turn.A : Turn.B; // Select a random character to start by selecting a random number between 0 or 1
 
         switch(currentTurn){ // based on the current turn do something
-            case Turn.Player: // its player turn
+            case Turn.A: // its player turn
                 SetBattleState(BattleState.Idle); // set battle state to idle
                 break;
 
-            case Turn.Enemy: // its enemy turn
+            case Turn.B: // its enemy turn
                 StartCoroutine(EnemyBattleLogic()); // handle enemy turn
                 break;
         }
     }
 
     public void EndBattle(){
-        if (currentBattleState == BattleState.BattleEnd) return; // prevent coroutine from running twice
+        if (currentBattleState == BattleState.EndingBattle) return; // prevent coroutine from running twice
         
-        SetBattleState(BattleState.BattleEnd); // set battlestate to battleend
+        SetBattleState(BattleState.EndingBattle); // set battlestate to battleend
 
         StopAllCoroutines();
 
-        enemy.GetComponent<Enemy>().hasBeenDefeated = true;
+        B.GetComponent<Enemy>().hasBeenDefeated = true;
 
         // Enable player movement and move the player + enemy back to their original positions prior to battle
-        Debug.DrawLine(previousPlayerPosition, previousPlayerPosition + Vector3.up * 10f, Color.magenta, Mathf.Infinity);
-        player.GetComponent<CharacterController>().enabled = false;
-        player.transform.SetPositionAndRotation(previousPlayerPosition, previousPlayerRotation);
-        player.GetComponent<CharacterController>().enabled = true;
-        enemy.transform.SetPositionAndRotation(previousEnemyPosition, previousEnemyRotation);
-        player.GetComponent<PlayerMovement>().enabled = true; // enable player movement
+        Debug.DrawLine(previous_A_Position, previous_A_Position + Vector3.up * 10f, Color.magenta, Mathf.Infinity);
+        A.GetComponent<CharacterController>().enabled = false;
+        A.transform.SetPositionAndRotation(previous_A_Position, previous_A_Rotation);
+        A.GetComponent<CharacterController>().enabled = true;
+        B.transform.SetPositionAndRotation(previous_B_Position, previous_B_Rotation);
+        A.GetComponent<PlayerMovement>().enabled = true; // enable player movement
 
         GameManager.Instance.SetState(GameManager.GameState.Exploring);
 
@@ -556,14 +556,14 @@ public class BattleManager : MonoBehaviour
         Cursor.visible = false;
         
         // Reset References (these cant be set to null)
-        previousPlayerPosition = Vector3.zero;
-        previousPlayerRotation = Quaternion.identity;
-        previousEnemyPosition = Vector3.zero;
-        previousEnemyRotation = Quaternion.identity;
+        previous_A_Position = Vector3.zero;
+        previous_A_Rotation = Quaternion.identity;
+        previous_B_Position = Vector3.zero;
+        previous_B_Rotation = Quaternion.identity;
 
         // Reset References
-        player = enemy = Arena = null;
-        Arena_playerPosition = Arena_enemyPosition = null;
+        A = B = Arena = null;
+        Arena_A_Position = Arena_B_Position = null;
     }
 
     public IEnumerator DrawCards(int numToDraw, bool ForPlayer){
@@ -573,13 +573,13 @@ public class BattleManager : MonoBehaviour
 
         switch(ForPlayer){
             case true:
-                numToDraw = Mathf.Min(numToDraw, playerDeck.Count);
-                yield return StartCoroutine(MoveCardsToAnotherList(playerDeck, playerHand, numToDraw));  
+                numToDraw = Mathf.Min(numToDraw, A_Deck.Count);
+                yield return StartCoroutine(MoveCardsToAnotherList(A_Deck, A_Hand, numToDraw));  
                 break;
             
             case false:
-                numToDraw = Mathf.Min(numToDraw, enemyDeck.Count);
-                yield return StartCoroutine(MoveCardsToAnotherList(enemyDeck, enemyHand, numToDraw));
+                numToDraw = Mathf.Min(numToDraw, B_Deck.Count);
+                yield return StartCoroutine(MoveCardsToAnotherList(B_Deck, B_Hand, numToDraw));
                 break;
         }
         SetBattleState(BattleState.Idle);
@@ -652,9 +652,6 @@ public class BattleManager : MonoBehaviour
 
     // ENEMY BATTLE code
     public IEnumerator EnemyBattleLogic(){
-        if (currentBattleState == BattleState.EnemyTurn) yield break; // prevent coroutine running twice
-
-        SetBattleState(BattleState.EnemyTurn);
 
         Transform eZone = Arena.transform.Find("Zones/EZone");
 
@@ -670,9 +667,9 @@ public class BattleManager : MonoBehaviour
 
         float timer = 0;
         int cardIndex = 0;
-        while(cardIndex < enemyHand.Count){
+        while(cardIndex < B_Hand.Count){
             if(timer > 20){break;}
-            Card card = enemyHand[cardIndex];
+            Card card = B_Hand[cardIndex];
             bool placedCard = false;
             foreach (Transform slot in eZone){
                 if(slot.childCount == 2){
@@ -696,16 +693,16 @@ public class BattleManager : MonoBehaviour
 
     // METHODS FOR UPDATING HEALTH AND MANA BELOW
     public void InitializeHealthAndMana(float E_StartHp, float E_StartMana){
-        P_Health = healthBar.value = healthBar.maxValue = P_maxHp;
-        P_Mana = manaBar.value = manaBar.maxValue = P_maxMana;
+        A_Health = healthBar.value = healthBar.maxValue = A_maxHp;
+        A_Mana = manaBar.value = manaBar.maxValue = A_maxMana;
 
-        E_Health = E_maxHp = E_StartHp;
-        E_Mana = E_maxMana = E_StartMana;
+        B_Health = B_maxHp = E_StartHp;
+        B_Mana = B_maxMana = E_StartMana;
 
-        Mathf.Clamp(P_Health, 0, P_maxHp);
-        Mathf.Clamp(P_Mana, 0, P_maxMana);
-        Mathf.Clamp(E_Health, 0, E_maxHp);
-        Mathf.Clamp(E_Mana, 0, E_maxMana);
+        Mathf.Clamp(A_Health, 0, A_maxHp);
+        Mathf.Clamp(A_Mana, 0, A_maxMana);
+        Mathf.Clamp(B_Health, 0, B_maxHp);
+        Mathf.Clamp(B_Mana, 0, B_maxMana);
 
         UpdateManaHealthText();
     }
@@ -714,23 +711,23 @@ public class BattleManager : MonoBehaviour
     { // the bool IsThisForPlayer indicated if player mana is updated or enemy mana is updated
         switch(IsThisForPlayer){
             case true: // this is to update player mana
-                float potential_PMana = P_Mana - manaCost;
+                float potential_PMana = A_Mana - manaCost;
                 if (potential_PMana < 0){ // check if there is enough mana to use
                     Debug.Log("Player Not enough Mana");
                     return false;
                 }
                 StartCoroutine(ResourceSliderLerp(manaBar, potential_PMana));
-                P_Mana = potential_PMana; 
+                A_Mana = potential_PMana; 
                 UpdateManaHealthText();
                 return true;
 
             case false: // this is to update enemy mana
-                float potential_EMana = E_Mana - manaCost;
+                float potential_EMana = B_Mana - manaCost;
                 if (potential_EMana < 0){ // check if there is enough mana to use
                     Debug.Log("Enemy Not enough Mana");
                     return false;
                 }
-                E_Mana = potential_EMana; // update mana value
+                B_Mana = potential_EMana; // update mana value
                 return true;
         }
     }
@@ -738,25 +735,25 @@ public class BattleManager : MonoBehaviour
     public void ManaRegen(float manaToRegen, bool IsThisForPlayer){
         switch(IsThisForPlayer){
             case true:
-                if((P_Mana + manaToRegen) > P_maxMana){
-                    StartCoroutine(ResourceSliderLerp(manaBar, P_maxMana));
-                    P_Mana = P_maxMana; 
+                if((A_Mana + manaToRegen) > A_maxMana){
+                    StartCoroutine(ResourceSliderLerp(manaBar, A_maxMana));
+                    A_Mana = A_maxMana; 
                     UpdateManaHealthText();
                     break;
                 }
 
-                StartCoroutine(ResourceSliderLerp(manaBar, P_Mana + manaToRegen));
-                P_Mana = (P_Mana + manaToRegen);
+                StartCoroutine(ResourceSliderLerp(manaBar, A_Mana + manaToRegen));
+                A_Mana = (A_Mana + manaToRegen);
                 UpdateManaHealthText();
                 break;
 
             case false:
-                if((E_Mana + manaToRegen) > E_maxMana){
-                    E_Mana = E_maxMana;
+                if((B_Mana + manaToRegen) > B_maxMana){
+                    B_Mana = B_maxMana;
                     break;
                 }
 
-                E_Mana = (E_Mana + manaToRegen);
+                B_Mana = (B_Mana + manaToRegen);
                 break;
         }
     }
@@ -764,30 +761,30 @@ public class BattleManager : MonoBehaviour
     public void RemoveHealth(float damageTaken, bool IsThisForPlayer){ // take damage and update the health slider
         switch(IsThisForPlayer){
             case true: // this is to update player mana
-                float potential_PHealth = P_Health - damageTaken;
+                float potential_PHealth = A_Health - damageTaken;
                 if (potential_PHealth <= 0){ // check if health will go below 0
                     EndBattle(); // handle game end
                     break;
                 }
                 StartCoroutine(ResourceSliderLerp(healthBar, potential_PHealth));
-                P_Health = potential_PHealth; 
+                A_Health = potential_PHealth; 
                 UpdateManaHealthText();
                 break;
 
             case false: // this is to update enemy mana
-                float potential_EHealth = E_Health - damageTaken;
+                float potential_EHealth = B_Health - damageTaken;
                 if (potential_EHealth <= 0){ // check if there is enough mana to use
                     EndBattle(); // handle game end
                     break;
                 }
-                E_Health -= damageTaken; // update mana value
+                B_Health -= damageTaken; // update mana value
                 break;
         }
     }
 
     public void UpdateManaHealthText(){
-        manaText.text =  P_Mana.ToString("F0") + " / " + P_maxMana.ToString("F0"); // update mana text
-        healthText.text =  P_Health.ToString("F0") + " / " + P_maxHp.ToString("F0"); // update health text
+        manaText.text =  A_Mana.ToString("F0") + " / " + A_maxMana.ToString("F0"); // update mana text
+        healthText.text =  A_Health.ToString("F0") + " / " + A_maxHp.ToString("F0"); // update health text
     }
 
     public IEnumerator ResourceSliderLerp(Slider rSlider, float newValue){

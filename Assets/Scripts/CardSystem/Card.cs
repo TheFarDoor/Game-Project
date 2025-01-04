@@ -19,7 +19,6 @@ public class Card : ScriptableObject
     [SerializeField] [Range(0,100)] private int damage; // card damage which can be between 0 - 100 
     [SerializeField] [Range(0,100)] private int health; // card defence which can be between 0 - 100 
     [SerializeField] private int cost; // cost to use card
-    [SerializeField] private bool used; // bool to track if card is used
     [SerializeField] private GameObject model; // model for summon if card summons something
 
     // Getter method for each private variable
@@ -29,7 +28,6 @@ public class Card : ScriptableObject
     public int Damage => damage;
     public int Health => health;
     public int Cost => cost;
-    public bool Used => used;
     public GameObject Model => model;
 
     public static Card CreateInstance(Card data){ // create new instance of template card

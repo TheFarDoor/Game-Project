@@ -45,7 +45,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         }
 
         if (playerCardSlots.Count <= 0){
-            foreach(Transform slot in BattleManager.Instance.Arena_playerCardSlots){
+            foreach(Transform slot in BattleManager.Instance.Arena_A_CardSlots){
                 playerCardSlots.Add(slot.position);
             }
         }
@@ -125,7 +125,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             List<Collider> pSlotsNearMouse = new List<Collider>();
             
             foreach(Collider col in slotsNearby){
-                if(col.CompareTag(BattleManager.Instance.playerCardZoneTag) && col.transform.parent.childCount !<= 2){
+                if(col.CompareTag(BattleManager.Instance.A_CardzoneTag) && col.transform.parent.childCount !<= 2){
                     pSlotsNearMouse.Add(col);
                 }
             }

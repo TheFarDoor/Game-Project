@@ -6,14 +6,15 @@ TagManager:
   tags:
   - PlayerHealth
   - PlayerMana
-  - CardZone_P
-  - CardZone_E
-  - CardZone_N
   - SummonedMonster
-  - Arena_EZone
-  - Arena_PZone
   - Enemy
   - Ground
+  - A CardZone
+  - B CardZone
+  - N CardZone
+  - A Pos
+  - B Pos
+  - CardZone_N
   layers:
   - Default
   - TransparentFX
