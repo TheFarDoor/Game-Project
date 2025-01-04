@@ -15,20 +15,19 @@ public class pickUp : MonoBehaviour
     private Vector3 startPosition;
     private bool isPlayerNearby = false;
 
-    public GameObject interactTextPrefab; // Assign a prefab for the "Click E" text in the Inspector
+    public GameObject interactTextPrefab;
     private GameObject interactTextInstance;
 
     private InputActions inputActions;
 
-    // Start is called before the first frame update
     void Start()
     {
         playerDeck = GameObject.FindWithTag("Player").GetComponent<Deck>();
-        startPosition = transform.position; // Initial position of the model/card
+        startPosition = transform.position;
 
         inputActions = new InputActions();
         inputActions.Player.Enable();
-        inputActions.Player.Interaction.performed += OnInteract; // Bind interaction action
+        inputActions.Player.Interaction.performed += OnInteract;
     }
 
     void OnDestroy()
@@ -38,7 +37,6 @@ public class pickUp : MonoBehaviour
 
     void Update()
     {
-        // Floating and rotating animation
         transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
         
         float newHeight = startPosition.y + Mathf.Sin(Time.time * heightRotationSpeed) * heightRotation;
@@ -51,7 +49,6 @@ public class pickUp : MonoBehaviour
         {
             isPlayerNearby = true;
 
-            // Display interaction UI
             if (interactTextPrefab != null && interactTextInstance == null)
             {
                 interactTextInstance = Instantiate(interactTextPrefab, transform.position + Vector3.up * 2f, Quaternion.identity, transform);
@@ -65,7 +62,6 @@ public class pickUp : MonoBehaviour
         {
             isPlayerNearby = false;
 
-            // Hide interaction UI
             if (interactTextInstance != null)
             {
                 Destroy(interactTextInstance);
@@ -78,17 +74,14 @@ public class pickUp : MonoBehaviour
     {
         if (isPlayerNearby)
         {
-            // Ensure pick-up has a card assigned
             if (card == null)
             {
                 Debug.LogWarning("No card assigned to this pick-up.");
-                return; // Exit if no card assigned
+                return;
             }
 
-            // Check if the player already has this card
             if (!playerDeck.collectionList.Contains(card))
             {
-                // Add the card to the player's deck
                 playerDeck.deckList.Add(card);
                 Debug.Log("Card added to user collection: " + card.name);
             }
@@ -97,7 +90,6 @@ public class pickUp : MonoBehaviour
                 Debug.Log("Player already has this card: " + card.name);
             }
 
-            // Destroy the card object
             Destroy(transform.parent.gameObject);
         }
     }
