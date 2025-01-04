@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class DeckBuilder : MonoBehaviour
 {
     [Header("UI References")]
-    public GameObject Inventory;
+    public GameObject Collection;
     public GameObject DeckList;
     public GameObject cardPrefab;
     public TextMeshProUGUI deckCountText;
@@ -40,7 +40,7 @@ public class DeckBuilder : MonoBehaviour
     {
         // Find UI elements based on the hierarchy
         DeckList = this.transform.Find("InventoryUI/CardDeck/CardDeckScrollView/Viewport/DeckContent").gameObject;
-        Inventory = this.transform.Find("InventoryUI/CardCollection/CardCollectionScrollView/Viewport/CollectionContent").gameObject;
+        Collection = this.transform.Find("InventoryUI/CardCollection/CardCollectionScrollView/Viewport/CollectionContent").gameObject;
         deckCountText = this.transform.Find("InventoryUI/CardDeck/DeckCount").GetComponent<TextMeshProUGUI>();
 
         // Get references to labels and set them
@@ -81,12 +81,12 @@ public class DeckBuilder : MonoBehaviour
 
         // Ensure the content holders are active
         DeckList.SetActive(true);
-        Inventory.SetActive(true);
+        Collection.SetActive(true);
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         
-        ViewCards(playerDeck.collectionList, Inventory.transform, true);
+        ViewCards(playerDeck.collectionList, Collection.transform, true);
         ViewCards(playerDeck.deckList, DeckList.transform, false);
         UpdateDeckCount(playerDeck.deckList.Count);
     }
@@ -140,7 +140,7 @@ public class DeckBuilder : MonoBehaviour
 
     private void UpdateUI()
     {
-        ViewCards(playerDeck.collectionList, Inventory.transform, true);
+        ViewCards(playerDeck.collectionList, Collection.transform, true);
         ViewCards(playerDeck.deckList, DeckList.transform, false);
         UpdateDeckCount(playerDeck.deckList.Count);
     }
