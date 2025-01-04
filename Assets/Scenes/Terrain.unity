@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571336, b: 0.3069219, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2353,6 +2353,7 @@ MonoBehaviour:
   minPitchAngle: -3
   maxPitchAngle: 30
   cameraTransform: {fileID: 1476227591}
+  inventoryPanel: {fileID: 0}
 --- !u!114 &721909223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2939,7 +2940,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &824143735
 Transform:
   m_ObjectHideFlags: 0
@@ -3482,6 +3483,58 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72e74826db57611459aefd15ce3e4e42, type: 3}
+--- !u!1 &1095560422
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1095560424}
+  - component: {fileID: 1095560423}
+  m_Layer: 0
+  m_Name: SnowTreeSpawner (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1095560423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1095560422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30104e43981d54570abddc60e910e4f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treePrefab: {fileID: 192044, guid: 19682540d8a014522a319b1cf788aee2, type: 3}
+  treeCount: 220
+  radius: 50
+  offset: {x: 0, y: 0, z: 0}
+  minDistanceBetweenTrees: 0.5
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 256
+--- !u!4 &1095560424
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1095560422}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 465.7, y: 0, z: 244.9}
+  m_LocalScale: {x: 0.31490177, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1135935165
 GameObject:
   m_ObjectHideFlags: 0
@@ -6569,3 +6622,4 @@ SceneRoots:
   - {fileID: 1414799095}
   - {fileID: 2106558325}
   - {fileID: 824143735}
+  - {fileID: 1095560424}
