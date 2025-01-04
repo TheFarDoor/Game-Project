@@ -19,6 +19,10 @@ public class PlayerInputHandler : MonoBehaviour
     public Transform cameraTransform;
     private CharacterController characterController;
 
+    // Inventory UI reference
+    public GameObject inventoryPanel;
+    private bool isInventoryOpen = false; // Make inventory UI not visible at launch
+
     Animator animator;
 
     private void Awake()
@@ -34,8 +38,15 @@ public class PlayerInputHandler : MonoBehaviour
         controls.Player.Run.canceled += ctx => isRunning = false;
         controls.Player.Jump.performed += ctx => Jump();
 
+        controls.Player.Inventory.performed += ctx => ToggleInventory();
+
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        LockCursor(); // Lock the cursor at the start of the game
     }
 
     private void OnEnable() { controls.Player.Enable(); }
@@ -43,9 +54,12 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Update()
     {
-        Movement();
-        RotatePlayer();
-        HandleJump();
+        if (!isInventoryOpen) // Only allow movement when inventory is closed
+        {
+            Movement();
+            RotatePlayer();
+            HandleJump();
+        }
     }
 
     private void Movement()
@@ -99,5 +113,32 @@ public class PlayerInputHandler : MonoBehaviour
             verticalVelocity = jumpForce;
             isGrounded = false;
         }
+    }
+
+    private void ToggleInventory()
+    {
+        isInventoryOpen = !isInventoryOpen;
+        inventoryPanel.SetActive(isInventoryOpen);
+
+        if (isInventoryOpen)
+        {
+            UnlockCursor();
+        }
+        else
+        {
+            LockCursor();
+        }
+    }
+
+    private void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked; // Locks the cursor
+        Cursor.visible = false;                  // Hides the cursor
+    }
+
+    private void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;  // Unlocks the cursor
+        Cursor.visible = true;                   // Shows the cursor
     }
 }

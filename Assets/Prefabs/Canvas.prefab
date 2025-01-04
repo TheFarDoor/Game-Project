@@ -468,7 +468,6 @@ GameObject:
   - component: {fileID: 1594574982017875626}
   - component: {fileID: 8546318579189325582}
   - component: {fileID: 3986470330382738122}
-  - component: {fileID: 5502195163039551795}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -533,30 +532,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5502195163039551795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4594908077166134679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 50
-    m_Right: 50
-    m_Top: 50
-    m_Bottom: 50
-  m_ChildAlignment: 0
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 100, y: 150}
-  m_Spacing: {x: 10, y: 10}
-  m_Constraint: 0
-  m_ConstraintCount: 2
 --- !u!1 &4777717902534883651
 GameObject:
   m_ObjectHideFlags: 0
@@ -1182,7 +1157,6 @@ GameObject:
   - component: {fileID: 5206711139190400451}
   - component: {fileID: 2182688308694567820}
   - component: {fileID: 613842108761575307}
-  - component: {fileID: 420268572808272919}
   m_Layer: 5
   m_Name: DeckList
   m_TagString: Untagged
@@ -1247,32 +1221,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &420268572808272919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8135380290261557025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 25
-    m_Right: 25
-    m_Top: 25
-    m_Bottom: 25
-  m_ChildAlignment: 0
-  m_Spacing: 10
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
 --- !u!1 &8997703061885423672
 GameObject:
   m_ObjectHideFlags: 0
@@ -1430,9 +1378,9 @@ MonoBehaviour:
   Inventory: {fileID: 0}
   DeckList: {fileID: 0}
   cardPrefab: {fileID: 1126759391420411042, guid: b2f9ca26b4eae344fb5d85f398e9d3dd, type: 3}
+  deckCountText: {fileID: 0}
   Vis: 0
   playerDeck: {fileID: 0}
-  cardText: {fileID: 0}
 --- !u!1001 &261283971851364739
 PrefabInstance:
   m_ObjectHideFlags: 0
