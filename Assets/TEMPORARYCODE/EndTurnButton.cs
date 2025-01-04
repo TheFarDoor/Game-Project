@@ -12,7 +12,7 @@ public class EndTurnButton : MonoBehaviour
     }
 
     public void Update(){
-        this.GetComponent<Button>().interactable = (BattleManager.Instance.currentTurn == BattleManager.Turn.Player && BattleManager.Instance.currentBattleState == (BattleManager.BattleState.Idle));
+        this.GetComponent<Button>().interactable = (BattleManager.Instance.currentTurn == BattleManager.Turn.A && BattleManager.Instance.currentBattleState == (BattleManager.BattleState.Idle));
     }
 
     public void OnButtonClick(){

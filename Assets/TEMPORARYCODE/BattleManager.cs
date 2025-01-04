@@ -57,8 +57,6 @@ public class BattleManager : MonoBehaviour
     public Transform Arena_B_CardSlots;
 
     [Space(10)]
-    
-
 
     [Header("Decks/Card Data"), Space(20)] // Cards List information below which includes a deck, the hand and used cards for the player and enemy
     public int startingCardAmount = 5;
@@ -117,6 +115,8 @@ public class BattleManager : MonoBehaviour
     [Header("Animation Durations"), Space(20)]
     [Range(0.5f,2)] public float attackLerpSpeed = 1.0f;
 
+    // INFORMATION OF SLOTS
+    public Dictionary<string, Tuple<bool, Card, bool>> InformationSlots = new Dictionary<string, Tuple<bool, Card, bool>>(); // tuple (occupied, Card, can attack)
 
 
     // METHODS
@@ -147,11 +147,11 @@ public class BattleManager : MonoBehaviour
 
         // Nessasary code below
         if (currentBattleState != BattleState.Initializing){
-           HandleBattleLogic();
+           HandlePlayerInput();
         }
     }
 
-    public void HandleBattleLogic(){
+    public void HandlePlayerInput(){
         switch(currentBattleState){
             case BattleState.Idle:
                 GameObject I_clickedObject = CheckMouseClick();

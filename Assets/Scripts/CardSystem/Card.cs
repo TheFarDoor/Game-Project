@@ -61,16 +61,6 @@ public class Card : ScriptableObject
         this.health = Mathf.Clamp(newDefence, 0, 10); // Clamps value between 0 and 100
     }
 
-    public void UseCard()
-    {
-        this.used = true; // Mark card as used
-    }
-
-    public void ResetCardUsage()
-    {
-        this.used = false; // Reset usage status for the next battle
-    }
-
     public void SetId(int val){
         this.id = val;
     }

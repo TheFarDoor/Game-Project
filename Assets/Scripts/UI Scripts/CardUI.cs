@@ -37,7 +37,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
 
     public void Update(){
-        if (BattleManager.Instance.selectedCard == this){
+        if (BattleManager.Instance.A_selectedCard == this){
             thisCardSelected = true;
         }
         else{
@@ -93,7 +93,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     }
 
     public void OnPointerClick(PointerEventData eventData){
-        if (BattleManager.Instance.currentTurn == BattleManager.Turn.Player && !thisCardSelected && eventData.button == PointerEventData.InputButton.Left){
+        if (BattleManager.Instance.currentTurn == BattleManager.Turn.A && !thisCardSelected && eventData.button == PointerEventData.InputButton.Left){
             this.GetComponent<Image>().color = BattleManager.Instance.selected_CardUIColour;
             this.transform.localScale = defaultScale * BattleManager.Instance.cardUIHoverScale;
             BattleManager.Instance.UpdateSelectedCardAndMonster(this, null); // tell battleManager that this card is selected
@@ -102,7 +102,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (BattleManager.Instance.currentTurn == BattleManager.Turn.Player){
+        if (BattleManager.Instance.currentTurn == BattleManager.Turn.A){
             originalPositionPreDrag = this.transform.position;
             BattleManager.Instance.UpdateSelectedCardAndMonster(this, null);
             this.GetComponent<Image>().color = BattleManager.Instance.selected_CardUIColour;
@@ -113,7 +113,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (BattleManager.Instance.currentTurn == BattleManager.Turn.Player){
+        if (BattleManager.Instance.currentTurn == BattleManager.Turn.A){
             this.transform.position = Input.mousePosition;
 
             Ray ray = BattleManager.Instance.Arena.transform.Find("Cam").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition); // ray aimed at where mouse if pointing
@@ -155,10 +155,10 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     public void OnEndDrag(PointerEventData eventData)
     {   
-        if (BattleManager.Instance.currentTurn == BattleManager.Turn.Player){
+        if (BattleManager.Instance.currentTurn == BattleManager.Turn.A){
             if(snappedSlot != null){
                 Debug.Log(snappedSlot.name);
-                BattleManager.Instance.PlaceOrUseCard(BattleManager.Instance.selectedCard.cardData, snappedSlot.parent, true);
+                BattleManager.Instance.PlaceOrUseCard(BattleManager.Instance.A_selectedCard.cardData, snappedSlot.parent, true);
             }
             else{
                 this.transform.position = originalPositionPreDrag;
