@@ -3647,6 +3647,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5275251937153499479, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
+      propertyPath: Vis
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5275251937153499479, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
       propertyPath: DeckList
       value: 
       objectReference: {fileID: 13327526}
@@ -4128,6 +4132,10 @@ PrefabInstance:
     - target: {fileID: 1531872186945724497, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1786627719258925914, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
+      propertyPath: inventoryUI
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3955390170709009430, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
       propertyPath: m_Name

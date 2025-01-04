@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void Start(){
-        inventoryUI = GameObject.Find("/Canvas-Cam/IHolder");
+        inventoryUI = GameObject.Find("/Canvas-Cam/InventoryUI");
         worldUI = GameObject.Find("/Canvas-Cam/NormalUI");
         battleUI = GameObject.Find("/Canvas-Cam/BattleUI");
 
