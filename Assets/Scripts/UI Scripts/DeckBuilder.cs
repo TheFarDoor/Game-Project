@@ -3,80 +3,134 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class DeckBuilder : MonoBehaviour
 {
+    [Header("UI References")]
     public GameObject Inventory;
     public GameObject DeckList;
-    public GameObject cardPrefab; // Prefab for the card UI
+    public GameObject cardPrefab;
+    public TextMeshProUGUI deckCountText;
     public bool Vis;
+
+    [Header("Deck Settings")]
     public Deck playerDeck;
-    public TextMeshProUGUI cardText;
+    private int maxDeckSize = 20;
+
+    private InputActions controls;
+
+    void Awake()
+    {
+        controls = new InputActions();
+        controls.Player.Inventory.performed += OnToggleDeck;
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
+    }
 
     void Start()
     {
-        DeckList = this.transform.Find("IHolder/DeckList").gameObject;
-        Inventory = this.transform.Find("IHolder/Inventory").gameObject;
+        // Find UI elements based on the hierarchy
+        DeckList = this.transform.Find("InventoryUI/CardDeck/CardDeckScrollView/Viewport/DeckContent").gameObject;
+        Inventory = this.transform.Find("InventoryUI/CardCollection/CardCollectionScrollView/Viewport/CollectionContent").gameObject;
+        deckCountText = this.transform.Find("InventoryUI/CardDeck/DeckCount").GetComponent<TextMeshProUGUI>();
 
-        DeckList.SetActive(false);
-        Inventory.SetActive(false);
+        // Get references to labels and set them
+        TextMeshProUGUI deckLabel = this.transform.Find("InventoryUI/CardDeck/DeckLabel").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI collectionLabel = this.transform.Find("InventoryUI/CardCollection/CollectionLabel").GetComponent<TextMeshProUGUI>();
+        deckLabel.text = "Battle Deck";
+        collectionLabel.text = "Card Collection";
 
-        playerDeck = GameObject.Find("/Player").GetComponent<Deck>(); // Get the player's deck
+        // Hide UI by default
+        Transform inventoryUI = this.transform.Find("InventoryUI");
+        inventoryUI.gameObject.SetActive(false);
+        Vis = false;
+
+        // Get the player's deck
+        playerDeck = GameObject.FindWithTag("Player").GetComponent<Deck>();
+        
+        UpdateDeckCount(playerDeck.deckList.Count);
     }
 
-    void Update()
+    private void OnToggleDeck(InputAction.CallbackContext context)
     {
-        if (Input.GetKeyDown(KeyCode.B)) // Open inventory with the 'B' key
+        if (Vis)
         {
-            if (Vis)
-            {
-                Vis = false;
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-                DeckList.SetActive(Vis);
-                Inventory.SetActive(Vis);
-            }
-            else
-            {
-                Vis = true;
-                DeckList.SetActive(Vis);
-                Inventory.SetActive(Vis);
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                ViewCards(playerDeck.collectionList, Inventory.transform, true); // Show cards in inventory
-                ViewCards(playerDeck.deckList, DeckList.transform, false); // Show cards in deck
-            }
+            CloseInventory();
+        }
+        else
+        {
+            OpenInventory();
         }
     }
 
-    // View cards in the UI (Inventory or Deck)
+    private void OpenInventory()
+    {
+        Vis = true;
+        // Find and activate the main InventoryUI parent
+        Transform inventoryUI = this.transform.Find("InventoryUI");
+        inventoryUI.gameObject.SetActive(true);
+
+        // Ensure the content holders are active
+        DeckList.SetActive(true);
+        Inventory.SetActive(true);
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        
+        ViewCards(playerDeck.collectionList, Inventory.transform, true);
+        ViewCards(playerDeck.deckList, DeckList.transform, false);
+        UpdateDeckCount(playerDeck.deckList.Count);
+    }
+
+    private void CloseInventory()
+    {
+        Vis = false;
+        // Find and deactivate the main InventoryUI parent
+        Transform inventoryUI = this.transform.Find("InventoryUI");
+        inventoryUI.gameObject.SetActive(false);
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     void ViewCards(List<Card> listCard, Transform container, bool isInventory)
     {
-        foreach (Transform slot in container.transform)
+        foreach (Transform child in container)
         {
-            Destroy(slot.gameObject); // Clear the current UI
+            Destroy(child.gameObject);
         }
 
-        foreach (var card in listCard)
+        foreach (Card card in listCard)
         {
-            GameObject newCardUI = Instantiate(cardPrefab, container); // Create card UI prefab
-            DeckUICard deckUICard = newCardUI.GetComponent<DeckUICard>();
+            GameObject cardInstance = Instantiate(cardPrefab, container);
+            DeckUICard deckUICard = cardInstance.GetComponent<DeckUICard>();
+            
             if (deckUICard != null)
             {
-                deckUICard.SetCardData(card, isInventory, this); // Set card data and interaction type (inventory or deck)
+                deckUICard.SetCardData(card, isInventory, this);
             }
         }
     }
 
-    // Add card from inventory to deck
     public void AddCardToDeck(Card card)
     {
-        playerDeck.deckList.Add(card);
-        playerDeck.collectionList.Remove(card);
-        UpdateUI();
+        if (playerDeck.deckList.Count < maxDeckSize)
+        {
+            playerDeck.deckList.Add(card);
+            playerDeck.collectionList.Remove(card);
+            UpdateUI();
+        }
     }
 
-    // Remove card from deck and return it to inventory
     public void RemoveCardFromDeck(Card card)
     {
         playerDeck.deckList.Remove(card);
@@ -84,10 +138,15 @@ public class DeckBuilder : MonoBehaviour
         UpdateUI();
     }
 
-    // Refresh UI when cards are added/removed
-    void UpdateUI()
+    private void UpdateUI()
     {
         ViewCards(playerDeck.collectionList, Inventory.transform, true);
         ViewCards(playerDeck.deckList, DeckList.transform, false);
+        UpdateDeckCount(playerDeck.deckList.Count);
+    }
+
+    private void UpdateDeckCount(int currentCount)
+    {
+        deckCountText.text = $"{currentCount}/{maxDeckSize}";
     }
 }
