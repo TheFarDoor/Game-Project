@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571336, b: 0.3069219, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -605,7 +605,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00005340576}
+  m_AnchoredPosition: {x: 0, y: 0.000011444092}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &321768915
@@ -2353,7 +2353,7 @@ MonoBehaviour:
   minPitchAngle: -3
   maxPitchAngle: 30
   cameraTransform: {fileID: 1476227591}
-  inventoryPanel: {fileID: 0}
+  inventoryPanel: {fileID: 1731418771}
 --- !u!114 &721909223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4332,6 +4332,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.30677032
       objectReference: {fileID: 0}
+    - target: {fileID: 8964512163698871178, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9058819492457133383, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.25
@@ -4350,13 +4354,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3762378694222051054, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 481419055621721432, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 4369146039612549982, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 7555249207454742471, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 4369146039612549982, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 481419055621721432, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: e4b700084aeca304d836e3dff2aec3ee, type: 3}
@@ -5581,6 +5585,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1594574982017875626, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
   m_PrefabInstance: {fileID: 631675013}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1731418771 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4777717902534883651, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
+  m_PrefabInstance: {fileID: 631675013}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1787338626
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5908,7 +5917,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.0000076293945}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1827360392
