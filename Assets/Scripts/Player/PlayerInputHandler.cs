@@ -23,6 +23,8 @@ public class PlayerInputHandler : MonoBehaviour
     public GameObject inventoryPanel;
     private bool isInventoryOpen = false; // Make inventory UI not visible at launch
 
+    Animator animator;
+
     private void Awake()
     {
         controls = new InputActions();
@@ -39,6 +41,7 @@ public class PlayerInputHandler : MonoBehaviour
         controls.Player.Inventory.performed += ctx => ToggleInventory();
 
         characterController = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -64,6 +67,11 @@ public class PlayerInputHandler : MonoBehaviour
         float speed = isRunning ? runSpeed : walkSpeed;
         Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
 
+        // checks if player is moving
+        bool isWalking = moveInput.x != 0 || moveInput.y != 0;
+        animator.SetBool("isWalking", isWalking);
+        animator.SetBool("isRunning", isWalking && isRunning);
+
         if (!isGrounded)
         {
             verticalVelocity += gravity * Time.deltaTime;
@@ -75,7 +83,7 @@ public class PlayerInputHandler : MonoBehaviour
         isGrounded = characterController.isGrounded;
         if (isGrounded && verticalVelocity < 0)
         {
-            verticalVelocity = -2f; // value to keep player grounded
+            verticalVelocity = -0.1f;
         }
     }
 
