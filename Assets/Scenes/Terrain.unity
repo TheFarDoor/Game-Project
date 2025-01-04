@@ -170,17 +170,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 50
     m_Right: 0
-    m_Top: 0
+    m_Top: 25
     m_Bottom: 0
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 150, y: 200}
-  m_Spacing: {x: 5, y: 5}
+  m_Spacing: {x: 15, y: 15}
   m_Constraint: 1
-  m_ConstraintCount: 3
+  m_ConstraintCount: 4
 --- !u!114 &13327529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3657,7 +3657,7 @@ PrefabInstance:
     - target: {fileID: 5275251937153499479, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
       propertyPath: cardPrefab
       value: 
-      objectReference: {fileID: 388044282806952549, guid: 27409407ce07947608c7d44781612e72, type: 3}
+      objectReference: {fileID: 1126759391420411042, guid: b2f9ca26b4eae344fb5d85f398e9d3dd, type: 3}
     - target: {fileID: 5275251937153499479, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
       propertyPath: deckCountText
       value: 
@@ -5288,17 +5288,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 50
     m_Right: 0
-    m_Top: 0
+    m_Top: 25
     m_Bottom: 0
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 150, y: 200}
-  m_Spacing: {x: 5, y: 5}
+  m_Spacing: {x: 15, y: 15}
   m_Constraint: 1
-  m_ConstraintCount: 3
+  m_ConstraintCount: 4
 --- !u!114 &2054687544
 MonoBehaviour:
   m_ObjectHideFlags: 0
