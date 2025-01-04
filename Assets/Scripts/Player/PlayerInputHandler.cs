@@ -3,82 +3,91 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
 {
+    // Movement Settings
+    [SerializeField] private float walkSpeed = 5f;
+    [SerializeField] private float runSpeed = 10f;
+    [SerializeField] private float gravity = -9.8f;
+    [SerializeField] private float jumpForce = 2f;
+
+    // Rotation Settings
+    [SerializeField] private float yaSensitivity = 2f; // mouse sensitivity - horizontal
+    [SerializeField] private float pitchSensitivity = 2f; // mouse sensitivity - vertical
+    [SerializeField] private float minPitchAngle = -3f;
+    [SerializeField] private float maxPitchAngle = 30f;
+
+    // References
+    [SerializeField] private Transform cameraTransform;
+    
     private InputActions controls;
     private Vector2 moveInput;
     private Vector2 lookInput;
     private bool isRunning;
-
-    private float walkSpeed = 5f;
-    private float runSpeed = 10f;
-
     private bool isGrounded = true;
-    private float verticalVelocity = 0f;
-    private float gravity = -9.8f;
-    private float jumpForce = 2f;
+    private float verticalVelocity = 0f; // up/down movement speed
+    private float pitch = 0f;
 
-    public Transform cameraTransform;
+    private float slopeAngle = 0f;
+    private Vector3 hitNormal;
+
     private CharacterController characterController;
-
-    // Inventory UI reference
-    public GameObject inventoryPanel;
-    private bool isInventoryOpen = false; // Make inventory UI not visible at launch
-
-    Animator animator;
+    private Animator animator;
 
     private void Awake()
     {
-        controls = new InputActions();
-
-        // Bind the actions
-        controls.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        controls.Player.Move.canceled += ctx => moveInput = Vector2.zero;
-        controls.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
-        controls.Player.Look.canceled += ctx => lookInput = Vector2.zero;
-        controls.Player.Run.performed += ctx => isRunning = ctx.ReadValueAsButton();
-        controls.Player.Run.canceled += ctx => isRunning = false;
-        controls.Player.Jump.performed += ctx => Jump();
-
-        controls.Player.Inventory.performed += ctx => ToggleInventory();
-
+        InitializeInputActions();
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
     }
 
-    private void Start()
-    {
-        LockCursor(); // Lock the cursor at the start of the game
-    }
-
-    private void OnEnable() { controls.Player.Enable(); }
-    private void OnDisable() { controls.Player.Disable(); }
+    private void OnEnable() => controls.Player.Enable();
+    private void OnDisable() => controls.Player.Disable();
 
     private void Update()
     {
-        if (!isInventoryOpen) // Only allow movement when inventory is closed
+        CheckSlope();
+        if (slopeAngle > characterController.slopeLimit && isGrounded)
         {
-            Movement();
-            RotatePlayer();
-            HandleJump();
+            HandleSliding();
         }
+        else
+        {
+            HandleMovement();
+        }
+        RotatePlayer();
+        ApplyJump();
     }
 
-    private void Movement()
+    private void InitializeInputActions()
+    {
+        controls = new InputActions();
+
+        controls.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        controls.Player.Move.canceled += ctx => moveInput = Vector2.zero;
+
+        controls.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
+        controls.Player.Look.canceled += ctx => lookInput = Vector2.zero;
+
+        controls.Player.Run.performed += ctx => isRunning = ctx.ReadValueAsButton();
+        controls.Player.Run.canceled += ctx => isRunning = false;
+
+        controls.Player.Jump.performed += ctx => TriggerJump();
+    }
+
+    private void HandleMovement()
     {
         float speed = isRunning ? runSpeed : walkSpeed;
-        Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
+        Vector3 moveDirection = CalculateMoveDirection();
 
-        // checks if player is moving
-        bool isWalking = moveInput.x != 0 || moveInput.y != 0;
-        animator.SetBool("isWalking", isWalking);
-        animator.SetBool("isRunning", isWalking && isRunning);
+        animator.SetBool("isWalking", moveInput.sqrMagnitude > 0);
+        animator.SetBool("isRunning", isRunning && moveInput.sqrMagnitude > 0);
 
         if (!isGrounded)
         {
             verticalVelocity += gravity * Time.deltaTime;
         }
 
-        move.y = verticalVelocity;
-        characterController.Move(move * speed * Time.deltaTime);
+        moveDirection.y = verticalVelocity;
+        characterController.Move(moveDirection * speed * Time.deltaTime);
 
         isGrounded = characterController.isGrounded;
         if (isGrounded && verticalVelocity < 0)
@@ -87,26 +96,37 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
+    private Vector3 CalculateMoveDirection()
+    {
+        return transform.right * moveInput.x + transform.forward * moveInput.y;
+    }
+
     private void RotatePlayer()
     {
         if (lookInput.x != 0)
         {
-            float yRotation = lookInput.x * 2f;
-            transform.Rotate(0, yRotation, 0);
+            float ya = lookInput.x * yaSensitivity;
+            transform.Rotate(0, ya, 0);
+        }
+
+        if (lookInput.y != 0)
+        {
+            pitch -= lookInput.y * pitchSensitivity;
+            pitch = Mathf.Clamp(pitch, minPitchAngle, maxPitchAngle);
+            cameraTransform.localEulerAngles = new Vector3(pitch, cameraTransform.localEulerAngles.y, 0);
         }
     }
 
-    private void HandleJump()
+    private void ApplyJump()
     {
-        if (!isGrounded) return;
-
-        if (controls.Player.Jump.triggered)
+        if (isGrounded && controls.Player.Jump.triggered)
         {
             verticalVelocity = jumpForce;
+            isGrounded = false;
         }
     }
 
-    private void Jump()
+    private void TriggerJump()
     {
         if (isGrounded)
         {
@@ -115,30 +135,25 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
-    private void ToggleInventory()
+    private void CheckSlope()
     {
-        isInventoryOpen = !isInventoryOpen;
-        inventoryPanel.SetActive(isInventoryOpen);
-
-        if (isInventoryOpen)
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.5f))
         {
-            UnlockCursor();
+            hitNormal = hit.normal;
+            slopeAngle = Vector3.Angle(hitNormal, Vector3.up);
         }
         else
         {
-            LockCursor();
+            slopeAngle = 0f;
         }
     }
 
-    private void LockCursor()
+    private void HandleSliding()
     {
-        Cursor.lockState = CursorLockMode.Locked; // Locks the cursor
-        Cursor.visible = false;                  // Hides the cursor
-    }
+        Vector3 slideDirection = new Vector3(hitNormal.x, -hitNormal.y, hitNormal.z);
+        characterController.Move(slideDirection * walkSpeed * Time.deltaTime);
 
-    private void UnlockCursor()
-    {
-        Cursor.lockState = CursorLockMode.None;  // Unlocks the cursor
-        Cursor.visible = true;                   // Shows the cursor
+        verticalVelocity += gravity * Time.deltaTime;
+        slideDirection.y = verticalVelocity;
     }
 }
