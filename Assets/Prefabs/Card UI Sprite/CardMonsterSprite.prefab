@@ -230,6 +230,8 @@ MonoBehaviour:
   damageText: {fileID: 0}
   defenceText: {fileID: 0}
   costText: {fileID: 0}
+  originalPositionPreDrag: {x: 0, y: 0, z: 0}
+  playerCardSlots: []
   cardData: {fileID: 0}
   thisCardSelected: 0
   defaultScale: {x: 1, y: 1, z: 1}
