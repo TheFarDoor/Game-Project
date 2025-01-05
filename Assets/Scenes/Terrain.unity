@@ -5259,6 +5259,42 @@ PrefabInstance:
       propertyPath: A_maxMana
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
+      propertyPath: default_CardUIColour.b
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
+      propertyPath: default_CardUIColour.g
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
+      propertyPath: default_CardUIColour.r
+      value: 0.36078432
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
+      propertyPath: hovered_CardUIColour.b
+      value: 0.251068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
+      propertyPath: hovered_CardUIColour.g
+      value: 0.35691896
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
+      propertyPath: hovered_CardUIColour.r
+      value: 0.5849056
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
+      propertyPath: selected_CardUIColour.b
+      value: 0.21782663
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
+      propertyPath: selected_CardUIColour.g
+      value: 0.3640192
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345704999082227121, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
+      propertyPath: selected_CardUIColour.r
+      value: 0.8396226
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
