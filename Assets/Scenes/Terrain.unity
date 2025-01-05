@@ -1832,7 +1832,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas-Cam
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5275251937153499479, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6911392307453699921, guid: 6b1586e0bead07d418bc539e306d3e9e, type: 3}
@@ -7992,6 +7993,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 2084690806}
   - {fileID: 1869629847}
+  - {fileID: 2106558325}
   - {fileID: 1694274550}
   - {fileID: 1138261074}
   - {fileID: 1135935166}
@@ -8001,6 +8003,5 @@ SceneRoots:
   - {fileID: 721909219}
   - {fileID: 2033986096}
   - {fileID: 1414799095}
-  - {fileID: 2106558325}
   - {fileID: 824143735}
   - {fileID: 1095560424}
