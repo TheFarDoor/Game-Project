@@ -414,18 +414,7 @@ public class BattleManager : MonoBehaviour
     }
 
     public void HandleLeftClick(){
-        GameObject clickedObject;
-        Ray ray = arenaCam.ScreenPointToRay(Mouse.current.position.ReadValue()); // ray aimed at where mouse if pointing
-        RaycastHit hit; // store information from raycast hit
-
-        if(Physics.Raycast(ray, out hit, Mathf.Infinity)){ // If the raycase with infinite range hits something
-            clickedObject = hit.collider.gameObject; // return the tag and gameobject of the thing that is hit by the ray
-        }
-
-        if(currentTurn == Turn.A){
-            
-        }
-        Debug.Log("LeftClicked");
+       Debug.Log("LeftClicked");
     }
 
     public void HandleRightClick(){
@@ -519,6 +508,8 @@ public class BattleManager : MonoBehaviour
         previous_A_Rotation = A.transform.rotation; // save player rotation prior to battle
         previous_B_Position = B.transform.position; // save enemy position prior to battle
         previous_B_Rotation = B.transform.rotation; // save enemy rotation prior to battle
+
+        A.GetComponent<PlayerInputHandler>().enabled = false;
 
         // Stop player movement and move the player + enemy to the arena
         A.GetComponent<CharacterController>().enabled = false;

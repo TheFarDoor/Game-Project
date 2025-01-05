@@ -314,7 +314,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3051589412576447148}
-  - component: {fileID: 8163585774508044491}
   m_Layer: 7
   m_Name: A Position
   m_TagString: A Pos
@@ -337,27 +336,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3831056634285369145}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!65 &8163585774508044491
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1133495986138066375}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 5, y: 3, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1363388798086035096
 GameObject:
   m_ObjectHideFlags: 0
