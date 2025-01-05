@@ -17,6 +17,10 @@ public class PlayerInputHandler : MonoBehaviour
 
     // References
     [SerializeField] private Transform cameraTransform;
+
+    // Sound FX
+    [Header("Sound Effects")]
+    public AudioClip jumpSound;
     
     private InputActions controls;
     private Vector2 moveInput;
@@ -32,6 +36,7 @@ public class PlayerInputHandler : MonoBehaviour
     private CharacterController characterController;
     private Animator animator;
 
+    [Header("UI Elements")]
     // Inventory UI reference
     public GameObject inventoryPanel;
     private bool isInventoryOpen = false; // Make inventory UI not visible at launch
@@ -152,6 +157,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (isGrounded)
         {
+            SoundFXManager.instance.playSoundFXClip(jumpSound, transform, 1f);
             verticalVelocity = jumpForce;
             isGrounded = false;
         }

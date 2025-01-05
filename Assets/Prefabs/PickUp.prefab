@@ -155,3 +155,4 @@ MonoBehaviour:
   heightRotation: 0.25
   heightRotationSpeed: 1.5
   interactTextPrefab: {fileID: 0}
+  pickUpSound: {fileID: 8300000, guid: 7fcdffef51c6842dbaf87b9f83e394fa, type: 3}

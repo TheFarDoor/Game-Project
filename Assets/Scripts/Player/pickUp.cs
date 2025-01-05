@@ -18,6 +18,8 @@ public class pickUp : MonoBehaviour
     public GameObject interactTextPrefab;
     private GameObject interactTextInstance;
 
+    [SerializeField] public AudioClip pickUpSound;
+
     private InputActions inputActions;
 
     void Start()
@@ -83,6 +85,7 @@ public class pickUp : MonoBehaviour
             if (!playerDeck.collectionList.Contains(card))
             {
                 playerDeck.deckList.Add(card);
+                SoundFXManager.instance.playSoundFXClip(pickUpSound, transform, 1f);
                 Debug.Log("Card added to user collection: " + card.name);
             }
             else
