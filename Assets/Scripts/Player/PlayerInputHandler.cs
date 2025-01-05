@@ -210,7 +210,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         isPaused = !isPaused;
         pausePanel.SetActive(isPaused);
-
+        
         if (isPaused)
         {
             UnlockCursor();

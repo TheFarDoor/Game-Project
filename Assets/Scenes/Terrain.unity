@@ -2173,8 +2173,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1417178429}
   m_HandleRect: {fileID: 1417178428}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.49999997
+  m_Value: 1
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4722,7 +4722,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 530634828}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.5
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4848,7 +4848,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1832546794}
+      - m_Target: {fileID: 1832546800}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: backToMenu
         m_Mode: 1
@@ -5931,7 +5931,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3955390170709009430, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1832546794}
+      addedObject: {fileID: 1832546800}
   m_SourcePrefab: {fileID: 100100000, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
 --- !u!4 &1613835541 stripped
 Transform:
@@ -6810,7 +6810,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3955390170709009430, guid: 4fed688317136e846b9abee655c1c4b7, type: 3}
   m_PrefabInstance: {fileID: 1610797468}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1832546794
+--- !u!114 &1832546800
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7170,7 +7170,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1832546794}
+      - m_Target: {fileID: 1832546800}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: quitGame
         m_Mode: 1
