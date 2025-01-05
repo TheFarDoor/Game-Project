@@ -10,7 +10,7 @@ public class PauseMenu : MonoBehaviour
 {
     [Header("UI References")]
     public GameObject pauseMenu;
-    public static bool isPaused;
+    public static bool isPaused = false; // Make Paused menu not show up at first
 
     private InputActions controls;
 
@@ -50,15 +50,29 @@ public class PauseMenu : MonoBehaviour
 
     public void pauseGame()
     {
+        isPaused = true;
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
-        isPaused = true;
     }
 
     public void resumeGame()
     {
+        isPaused = false;
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
+    }
+
+    public void backToMenu()
+    {
         isPaused = false;
+        Time.timeScale = 1f;
+        pauseMenu.SetActive(false);
+        Destroy(gameObject);
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void quitGame()
+    {
+        Application.Quit();
     }
 }
