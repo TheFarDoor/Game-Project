@@ -1,8 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
-
 
 public class NPCInteraction : MonoBehaviour
 {
@@ -16,45 +14,49 @@ public class NPCInteraction : MonoBehaviour
     private Animator animator;           // Reference to the NPC's Animator
     private int messageIndex = 0;        // Keeps track of the current message index
     private bool isDialogueActive = false; // Checks if dialogue is currently active
+    private InputActions inputActions;   // Reference to the InputActions
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+
+        // Initialize InputActions
+        inputActions = new InputActions();
+
+        // Bind the Interaction action
+        inputActions.Player.Interaction.performed += OnInteract;
     }
 
-
-    private void Update()
+    private void OnEnable()
     {
-        // Check the distance between the player and the NPC
-        float distance = Vector3.Distance(transform.position, player.position);
+        inputActions.Player.Enable();
+    }
 
+    private void OnDisable()
+    {
+        inputActions.Player.Disable();
+    }
+
+    private void OnInteract(InputAction.CallbackContext context)
+    {
+        // Check if the player is within range of the NPC
+        float distance = Vector3.Distance(transform.position, player.position);
         if (distance <= interactionRange)
         {
-            // Check for interaction input
-            if (Input.GetKeyDown(KeyCode.E))
+            // Trigger the animation each time the interaction input is performed
+            if (animator != null)
             {
-                // Trigger the animation each time E is pressed
-                if (animator != null)
-                {
-                    animator.SetTrigger("Talk"); // Trigger the "Talk" animation
-                }
-
-                if (!isDialogueActive)
-                {
-                    StartDialogue();
-                }
-                else
-                {
-                    NextMessage();
-                }
+                animator.SetTrigger("Talk");
             }
-        }
-        else
-        {
-            // End dialogue if the player moves out of range
-            if (isDialogueActive)
+
+            // Handle dialogue logic
+            if (!isDialogueActive)
             {
-                EndDialogue();
+                StartDialogue();
+            }
+            else
+            {
+                NextMessage();
             }
         }
     }
