@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
     [Header("Enemy AI"), Space(10)]
     [Range(0, 2.0f)]public float enemySearchDelay = 0.2f;
 
+
     private void Awake(){ // ensuring there is only one gameobjects with the gamemanager script at any given time
         if (Instance == null){
             Instance = this;
@@ -37,7 +39,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void Start(){
-        inventoryUI = GameObject.Find("/Canvas-Cam/InventoryUI");
+        inventoryUI = GameObject.Find("/Canvas-Cam/").transform.GetChild(2).gameObject;
         worldUI = GameObject.Find("/Canvas-Cam/NormalUI");
         battleUI = GameObject.Find("/Canvas-Cam/BattleUI");
         pauseUI = GameObject.Find("/Canvas-Cam/PauseMenuUI");

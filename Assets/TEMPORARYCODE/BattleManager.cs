@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.InputSystem;
 
 public class BattleManager : MonoBehaviour
 {
@@ -31,8 +32,8 @@ public class BattleManager : MonoBehaviour
     public BattleState currentBattleState; // tracks current battle state
 
     [Header("Player + Enemy Ref"), Space(20)] // reference to player and enemy
-    GameObject A;
-    GameObject B;
+    public GameObject A;
+    public GameObject B;
 
     [Header("Turn Tracking"), Space(20)]
     public Turn currentTurn; // tracks whos turn it is
@@ -119,6 +120,14 @@ public class BattleManager : MonoBehaviour
     public Dictionary<string, Tuple<bool, Card, bool>> InformationSlots = new Dictionary<string, Tuple<bool, Card, bool>>(); // tuple (occupied, Card, can attack)
 
 
+    [Header("PlayerInput"), Space(10)]
+    public PlayerInput controls;
+
+    void OnEnable(){
+        controls.actions["Left Click"].performed += ctx => HandleLeftClick();
+        controls.actions["Right Click"].performed += ctx => HandleRightClick();
+    }
+
     // METHODS
     private void Awake(){ // ensuring there is only one gameobject with the battlemanager script at any given time
         if (Instance == null){
@@ -128,6 +137,8 @@ public class BattleManager : MonoBehaviour
         else{
             Destroy(gameObject);
         }
+
+        controls = GameObject.Find("/Player").GetComponent<PlayerInput>();
     }
 
     public void Start(){
@@ -139,11 +150,11 @@ public class BattleManager : MonoBehaviour
     void Update()
     {   
         // TESTING !!!!!! TEMP CODE !!!!!!!!!!!!
-        if(Input.GetKeyDown(KeyCode.F)){EndBattle();} 
-        if(Input.GetKeyDown(KeyCode.G)){RemoveMana(1.0f, true);} 
-        if(Input.GetKeyDown(KeyCode.R)){RemoveHealth(5.0f, true);}
-        if(Input.GetKeyDown(KeyCode.T)){ManaRegen(1.0f, true);}
-        if(Input.GetKeyDown(KeyCode.Y)){SwitchTurn();}
+        // if(Input.GetKeyDown(KeyCode.F)){EndBattle();} 
+        // if(Input.GetKeyDown(KeyCode.G)){RemoveMana(1.0f, true);} 
+        // if(Input.GetKeyDown(KeyCode.R)){RemoveHealth(5.0f, true);}
+        // if(Input.GetKeyDown(KeyCode.T)){ManaRegen(1.0f, true);}
+        // if(Input.GetKeyDown(KeyCode.Y)){SwitchTurn();}
 
         // Nessasary code below
         if (currentBattleState != BattleState.Initializing){
@@ -383,23 +394,31 @@ public class BattleManager : MonoBehaviour
     }
 
     public GameObject CheckMouseClick(){ // check what is clicked when mouse is clicked
-        if(Input.GetMouseButtonDown(0)){ // left click
-            Ray ray = arenaCam.ScreenPointToRay(Input.mousePosition); // ray aimed at where mouse if pointing
-            RaycastHit hit; // store information from raycast hit
+        // if(Input.GetMouseButtonDown(0)){ // left click
+        //     Ray ray = arenaCam.ScreenPointToRay(Input.mousePosition); // ray aimed at where mouse if pointing
+        //     RaycastHit hit; // store information from raycast hit
 
-            if(Physics.Raycast(ray, out hit, Mathf.Infinity)){ // If the raycase with infinite range hits something
-                return hit.collider.gameObject; // return the tag and gameobject of the thing that is hit by the ray
-            }
+        //     if(Physics.Raycast(ray, out hit, Mathf.Infinity)){ // If the raycase with infinite range hits something
+        //         return hit.collider.gameObject; // return the tag and gameobject of the thing that is hit by the ray
+        //     }
 
-            return null; // return null is nothing is hit  
-        }
-        else if(Input.GetMouseButtonDown(1)){ // if right click then deselect card and/or monster
-            UpdateSelectedCardAndMonster(null, null);
-            SetBattleState(BattleState.Idle); // update current battle state as nothing is selected
-            return  null; // return null as the right click was to deselect card and/or monster
-        }
+        //     return null; // return null is nothing is hit  
+        // }
+        // else if(Input.GetMouseButtonDown(1)){ // if right click then deselect card and/or monster
+        //     UpdateSelectedCardAndMonster(null, null);
+        //     SetBattleState(BattleState.Idle); // update current battle state as nothing is selected
+        //     return  null; // return null as the right click was to deselect card and/or monster
+        // }
 
         return null; // return null if not mouse click
+    }
+
+    public void HandleLeftClick(){
+       Debug.Log("LeftClicked");
+    }
+
+    public void HandleRightClick(){
+        Debug.Log("Right clicked");
     }
 
     public void UpdateSelectedCardAndMonster(CardUI clickedCard, GameObject clickedMonster){
@@ -479,10 +498,10 @@ public class BattleManager : MonoBehaviour
 
         Arena = B.GetComponent<Enemy>().assignedArena; // get arena assigned to enemy
         arenaCam = Arena.transform.Find("Cam").GetComponent<Camera>(); // get arena camera
-        Arena_A_Position = Arena.transform.Find("PlayerPos"); // get arena position for player
-        Arena_B_Position = Arena.transform.Find("EnemyPos"); // get arena position for enemy
-        Arena_A_CardSlots = Arena.transform.Find("Zones/PZone"); // player placeable card zones
-        Arena_B_CardSlots = Arena.transform.Find("Zones/EZone"); // enemy placeable card zones
+        Arena_A_Position = Arena.transform.Find("A Position"); // get arena position for player
+        Arena_B_Position = Arena.transform.Find("B Position"); // get arena position for enemy
+        Arena_A_CardSlots = Arena.transform.Find("Zones/A Zone"); // player placeable card zones
+        Arena_B_CardSlots = Arena.transform.Find("Zones/B Zone"); // enemy placeable card zones
 
         
         previous_A_Position = A.transform.position; // save player position prior to battle
@@ -490,9 +509,12 @@ public class BattleManager : MonoBehaviour
         previous_B_Position = B.transform.position; // save enemy position prior to battle
         previous_B_Rotation = B.transform.rotation; // save enemy rotation prior to battle
 
+        A.GetComponent<PlayerInputHandler>().enabled = false;
+
         // Stop player movement and move the player + enemy to the arena
-        A.GetComponent<PlayerMovement>().enabled = false; // turn off player movement script to stop movement
+        A.GetComponent<CharacterController>().enabled = false;
         A.transform.SetPositionAndRotation(Arena_A_Position.position, Arena_A_Position.rotation);
+        A.GetComponent<CharacterController>().enabled = true;
         B.transform.SetPositionAndRotation(Arena_B_Position.position, Arena_B_Position.rotation);
 
         // Initialize HP and Mana
@@ -543,7 +565,6 @@ public class BattleManager : MonoBehaviour
         A.transform.SetPositionAndRotation(previous_A_Position, previous_A_Rotation);
         A.GetComponent<CharacterController>().enabled = true;
         B.transform.SetPositionAndRotation(previous_B_Position, previous_B_Rotation);
-        A.GetComponent<PlayerMovement>().enabled = true; // enable player movement
 
         GameManager.Instance.SetState(GameManager.GameState.Exploring);
 
@@ -604,7 +625,7 @@ public class BattleManager : MonoBehaviour
 
         switch(forPlayer){
             case true:
-                slotsHolder = slotsHolder.Find("PZone");
+                slotsHolder = slotsHolder.Find("A Zone");
                 foreach(Transform slot in slotsHolder){
                     MonsterStatus monstStat = slot.GetComponent<MonsterStatus>();
                     if(slot.childCount == 3 && monstStat.canAttack == false){
@@ -614,7 +635,7 @@ public class BattleManager : MonoBehaviour
                 return;
 
             case false:
-                slotsHolder = slotsHolder.Find("EZone");
+                slotsHolder = slotsHolder.Find("B Zone");
                 foreach(Transform slot in slotsHolder){
                     MonsterStatus monstStat = slot.GetComponent<MonsterStatus>();
                     if(slot.childCount == 3 && monstStat.canAttack == false){
@@ -652,37 +673,6 @@ public class BattleManager : MonoBehaviour
 
     // ENEMY BATTLE code
     public IEnumerator EnemyBattleLogic(){
-
-        Transform eZone = Arena.transform.Find("Zones/EZone");
-
-        bool slotsFull = true;
-        foreach (Transform slot in eZone){
-            if(slot.childCount == 2){
-                slotsFull = false;
-                break;
-            }
-        }
-
-        if(slotsFull) yield break; // if slots are fulls
-
-        float timer = 0;
-        int cardIndex = 0;
-        while(cardIndex < B_Hand.Count){
-            if(timer > 20){break;}
-            Card card = B_Hand[cardIndex];
-            bool placedCard = false;
-            foreach (Transform slot in eZone){
-                if(slot.childCount == 2){
-                    if(PlaceOrUseCard(card, slot, false)){
-                        placedCard = true;
-                    }
-                    break;
-                }
-            }
-            
-            cardIndex = (placedCard? 0: cardIndex++);
-            timer ++;
-        }
 
         yield return new WaitForSeconds(3f);
         Debug.Log("EndingTurn");

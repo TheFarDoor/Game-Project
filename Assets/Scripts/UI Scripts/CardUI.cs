@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
-using System;
+using UnityEngine.InputSystem;
 
 public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -114,9 +114,9 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public void OnDrag(PointerEventData eventData)
     {
         if (BattleManager.Instance.currentTurn == BattleManager.Turn.A){
-            this.transform.position = Input.mousePosition;
+            this.transform.position = Mouse.current.position.ReadValue();
 
-            Ray ray = BattleManager.Instance.Arena.transform.Find("Cam").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition); // ray aimed at where mouse if pointing
+            Ray ray = BattleManager.Instance.Arena.transform.Find("Cam").GetComponent<Camera>().ScreenPointToRay(new Vector3(0,0)); // ray aimed at where mouse if pointing
             Physics.Raycast(ray, out hit); // Cast ray
 
             int lm_arena = 1 << LayerMask.NameToLayer("Arena_Interact"); // get layermask of specific layer
@@ -148,7 +148,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
                 }
             }
 
-            this.transform.position = Input.mousePosition;
+            this.transform.position = Mouse.current.position.ReadValue();
             snapTo = Vector3.zero;
         }
     }
