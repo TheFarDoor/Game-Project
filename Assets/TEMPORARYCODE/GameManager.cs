@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
         MainMenu,
         Exploring,
         Inventory,
+        Paused,
         InBattle,
         GameOver,
     }
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
     public GameObject inventoryUI;
     public GameObject worldUI;
     public GameObject battleUI;
+    public GameObject pauseUI;
 
     [Header("Enemy AI"), Space(10)]
     [Range(0, 2.0f)]public float enemySearchDelay = 0.2f;
@@ -35,9 +37,10 @@ public class GameManager : MonoBehaviour
     }
 
     public void Start(){
-        inventoryUI = GameObject.Find("/Canvas-Cam/IHolder");
+        inventoryUI = GameObject.Find("/Canvas-Cam/InventoryUI");
         worldUI = GameObject.Find("/Canvas-Cam/NormalUI");
         battleUI = GameObject.Find("/Canvas-Cam/BattleUI");
+        pauseUI = GameObject.Find("/Canvas-Cam/PauseMenuUI");
 
         SetState(GameState.Exploring);
     }
@@ -55,6 +58,7 @@ public class GameManager : MonoBehaviour
                 worldUI.SetActive(true);
                 battleUI.SetActive(false);
                 inventoryUI.SetActive(false);
+                pauseUI.SetActive(false);
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 break;
@@ -62,6 +66,7 @@ public class GameManager : MonoBehaviour
                 worldUI.SetActive(false);
                 battleUI.SetActive(true);
                 inventoryUI.SetActive(false);
+                pauseUI.SetActive(false);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 break;
@@ -69,11 +74,23 @@ public class GameManager : MonoBehaviour
                 worldUI.SetActive(false);
                 battleUI.SetActive(false);
                 inventoryUI.SetActive(false);
+                pauseUI.SetActive(false);
                 break;
             case GameState.Inventory:
                 worldUI.SetActive(false);
                 battleUI.SetActive(false);
                 inventoryUI.SetActive(true);
+                pauseUI.SetActive(false);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+            case GameState.Paused:
+                worldUI.SetActive(false);
+                battleUI.SetActive(false);
+                inventoryUI.SetActive(false);
+                pauseUI.SetActive(true);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 break;
         }
     }
