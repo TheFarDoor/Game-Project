@@ -214,6 +214,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "InBattle",
+            "id": "4167f095-b878-4ddd-8622-d2e22a3489d2",
+            "actions": [
+                {
+                    "name": "Left Click",
+                    "type": "Button",
+                    "id": "f70a2a38-7edb-4c3f-9316-56186abfbc23",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Right Click",
+                    "type": "Button",
+                    "id": "d4fc2616-6a7b-447c-95fd-a4a520528902",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8d6b4637-6569-441b-818f-157613062712",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b6c44adf-c1ab-4245-894d-4fe377a91150",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
