@@ -10,6 +10,7 @@ public class PauseMenu : MonoBehaviour
 {
     [Header("UI References")]
     public GameObject pauseMenu;
+    public GameObject settingsMenu;
     public static bool isPaused = false; // Make Paused menu not show up at first
 
     private InputActions controls;
@@ -34,6 +35,7 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         pauseMenu.SetActive(false);
+        settingsMenu.SetActive(false);
     }
 
     private void OnTogglePause(InputAction.CallbackContext context)
@@ -59,6 +61,7 @@ public class PauseMenu : MonoBehaviour
     {
         isPaused = false;
         pauseMenu.SetActive(false);
+        settingsMenu.SetActive(false);
         Time.timeScale = 1f;
     }
 
