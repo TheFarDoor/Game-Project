@@ -236,6 +236,54 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""InBattle"",
+            ""id"": ""4167f095-b878-4ddd-8622-d2e22a3489d2"",
+            ""actions"": [
+                {
+                    ""name"": ""Left Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""f70a2a38-7edb-4c3f-9316-56186abfbc23"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""d4fc2616-6a7b-447c-95fd-a4a520528902"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""8d6b4637-6569-441b-818f-157613062712"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6c44adf-c1ab-4245-894d-4fe377a91150"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -249,6 +297,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player_Interaction = m_Player.FindAction("Interaction", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        // InBattle
+        m_InBattle = asset.FindActionMap("InBattle", throwIfNotFound: true);
+        m_InBattle_LeftClick = m_InBattle.FindAction("Left Click", throwIfNotFound: true);
+        m_InBattle_RightClick = m_InBattle.FindAction("Right Click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -400,6 +452,60 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // InBattle
+    private readonly InputActionMap m_InBattle;
+    private List<IInBattleActions> m_InBattleActionsCallbackInterfaces = new List<IInBattleActions>();
+    private readonly InputAction m_InBattle_LeftClick;
+    private readonly InputAction m_InBattle_RightClick;
+    public struct InBattleActions
+    {
+        private @InputActions m_Wrapper;
+        public InBattleActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @LeftClick => m_Wrapper.m_InBattle_LeftClick;
+        public InputAction @RightClick => m_Wrapper.m_InBattle_RightClick;
+        public InputActionMap Get() { return m_Wrapper.m_InBattle; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InBattleActions set) { return set.Get(); }
+        public void AddCallbacks(IInBattleActions instance)
+        {
+            if (instance == null || m_Wrapper.m_InBattleActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_InBattleActionsCallbackInterfaces.Add(instance);
+            @LeftClick.started += instance.OnLeftClick;
+            @LeftClick.performed += instance.OnLeftClick;
+            @LeftClick.canceled += instance.OnLeftClick;
+            @RightClick.started += instance.OnRightClick;
+            @RightClick.performed += instance.OnRightClick;
+            @RightClick.canceled += instance.OnRightClick;
+        }
+
+        private void UnregisterCallbacks(IInBattleActions instance)
+        {
+            @LeftClick.started -= instance.OnLeftClick;
+            @LeftClick.performed -= instance.OnLeftClick;
+            @LeftClick.canceled -= instance.OnLeftClick;
+            @RightClick.started -= instance.OnRightClick;
+            @RightClick.performed -= instance.OnRightClick;
+            @RightClick.canceled -= instance.OnRightClick;
+        }
+
+        public void RemoveCallbacks(IInBattleActions instance)
+        {
+            if (m_Wrapper.m_InBattleActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IInBattleActions instance)
+        {
+            foreach (var item in m_Wrapper.m_InBattleActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_InBattleActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public InBattleActions @InBattle => new InBattleActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -409,5 +515,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnInteraction(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+    }
+    public interface IInBattleActions
+    {
+        void OnLeftClick(InputAction.CallbackContext context);
+        void OnRightClick(InputAction.CallbackContext context);
     }
 }
