@@ -521,7 +521,9 @@ public class BattleManager : MonoBehaviour
         previous_B_Rotation = B.transform.rotation; // save enemy rotation prior to battle
 
         // Stop player movement and move the player + enemy to the arena
+        A.GetComponent<CharacterController>().enabled = false;
         A.transform.SetPositionAndRotation(Arena_A_Position.position, Arena_A_Position.rotation);
+        A.GetComponent<CharacterController>().enabled = true;
         B.transform.SetPositionAndRotation(Arena_B_Position.position, Arena_B_Position.rotation);
 
         // Initialize HP and Mana
