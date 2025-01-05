@@ -36,6 +36,10 @@ public class PlayerInputHandler : MonoBehaviour
     public GameObject inventoryPanel;
     private bool isInventoryOpen = false; // Make inventory UI not visible at launch
 
+    // PauseMenu UI reference
+    public GameObject pausePanel;
+    private bool isPaused = false; // Make the game not paused at launch
+
     private void Awake()
     {
         InitializeInputActions();
@@ -53,19 +57,22 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Update()
     {
-        if (!isInventoryOpen)
+        if (!isPaused)
         {
-            CheckSlope();
-            if (slopeAngle > characterController.slopeLimit && isGrounded)
+            if (!isInventoryOpen)
             {
-                HandleSliding();
+                CheckSlope();
+                if (slopeAngle > characterController.slopeLimit && isGrounded)
+                {
+                    HandleSliding();
+                }
+                else
+                {
+                    HandleMovement();
+                }
+                RotatePlayer();
+                ApplyJump();
             }
-            else
-            {
-                HandleMovement();
-            }
-            RotatePlayer();
-            ApplyJump();
         }
     }
 
@@ -82,7 +89,8 @@ public class PlayerInputHandler : MonoBehaviour
         controls.Player.Run.performed += ctx => isRunning = ctx.ReadValueAsButton();
         controls.Player.Run.canceled += ctx => isRunning = false;
 
-        controls.Player.Inventory.performed += ctx => ToggleInventory();
+        controls.Player.Inventory.performed += ctx => ToggleInventory(); // Inventory
+        controls.Player.Pause.performed += ctx => TogglePause(); // Pause Menu
 
         controls.Player.Jump.performed += ctx => TriggerJump();
     }
@@ -196,5 +204,20 @@ public class PlayerInputHandler : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;  // Unlocks the cursor
         Cursor.visible = true;                   // Shows the cursor
+    }
+
+    private void TogglePause()
+    {
+        isPaused = !isPaused;
+        pausePanel.SetActive(isPaused);
+
+        if (isPaused)
+        {
+            UnlockCursor();
+        }
+        else
+        {
+            LockCursor();
+        }
     }
 }
