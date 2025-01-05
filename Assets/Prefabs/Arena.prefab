@@ -305,10 +305,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterStatText: {fileID: 5797108588742129234}
-  attack: 0
-  health: 0
-  monstName: 
-  canAttack: 0
 --- !u!1 &1133495986138066375
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,10 +477,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterStatText: {fileID: 101681776508818158}
-  attack: 0
-  health: 0
-  monstName: 
-  canAttack: 0
 --- !u!1 &1768643845998803526
 GameObject:
   m_ObjectHideFlags: 0
@@ -1011,10 +1003,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterStatText: {fileID: 1367232284837776377}
-  attack: 0
-  health: 0
-  monstName: 
-  canAttack: 0
 --- !u!1 &3762378694222051054
 GameObject:
   m_ObjectHideFlags: 0
@@ -1770,10 +1758,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterStatText: {fileID: 1488834536789859907}
-  attack: 0
-  health: 0
-  monstName: 
-  canAttack: 0
 --- !u!1 &5887357440370218916
 GameObject:
   m_ObjectHideFlags: 0
@@ -1995,10 +1979,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterStatText: {fileID: 2009261176946518967}
-  attack: 0
-  health: 0
-  monstName: 
-  canAttack: 0
 --- !u!1 &6861885771078513983
 GameObject:
   m_ObjectHideFlags: 0
@@ -2446,10 +2426,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterStatText: {fileID: 2908774878855710647}
-  attack: 0
-  health: 0
-  monstName: 
-  canAttack: 0
 --- !u!1 &8900116186448414385
 GameObject:
   m_ObjectHideFlags: 0
@@ -2533,7 +2509,6 @@ GameObject:
   - component: {fileID: 8876988617272572352}
   - component: {fileID: 5270282178307470274}
   - component: {fileID: 2370905870689428022}
-  - component: {fileID: 4971699551832221257}
   m_Layer: 0
   m_Name: Cam
   m_TagString: Untagged
@@ -2615,15 +2590,3 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8964512163698871178}
   m_Enabled: 1
---- !u!114 &4971699551832221257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8964512163698871178}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fdc83e565ce28e46a9dafefa348deae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
