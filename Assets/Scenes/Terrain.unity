@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028292, g: 0.22571306, b: 0.30692118, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571336, b: 0.3069219, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6299,8 +6299,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30104e43981d54570abddc60e910e4f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treePrefab: {fileID: 191266, guid: c44bd9bdc114d4a60932c0087d9d1732, type: 3}
-  treeCount: 320
+  treePrefab: {fileID: 2275399831387296705, guid: 80134143588e09c4892e00879262fce3, type: 3}
+  treeCount: 250
   radius: 100
   offset: {x: 0, y: 0, z: 0}
   minDistanceBetweenTrees: 0.5
