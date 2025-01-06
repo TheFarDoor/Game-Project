@@ -5,6 +5,9 @@ Welcome to Elemental Clash!!!
 Controls:
 
 WASD for Movement
+
 Left Click to interact with cards
+
 B for Inventory
+
 P for Pause Menu
