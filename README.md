@@ -1,4 +1,4 @@
-Navigate to https://peanutsproduction.github.io/Game-Prototype/ for WebGL build of game.
+Navigate to https://peanutsproduction.itch.io/elemental-clash for itch.io build of game.
 
 Welcome to Elemental Clash!!!
 
