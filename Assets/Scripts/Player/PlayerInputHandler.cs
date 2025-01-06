@@ -26,6 +26,7 @@ public class PlayerInputHandler : MonoBehaviour
     private Vector2 moveInput;
     private Vector2 lookInput;
     private bool isRunning;
+    private bool isJumping;
     private bool isGrounded = true;
     private float verticalVelocity = 0f; // up/down movement speed
     private float pitch = 0f;
@@ -97,7 +98,8 @@ public class PlayerInputHandler : MonoBehaviour
         controls.Player.Inventory.performed += ctx => ToggleInventory(); // Inventory
         controls.Player.Pause.performed += ctx => TogglePause(); // Pause Menu
 
-        controls.Player.Jump.performed += ctx => TriggerJump();
+        controls.Player.Jump.performed += ctx => isJumping = ctx.ReadValueAsButton();
+        controls.Player.Run.canceled += ctx => isJumping = false;
     }
 
     private void HandleMovement()
@@ -120,6 +122,9 @@ public class PlayerInputHandler : MonoBehaviour
         if (isGrounded && verticalVelocity < 0)
         {
             verticalVelocity = -0.1f;
+
+            // Set the isJumping parameter to false when landing
+            animator.SetBool("isJumping", false);
         }
     }
 
@@ -150,6 +155,9 @@ public class PlayerInputHandler : MonoBehaviour
         {
             verticalVelocity = jumpForce;
             isGrounded = false;
+
+            // Set the isJumping parameter to true
+            animator.SetBool("isJumping", true);
         }
     }
 
@@ -157,9 +165,13 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (isGrounded)
         {
-            SoundFXManager.instance.playSoundFXClip(jumpSound, transform, 1f);
             verticalVelocity = jumpForce;
             isGrounded = false;
+
+            // Set the isJumping parameter to true
+            animator.SetBool("isJumping", true);
+
+            SoundFXManager.instance.playSoundFXClip(jumpSound, transform, 1f);
         }
     }
 
