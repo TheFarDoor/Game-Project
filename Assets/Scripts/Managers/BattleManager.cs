@@ -10,6 +10,7 @@ using System.IO.Compression;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using System.Collections.Specialized;
+using UnityEngine.AI;
 
 public class BattleManager : MonoBehaviour
 {
@@ -501,6 +502,9 @@ public class BattleManager : MonoBehaviour
         previous_B_Rotation = B.transform.rotation; // save enemy rotation prior to battle
 
         A.GetComponent<PlayerInputHandler>().enabled = false;
+        B.GetComponent<NavMeshAgent>().ResetPath();
+        B.GetComponent<EnemyMovement>().enabled = false;
+
 
         // Stop player movement and move the player + enemy to the arena
         A.GetComponent<CharacterController>().enabled = false;
@@ -573,6 +577,7 @@ public class BattleManager : MonoBehaviour
         Cursor.visible = false;
         
         A.GetComponent<PlayerInputHandler>().enabled = true;
+        B.GetComponent<EnemyMovement>().enabled = true;
 
         // Reset References (these cant be set to null)
         previous_A_Position = Vector3.zero;

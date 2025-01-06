@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem.Switch;
 
 public class EnemyMovement : MonoBehaviour
@@ -18,6 +19,8 @@ public class EnemyMovement : MonoBehaviour
         Patrolling
     }
 
+    public State defaultState;
+    [Space(40)]
     public State currentState;
     public PatrolType pt;
 
@@ -28,32 +31,56 @@ public class EnemyMovement : MonoBehaviour
 
     [Header("Patrol Variables"), Space(20)]
     public Vector3 patrolA;
-    public Vector3 partrolB;
+    public Vector3 patrolB;
     public Vector3 patorlArea;
 
     [Header("FOV Settings"), Space(10)]
-    [Range(1, 10)] public float viewRadius = 5; // How far the enemy can see (default is 5)
+    [Range(1, 15)] public float viewRadius = 5; // How far the enemy can see (default is 5)
     [Range(10,160)] public float viewAngle = 40; // How wide the enemy can see (default is 40)
     public LayerMask playerMask; // LayerMask of player
     public LayerMask obstacleMask; // LayerMask for obstacles such as walls
 
+    [Space(10)]
+    public NavMeshAgent agent;
+    public Transform playerPos;
+
+
 
     public void Start(){
+        agent = this.GetComponent<NavMeshAgent>();
+        viewRadius = this.GetComponent<Enemy>().viewRadius * 1.8f;
+        viewAngle = this.GetComponent<Enemy>().viewAngle * 1.25f;
 
+        patrolA = transform.position + patrolA;
+        patrolB = transform.position + patrolB;
     }
 
     public void Update(){
-        switch(currentState){
-            case State.Idle:
-                break;
+        if(!this.GetComponent<Enemy>().inBattle){
+            playerPos = CheckForPlayer();
+            Debug.Log(playerPos);
+            if(playerPos != null){
+                currentState = State.Chasing;
+            }
+            else{
+                currentState = defaultState;
+            }
 
-            case State.Chasing:
-                ChasePlayer();
-                break;
+            switch(currentState){ // handle movement based on state
+                case State.Idle:
+                    break;
 
-            case State.Patrolling:
-                Patrol();
-                break;
+                case State.Chasing:
+                    ChasePlayer();
+                    break;
+
+                case State.Patrolling:
+                    Patrol();
+                    break;
+            }
+        }
+        else{
+            agent.ResetPath();
         }
     }
 
@@ -64,6 +91,7 @@ public class EnemyMovement : MonoBehaviour
                 break;
 
             case PatrolType.MoveAtoB:
+                MoveBetweenPoints();
                 break;
 
             case PatrolType.RandomRoam:
@@ -72,11 +100,24 @@ public class EnemyMovement : MonoBehaviour
     }
 
     public void ChasePlayer(){
-
+        agent.SetDestination(playerPos.position);
     }
 
-    public void LookAround(){
+    public void MoveBetweenPoints(){
+        if(Vector3.Distance(this.transform.position, patrolA) <= 0.5f){
+            agent.SetDestination(patrolB);
+        }
+        else if(Vector3.Distance(this.transform.position, patrolB) <= 0.5f){
+            agent.SetDestination(patrolA);
+        }
 
+        if(!agent.hasPath){
+            agent.SetDestination(patrolA);
+        }
+    }
+
+    public void LookAround(){ // just stand still
+        return;
     }
 
     private Transform CheckForPlayer(){
@@ -94,5 +135,17 @@ public class EnemyMovement : MonoBehaviour
             }
         }
         return null;
+    }
+
+    void OnDrawGizmos(){
+        Gizmos.color = Color.magenta;
+
+        Gizmos.DrawWireSphere(transform.position + patrolA, 1f);
+        Gizmos.DrawWireSphere(transform.position + patrolB, 1f);
+
+        Gizmos.DrawWireSphere(transform.position, viewRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + ((Quaternion.AngleAxis((viewAngle/2), transform.up) * transform.forward).normalized * viewRadius));
+        Gizmos.DrawLine(transform.position, transform.position + ((Quaternion.AngleAxis(-(viewAngle/2), transform.up) * transform.forward).normalized * viewRadius));
     }
 }

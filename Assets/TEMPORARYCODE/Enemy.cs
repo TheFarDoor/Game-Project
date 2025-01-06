@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
 
     [Header("Status"), Space(10)]
     public bool hasBeenDefeated = false; // boolean to track if player has beaten this enemy
+    public bool inBattle = false;
     public bool hasSeenPlayer = false; // track if player is seen
 
     [Header("Arena"), Space(10)]
@@ -36,6 +37,7 @@ public class Enemy : MonoBehaviour
             Transform playerTransform = CheckForPlayer();
             if(playerTransform != false){
                 hasSeenPlayer = true;
+                inBattle = true;
                 StartCoroutine(BattleManager.Instance.InitializeBattle(playerTransform, this.transform));
             }
         }
