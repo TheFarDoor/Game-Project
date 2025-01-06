@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   type: 2
-  cardName: 
+  cardName: Air Chicken
   description: 
   damage: 0
   health: 0
   cost: 0
-  model: {fileID: 0}
+  model: {fileID: 2494850767507529258, guid: 62f07f30f63319f4282314b2f4c38034, type: 3}
