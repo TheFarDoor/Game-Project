@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem.Switch;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -22,7 +21,7 @@ public class EnemyMovement : MonoBehaviour
     public State defaultState;
     [Space(40)]
     public State currentState;
-    public PatrolType pt;
+    public PatrolType patrolType;
 
     [Header("Move Stats"), Space(20)]
     public float chaseSpeed;
@@ -32,7 +31,10 @@ public class EnemyMovement : MonoBehaviour
     [Header("Patrol Variables"), Space(20)]
     public Vector3 patrolA;
     public Vector3 patrolB;
+    public Vector3 original_IdleArea;
+    public Vector3 rpp_Point;
     public Vector3 patorlArea;
+    public float pat_radius;
 
     [Header("FOV Settings"), Space(10)]
     [Range(1, 15)] public float viewRadius = 5; // How far the enemy can see (default is 5)
@@ -43,6 +45,7 @@ public class EnemyMovement : MonoBehaviour
     [Space(10)]
     public NavMeshAgent agent;
     public Transform playerPos;
+    public LayerMask terrainMask;
 
 
 
@@ -53,12 +56,14 @@ public class EnemyMovement : MonoBehaviour
 
         patrolA = transform.position + patrolA;
         patrolB = transform.position + patrolB;
+
+        original_IdleArea = this.transform.position;
     }
 
     public void Update(){
-        if(!this.GetComponent<Enemy>().inBattle){
+        if(agent.enabled == false){Debug.Log("Not allowed"); return;}
+        if(this.GetComponent<Enemy>() && !this.GetComponent<Enemy>().inBattle){
             playerPos = CheckForPlayer();
-            Debug.Log(playerPos);
             if(playerPos != null){
                 currentState = State.Chasing;
             }
@@ -80,12 +85,16 @@ public class EnemyMovement : MonoBehaviour
             }
         }
         else{
+            if(Vector3.Distance(transform.position, original_IdleArea) >= 0.5f){
+                agent.SetDestination(original_IdleArea);
+                return;
+            }
             agent.ResetPath();
         }
     }
 
     public void Patrol(){
-        switch(pt){
+        switch(patrolType){
             case PatrolType.LookAround:
                 LookAround();
                 break;
@@ -95,12 +104,28 @@ public class EnemyMovement : MonoBehaviour
                 break;
 
             case PatrolType.RandomRoam:
+                RandomPatrolPoints();
                 break;
         }
     }
 
     public void ChasePlayer(){
         agent.SetDestination(playerPos.position);
+    }
+
+    public void RandomPatrolPoints(){
+        if(rpp_Point != null){
+            agent.SetDestination(rpp_Point);
+        }
+        else{
+            Vector2 randPoint = Random.insideUnitCircle * patorlArea;
+            Vector3 randPos = new Vector3(randPoint.x + patorlArea.x, patorlArea.y + 100f, randPoint.y + patorlArea.z);
+
+            Ray ray = new Ray(randPos, Vector3.down);
+            if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, terrainMask)){
+                rpp_Point = hit.point;
+            }
+        }
     }
 
     public void MoveBetweenPoints(){
@@ -142,6 +167,8 @@ public class EnemyMovement : MonoBehaviour
 
         Gizmos.DrawWireSphere(transform.position + patrolA, 1f);
         Gizmos.DrawWireSphere(transform.position + patrolB, 1f);
+
+        Gizmos.DrawWireSphere(transform.position + patorlArea, pat_radius);
 
         Gizmos.DrawWireSphere(transform.position, viewRadius);
         Gizmos.color = Color.red;

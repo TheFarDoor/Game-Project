@@ -84,6 +84,8 @@ public class BattleManager : MonoBehaviour
     public TextMeshProUGUI healthText;
     public Slider manaBar;
     public TextMeshProUGUI manaText;
+    public Slider oppHealthSlider;
+    public TextMeshProUGUI oppmanaText;
     [Space(8)]
     public float A_maxHp; // max player Health
     public float A_Health; // current player health
@@ -151,17 +153,6 @@ public class BattleManager : MonoBehaviour
     public void Start(){
         mainCam = GameObject.Find("/Player/Main Camera").GetComponent<Camera>();
         SetBattleState(BattleState.NoBattleOngoing);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {   
-        // TESTING !!!!!! TEMP CODE !!!!!!!!!!!!
-        // if(Input.GetKeyDown(KeyCode.F)){EndBattle();} 
-        // if(Input.GetKeyDown(KeyCode.G)){RemoveMana(1.0f, true);} 
-        // if(Input.GetKeyDown(KeyCode.R)){RemoveHealth(5.0f, true);}
-        // if(Input.GetKeyDown(KeyCode.T)){ManaRegen(1.0f, true);}
-        // if(Input.GetKeyDown(KeyCode.Y)){SwitchTurn();}
     }
 
     public IEnumerator AttackWithMonster(GameObject attackingMonster, GameObject enemyMonster){
@@ -287,7 +278,6 @@ public class BattleManager : MonoBehaviour
             placedCard.transform.SetParent(cardSlot.transform, worldPositionStays: true); // assign placed card to slot
 
             // update text for monster stats on arena
-            Debug.Log(cardSlot.name);
             cardSlot.GetComponent<SlotStatus>().UpdateTuple(true, cardToUse, cardToUse.Health, firstTurn? false: true);
 
             // loop through user
@@ -434,34 +424,32 @@ public class BattleManager : MonoBehaviour
         currentBattleState = newState;
     }
 
-    public void SwitchTurn(){ // switches turns
-        if(currentBattleState == BattleState.SwitchingTurn){return;}
+    public void SwitchToPlayerTurn(){
         SetBattleState(BattleState.SwitchingTurn);
         if(firstTurn){firstTurn = false;}
-        switch(currentTurn){
-            case Turn.A:
-                UpdateSelectedCardAndMonster(null, null); // deselect any select items
-                Debug.Log("Switchting to enemy Turn");
-                currentTurn = Turn.B;
-                ManaRegen(1.0f, false);
-                StartCoroutine(DrawCards(1, false));
-                ResetMonsterAttackBools(false);
-                StartCoroutine(EnemyBattleLogic());
-                CheckWin();
-                Debug.Log("Completed switch to enemy Turn");
-                break;
+        Debug.Log("Switchting to player Turn");
+        currentTurn = Turn.A;
+        ManaRegen(1.0f, true);
+        StartCoroutine(DrawCards(1, true));
+        ResetMonsterAttackBools(true);
+        CheckWin();
+        currentTurn = Turn.A;
+        SetBattleState(BattleState.Idle);
+        Debug.Log("Completed switch to player Turn");
+    }
 
-            case Turn.B:
-                Debug.Log("Switchting to player Turn");
-                currentTurn = Turn.A;
-                ManaRegen(1.0f, true);
-                StartCoroutine(DrawCards(1, true));
-                ResetMonsterAttackBools(true);
-                CheckWin();
-                SetBattleState(BattleState.Idle);
-                Debug.Log("Completed switch to player Turn");
-                break;
-        }
+    public void SwitchToEnemyTurn(){
+        SetBattleState(BattleState.SwitchingTurn);
+        if(firstTurn){firstTurn = false;}
+        UpdateSelectedCardAndMonster(null, null); // deselect any select items
+        Debug.Log("Switchting to enemy Turn");
+        ManaRegen(1.0f, false);
+        StartCoroutine(DrawCards(1, false));
+        ResetMonsterAttackBools(false);
+        StartCoroutine(EnemyBattleLogic());
+        CheckWin();
+        currentTurn = Turn.B;
+        Debug.Log("Completed switch to enemy Turn");
     }
 
     public void CheckWin(){
@@ -482,6 +470,8 @@ public class BattleManager : MonoBehaviour
         healthText = GameObject.Find("/Canvas-Cam/BattleUI/HealthHolder/Health").GetComponent<TextMeshProUGUI>();
         manaBar = GameObject.Find("/Canvas-Cam/BattleUI/ManaHolder/ManaBar").GetComponent<Slider>();
         manaText = GameObject.Find("/Canvas-Cam/BattleUI/ManaHolder/Mana").GetComponent<TextMeshProUGUI>();
+        oppHealthSlider = GameObject.Find("/Canvas-Cam/BattleUI/OppHealthHolder/HealthBar").GetComponent<Slider>();
+        oppmanaText = GameObject.Find("/Canvas-Cam/BattleUI/OppHealthHolder/Health").GetComponent<TextMeshProUGUI>();
         cardUIHolder = GameObject.Find("/Canvas-Cam/BattleUI/CardContainer").transform;
 
         // Set References
@@ -502,15 +492,17 @@ public class BattleManager : MonoBehaviour
         previous_B_Rotation = B.transform.rotation; // save enemy rotation prior to battle
 
         A.GetComponent<PlayerInputHandler>().enabled = false;
-        B.GetComponent<NavMeshAgent>().ResetPath();
-        B.GetComponent<EnemyMovement>().enabled = false;
 
 
         // Stop player movement and move the player + enemy to the arena
         A.GetComponent<CharacterController>().enabled = false;
         A.transform.SetPositionAndRotation(Arena_A_Position.position, Arena_A_Position.rotation);
         A.GetComponent<CharacterController>().enabled = true;
+
+        B.GetComponent<EnemyMovement>().enabled = false;
+        B.GetComponent<NavMeshAgent>().enabled = false;
         B.transform.SetPositionAndRotation(Arena_B_Position.position, Arena_B_Position.rotation);
+        B.GetComponent<NavMeshAgent>().enabled = true;
 
         // Initialize HP and Mana
         InitializeHealthAndMana(B.GetComponent<Enemy>().e_Starting_health, B.GetComponent<Enemy>().e_Starting_mana);
@@ -588,6 +580,14 @@ public class BattleManager : MonoBehaviour
         // Reset References
         A = B = Arena = null;
         Arena_A_Position = Arena_B_Position = null;
+
+        foreach(Transform s in Arena_A_CardSlots){
+            s.GetComponent<SlotStatus>().ClearTuple();
+        }
+
+        foreach(Transform s in Arena_B_CardSlots){
+            s.GetComponent<SlotStatus>().ClearTuple();
+        }
     }
 
     public IEnumerator DrawCards(int numToDraw, bool ForPlayer){
@@ -696,7 +696,8 @@ public class BattleManager : MonoBehaviour
                 for(int j=0; j<Arena_B_CardSlots.childCount; j++){
                     if(!InformationSlots[Arena_B_CardSlots.GetChild(j).name].Item1){
                         try{
-                        PlaceOrUseCard(B_Hand[i], Arena_B_CardSlots.GetChild(j).transform, false);
+                            PlaceOrUseCard(B_Hand[i], Arena_B_CardSlots.GetChild(j).transform, false);
+                            break;
                         }
                         catch(Exception){
                             break;
@@ -727,7 +728,7 @@ public class BattleManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
-        SwitchTurn();
+        SwitchToPlayerTurn();
         Debug.Log("EndedTurn");
     }
 
@@ -826,6 +827,11 @@ public class BattleManager : MonoBehaviour
     public void UpdateManaHealthText(){
         manaText.text =  A_Mana.ToString("F0") + " / " + A_maxMana.ToString("F0"); // update mana text
         healthText.text =  A_Health.ToString("F0") + " / " + A_maxHp.ToString("F0"); // update health text
+    }
+
+    public void UpdateOppHealthText(float newVal){
+        ResourceSliderLerp(oppHealthSlider, newVal);
+        oppmanaText.text =  B_Mana.ToString("F0") + " / " + B_maxMana.ToString("F0"); // update mana text
     }
 
     public IEnumerator ResourceSliderLerp(Slider rSlider, float newValue){
