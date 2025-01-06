@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.Collections;
+
 
 public class NPCInteraction : MonoBehaviour
 {
@@ -15,6 +17,8 @@ public class NPCInteraction : MonoBehaviour
     private int messageIndex = 0;        // Keeps track of the current message index
     private bool isDialogueActive = false; // Checks if dialogue is currently active
     private InputActions inputActions;   // Reference to the InputActions
+
+    private Coroutine distanceCheckCoroutine; // Coroutine to monitor player distance
 
     private void Awake()
     {
@@ -69,6 +73,12 @@ public class NPCInteraction : MonoBehaviour
             messageIndex = 0;
             dialogueUI.SetActive(true); // Activate the dialogue UI
             dialogueText.text = messages[messageIndex]; // Display the first message
+
+            // Start monitoring the player's distance
+            if (distanceCheckCoroutine == null)
+            {
+                distanceCheckCoroutine = StartCoroutine(CheckPlayerDistance());
+            }
         }
     }
 
@@ -90,5 +100,27 @@ public class NPCInteraction : MonoBehaviour
         isDialogueActive = false;
         dialogueUI.SetActive(false); // Hide the dialogue UI
         messageIndex = 0; // Reset the message index for the next interaction
+
+        // Stop monitoring the player's distance
+        if (distanceCheckCoroutine != null)
+        {
+            StopCoroutine(distanceCheckCoroutine);
+            distanceCheckCoroutine = null;
+        }
+    }
+
+    private IEnumerator CheckPlayerDistance()
+    {
+        while (isDialogueActive)
+        {
+            float distance = Vector3.Distance(transform.position, player.position);
+            if (distance > interactionRange)
+            {
+                Debug.Log("Player moved too far. Dialogue UI resetting.");
+                EndDialogue();
+                yield break; // Exit the coroutine
+            }
+            yield return null; // Wait for the next frame
+        }
     }
 }

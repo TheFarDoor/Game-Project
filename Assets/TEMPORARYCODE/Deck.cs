@@ -10,7 +10,8 @@ public class Deck : MonoBehaviour
     [Header("CardCount")]
     public int fireTypeCount;
     public int rockTypeCount;
-    public int spellTypeCount;
+    public int airTypeCount;
+    public int waterTypeCount;
 
     [Header("Lists"), Space(5)]
     public List<Card> deckList;
@@ -23,7 +24,7 @@ public class Deck : MonoBehaviour
     }
 
     public void RandomizeDeck(){
-        deckList = CardsManager.Instance.GenerateRandomDeck(fireTypeCount, rockTypeCount, spellTypeCount); // uses the GenerateRandomDeck function to generate a deck with the number of each card type given
+        deckList = CardsManager.Instance.GenerateRandomDeck(fireTypeCount, rockTypeCount, airTypeCount, waterTypeCount); // uses the GenerateRandomDeck function to generate a deck with the number of each card type given
         ShuffleDeck();
     }
 

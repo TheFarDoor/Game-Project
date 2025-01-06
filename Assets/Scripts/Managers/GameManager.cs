@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         inventoryUI = GameObject.Find("/Canvas-Cam/").transform.GetChild(2).gameObject;
         worldUI = GameObject.Find("/Canvas-Cam/NormalUI");
         battleUI = GameObject.Find("/Canvas-Cam/BattleUI");
-        pauseUI = GameObject.Find("/Canvas-Cam/PauseMenuUI");
+        pauseUI = GameObject.Find("/Canvas-Cam/").transform.GetChild(3).gameObject;
 
         SetState(GameState.Exploring);
     }

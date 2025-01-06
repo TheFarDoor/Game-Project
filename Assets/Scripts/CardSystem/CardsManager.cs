@@ -15,7 +15,8 @@ public class CardsManager : MonoBehaviour
     [Header("Cards List")]
     public List<Card> allFireCards;
     public List<Card> allRockCards;
-    public List<Card> allSpells;
+    public List<Card> allAirCards;
+    public List<Card> allWaterCards;
 
 
     public void Awake() {
@@ -40,7 +41,9 @@ public class CardsManager : MonoBehaviour
             // Loading all the cards from the Resources Folder
             allFireCards = Resources.LoadAll<Card>("Cards/Fire").ToList();
             allRockCards = Resources.LoadAll<Card>("Cards/Rock").ToList();
-            allSpells = Resources.LoadAll<Card>("Cards/Spell").ToList();
+            allAirCards = Resources.LoadAll<Card>("Cards/Air").ToList();
+            allWaterCards = Resources.LoadAll<Card>("Cards/Water").ToList();
+
         }
         catch(Exception)
         {
@@ -65,13 +68,14 @@ public class CardsManager : MonoBehaviour
         return tempCards;
     }
 
-    public List<Card> GenerateRandomDeck(int fType, int rType, int spells){
+    public List<Card> GenerateRandomDeck(int fType, int rType, int aType, int wType){
         List<Card> tempDeck = new List<Card>();
 
         // Get Specified number of specific type of card. Example: line below gets fType number of fire cards
         tempDeck.AddRange(GetRandomCards(allFireCards, fType, tempDeck.Count));
         tempDeck.AddRange(GetRandomCards(allRockCards, rType, tempDeck.Count));
-        tempDeck.AddRange(GetRandomCards(allSpells, spells, tempDeck.Count));
+        tempDeck.AddRange(GetRandomCards(allAirCards, aType, tempDeck.Count));
+        tempDeck.AddRange(GetRandomCards(allWaterCards, wType, tempDeck.Count));
 
         return tempDeck;
     }
