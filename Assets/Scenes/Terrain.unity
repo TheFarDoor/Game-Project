@@ -5288,7 +5288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1438546959266459337, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 55.734024
+      value: 59.734024
       objectReference: {fileID: 0}
     - target: {fileID: 1438546959266459337, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5296,7 +5296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1438546959266459337, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 185.5434
+      value: 18.043396
       objectReference: {fileID: 0}
     - target: {fileID: 1438546959266459337, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5825,10 +5825,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomDeck: 1
-  fireTypeCount: 5
-  rockTypeCount: 5
-  airTypeCount: 0
-  waterTypeCount: 0
+  fireTypeCount: 1
+  rockTypeCount: 1
+  airTypeCount: 1
+  waterTypeCount: 1
   deckList: []
   collectionList: []
 --- !u!1 &1371005111
