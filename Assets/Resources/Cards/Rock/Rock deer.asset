@@ -16,7 +16,7 @@ MonoBehaviour:
   type: 0
   cardName: Rock deer
   description: 
-  damage: 0
-  health: 0
-  cost: 0
+  damage: 2
+  health: 3
+  cost: 3
   model: {fileID: 919132149155446097, guid: f612768321ebc364fa742fa8bbfadb5e, type: 3}
