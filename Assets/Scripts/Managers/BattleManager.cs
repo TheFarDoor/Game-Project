@@ -254,7 +254,7 @@ public class BattleManager : MonoBehaviour
         float A_HP = Astats.Item3 - Dstats.Item2.Damage;
 
         if(D_HP <= 0){
-            defMonstP.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
+            defMonstP.transform.GetChild(0).gameObject.SetActive(false);
             defMonstP.GetComponent<SlotStatus>().ClearTuple();
         }
         else{
@@ -262,7 +262,7 @@ public class BattleManager : MonoBehaviour
         }
 
         if(A_HP <= 0){
-            attkMonstP.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
+            attkMonstP.transform.GetChild(0).gameObject.SetActive(false);
             attkMonstP.GetComponent<SlotStatus>().ClearTuple();
         }
         else{
@@ -339,7 +339,7 @@ public class BattleManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Object does not have a Renderer.");
-            return 0f; // Return 0 if no Renderer is found
+            return 1f; // Return 0 if no Renderer is found
         }
     }
 

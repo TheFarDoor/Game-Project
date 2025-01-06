@@ -19,5 +19,4 @@ MonoBehaviour:
   damage: 2
   health: 3
   cost: 3
-  used: 0
-  model: {fileID: 1232576797506358272, guid: d8c4191216806174ca0fae251c535dd8, type: 3}
+  model: {fileID: 6332589239754808445, guid: 47a44d4926cb4a342b33f4ebec491ca5, type: 3}

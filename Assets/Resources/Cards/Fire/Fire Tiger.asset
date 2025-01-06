@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   type: 0
-  cardName: 
+  cardName: Fire Tiger
   description: 
   damage: 0
   health: 0
   cost: 0
-  model: {fileID: 0}
+  model: {fileID: 5024673393174363092, guid: 0e70402be574abb46bb2fd294eaf0c86, type: 3}

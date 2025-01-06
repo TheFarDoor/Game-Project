@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   type: 0
-  cardName: 
+  cardName: Water Herring
   description: 
   damage: 0
   health: 0
   cost: 0
-  model: {fileID: 0}
+  model: {fileID: 1342889782683910774, guid: 4aa01f1d5c72d4e47a8c44e612a6b6fc, type: 3}

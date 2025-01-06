@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   type: 0
-  cardName: 
+  cardName: Water Penguin
   description: 
   damage: 0
   health: 0
   cost: 0
-  model: {fileID: 0}
+  model: {fileID: 919132149155446097, guid: a2ef474392ac74f409c70c61ccb6c24a, type: 3}
