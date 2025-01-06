@@ -464,7 +464,7 @@ public class BattleManager : MonoBehaviour
     }
 
     public void CheckWin(){
-        if((A_Deck.Count == 0 && A_Hand.Count == 0)|| B_Deck.Count == 0){
+        if((A_Deck.Count == 0 && A_Hand.Count == 0)|| (B_Deck.Count == 0 && B_Hand.Count == 0 && CheckSlotsForMonsters(false))){
             EndBattle();
         }
     }
@@ -620,7 +620,7 @@ public class BattleManager : MonoBehaviour
     }
 
     public void ResetMonsterAttackBools(bool forPlayer){
-        Transform slotsHolder = Arena.transform.Find("Zones");
+        Transform slotsHolder = Arena.transform.GetChild(3);
 
         switch(forPlayer){
             case true:
@@ -673,7 +673,7 @@ public class BattleManager : MonoBehaviour
             UpdateSelectedCardAndMonster(null, null);
         }
         else{
-            StartCoroutine(MonsterAttkLerp(slotWithMonst.GetChild(0).gameObject, Arena_B_Position.gameObject, slotWithMonst.GetChild(0).position, true));
+            StartCoroutine(MonsterAttkLerp(slotWithMonst.GetChild(0).gameObject, Arena_A_Position.gameObject, slotWithMonst.GetChild(0).position, true));
             RemoveHealth(InformationSlots[slotWithMonst.name].Item2.Damage, true);
             slotWithMonst.GetComponent<SlotStatus>().UpdateAttackBool(false);
         }
@@ -712,7 +712,11 @@ public class BattleManager : MonoBehaviour
         else{
            for(int j=0; j<Arena_B_CardSlots.childCount; j++){
                 if(InformationSlots[Arena_B_CardSlots.GetChild(j).name].Item1 && InformationSlots[Arena_B_CardSlots.GetChild(j).name].Item4){
-                    AttackDirectly(Arena_B_CardSlots.GetChild(j), true);
+                    for(int k=0; k<Arena_A_CardSlots.childCount; k++){
+                        if(InformationSlots[Arena_A_CardSlots.GetChild(k).name].Item1){
+                            AttackWithMonster(Arena_B_CardSlots.GetChild(j).gameObject, Arena_A_CardSlots.GetChild(k).gameObject);    
+                        }                        
+                    }
                 }
             } 
         }
