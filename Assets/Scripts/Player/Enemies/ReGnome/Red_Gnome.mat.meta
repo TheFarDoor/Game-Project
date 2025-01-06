@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6dc10d2fe91416e488fad3a49c3aa4f6
+timeCreated: 1436480664
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 39818
+  packageName: Red Gnome Animation
+  packageVersion: 1.0
+  assetPath: Assets/Material/Red_Gnome.mat
+  uploadId: 71771

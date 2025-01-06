@@ -17,6 +17,6 @@ public class EndTurnButton : MonoBehaviour
 
     public void OnButtonClick(){
         Debug.Log("End Turn Clicked");
-        BattleManager.Instance.SwitchTurn();
+        BattleManager.Instance.SwitchToEnemyTurn();
     }
 }

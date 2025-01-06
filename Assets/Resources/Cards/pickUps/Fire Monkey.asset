@@ -17,7 +17,6 @@ MonoBehaviour:
   cardName: Fire Monkey
   description: oo oo aa aa
   damage: 1
-  defence: 2
+  health: 0
   cost: 1
-  used: 0
-  model: {fileID: 7451762790753324346, guid: fbc62769d99c464418d12906223f22c2, type: 3}
+  model: {fileID: 919132149155446097, guid: b7b20bc931c427e46a8b1918db64e552, type: 3}
