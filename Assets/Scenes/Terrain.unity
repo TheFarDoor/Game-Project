@@ -5094,7 +5094,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 5
-  runSpeed: 100
+  runSpeed: 10
   gravity: -9.8
   jumpForce: 2
   yaSensitivity: 2
