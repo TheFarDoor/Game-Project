@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3064522467478227328}
   - component: {fileID: 7792578015271705018}
   - component: {fileID: 1488834536789859907}
-  - component: {fileID: 8159962273117508408}
   m_Layer: 0
   m_Name: B3 text
   m_TagString: Untagged
@@ -174,18 +173,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 7792578015271705018}
   m_maskType: 0
---- !u!114 &8159962273117508408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 481419055621721432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d8fbe9a38fd2764fb4ad2a8c50257da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &781327736834332293
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +188,7 @@ GameObject:
   - component: {fileID: 175323792646563998}
   m_Layer: 7
   m_Name: A1
-  m_TagString: Untagged
+  m_TagString: A CardZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -351,7 +338,7 @@ GameObject:
   - component: {fileID: 6867132999181088585}
   m_Layer: 7
   m_Name: B2
-  m_TagString: Untagged
+  m_TagString: B CardZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -466,7 +453,6 @@ GameObject:
   - component: {fileID: 4438532923232562147}
   - component: {fileID: 2778326959101437307}
   - component: {fileID: 5797108588742129234}
-  - component: {fileID: 906291487769566398}
   m_Layer: 0
   m_Name: A1 text
   m_TagString: Untagged
@@ -627,18 +613,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 2778326959101437307}
   m_maskType: 0
---- !u!114 &906291487769566398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1768643845998803526}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d8fbe9a38fd2764fb4ad2a8c50257da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1976237615340886070
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,7 +624,6 @@ GameObject:
   - component: {fileID: 5679784121094334555}
   - component: {fileID: 5307499541555830429}
   - component: {fileID: 2908774878855710647}
-  - component: {fileID: 4113684870646894532}
   m_Layer: 0
   m_Name: A2 text
   m_TagString: Untagged
@@ -813,18 +786,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 5307499541555830429}
   m_maskType: 0
---- !u!114 &4113684870646894532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1976237615340886070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d8fbe9a38fd2764fb4ad2a8c50257da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3191542645226012676
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,7 +838,7 @@ GameObject:
   - component: {fileID: 8499644707904335367}
   m_Layer: 7
   m_Name: B1
-  m_TagString: Untagged
+  m_TagString: B CardZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -992,7 +953,6 @@ GameObject:
   - component: {fileID: 5094773950431669394}
   - component: {fileID: 2839777318922995049}
   - component: {fileID: 2009261176946518967}
-  - component: {fileID: 3032604978059444536}
   m_Layer: 0
   m_Name: A3 text
   m_TagString: Untagged
@@ -1155,18 +1115,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 2839777318922995049}
   m_maskType: 0
---- !u!114 &3032604978059444536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3762378694222051054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d8fbe9a38fd2764fb4ad2a8c50257da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3830885237837980129
 GameObject:
   m_ObjectHideFlags: 0
@@ -1321,7 +1269,6 @@ GameObject:
   - component: {fileID: 5256465957422392566}
   - component: {fileID: 1733158163708445102}
   - component: {fileID: 1367232284837776377}
-  - component: {fileID: 4616174883858641523}
   m_Layer: 0
   m_Name: B1 text
   m_TagString: Untagged
@@ -1484,18 +1431,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1733158163708445102}
   m_maskType: 0
---- !u!114 &4616174883858641523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4369146039612549982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d8fbe9a38fd2764fb4ad2a8c50257da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4406850218157155013
 GameObject:
   m_ObjectHideFlags: 0
@@ -1507,7 +1442,7 @@ GameObject:
   - component: {fileID: 5136542396614398557}
   m_Layer: 0
   m_Name: B Zone
-  m_TagString: B CardZone
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1594,7 +1529,7 @@ GameObject:
   - component: {fileID: 7081523205135746326}
   m_Layer: 0
   m_Name: A Zone
-  m_TagString: A CardZone
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1632,7 +1567,7 @@ GameObject:
   - component: {fileID: 1316397724179924504}
   m_Layer: 7
   m_Name: B3
-  m_TagString: Untagged
+  m_TagString: B CardZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1853,7 +1788,7 @@ GameObject:
   - component: {fileID: 5221814548241712802}
   m_Layer: 7
   m_Name: A3
-  m_TagString: Untagged
+  m_TagString: A CardZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2110,7 +2045,6 @@ GameObject:
   - component: {fileID: 9058819492457133383}
   - component: {fileID: 661512968667295335}
   - component: {fileID: 101681776508818158}
-  - component: {fileID: 4072215116863726971}
   m_Layer: 0
   m_Name: B2 text
   m_TagString: Untagged
@@ -2273,18 +2207,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 661512968667295335}
   m_maskType: 0
---- !u!114 &4072215116863726971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7555249207454742471}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d8fbe9a38fd2764fb4ad2a8c50257da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8201714114275288492
 GameObject:
   m_ObjectHideFlags: 0
@@ -2300,7 +2222,7 @@ GameObject:
   - component: {fileID: 7177339007077744016}
   m_Layer: 7
   m_Name: A2
-  m_TagString: Untagged
+  m_TagString: A CardZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2493,7 +2415,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8876988617272572352
 Transform:
   m_ObjectHideFlags: 0

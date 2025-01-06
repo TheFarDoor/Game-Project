@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
     [Header("Enemy AI"), Space(10)]
     [Range(0, 2.0f)]public float enemySearchDelay = 0.2f;
 
+    [Header("Player Inputs"), Space(20)]
+    public PlayerInput controls;
+
 
     private void Awake(){ // ensuring there is only one gameobjects with the gamemanager script at any given time
         if (Instance == null){
@@ -43,6 +46,8 @@ public class GameManager : MonoBehaviour
         worldUI = GameObject.Find("/Canvas-Cam/NormalUI");
         battleUI = GameObject.Find("/Canvas-Cam/BattleUI");
         pauseUI = GameObject.Find("/Canvas-Cam/PauseMenuUI");
+
+        controls = GameObject.Find("/Player").GetComponent<PlayerInput>();
 
         SetState(GameState.Exploring);
     }
@@ -61,6 +66,7 @@ public class GameManager : MonoBehaviour
                 battleUI.SetActive(false);
                 inventoryUI.SetActive(false);
                 pauseUI.SetActive(false);
+                controls.SwitchCurrentActionMap("Player");
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 break;
@@ -69,6 +75,7 @@ public class GameManager : MonoBehaviour
                 battleUI.SetActive(true);
                 inventoryUI.SetActive(false);
                 pauseUI.SetActive(false);
+                controls.SwitchCurrentActionMap("InBattle");
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 break;

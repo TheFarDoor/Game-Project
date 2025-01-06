@@ -31,6 +31,12 @@ public class EnemyMovement : MonoBehaviour
     public Vector3 partrolB;
     public Vector3 patorlArea;
 
+    [Header("FOV Settings"), Space(10)]
+    [Range(1, 10)] public float viewRadius = 5; // How far the enemy can see (default is 5)
+    [Range(10,160)] public float viewAngle = 40; // How wide the enemy can see (default is 40)
+    public LayerMask playerMask; // LayerMask of player
+    public LayerMask obstacleMask; // LayerMask for obstacles such as walls
+
 
     public void Start(){
 
@@ -70,5 +76,23 @@ public class EnemyMovement : MonoBehaviour
     }
 
     public void LookAround(){
+
+    }
+
+    private Transform CheckForPlayer(){
+        Collider[] targetsInView = Physics.OverlapSphere(transform.position, viewRadius, playerMask); // cast a overlap sphere and store detected colliders in array
+        
+        if (targetsInView.Length != 0){ // if player detected
+            Transform playerTarget = targetsInView[0].transform;
+            Vector3 playerDirection = (playerTarget.position - transform.position).normalized;
+            if (Vector3.Angle(transform.forward, playerDirection) < viewAngle/2){ // check if player is within view range 
+                float distanceToPlayer = Vector3.Distance(transform.position, playerTarget.position);
+                if(!Physics.Raycast(transform.position, playerDirection, distanceToPlayer, obstacleMask)){ // use raycast to make sure there is no obstacle in the way
+                    Debug.DrawRay(transform.position, playerDirection * distanceToPlayer, Color.red, 0.15f);
+                    return playerTarget;
+                }
+            }
+        }
+        return null;
     }
 }
