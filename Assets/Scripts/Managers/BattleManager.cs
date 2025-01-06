@@ -694,8 +694,9 @@ public class BattleManager : MonoBehaviour
         while(B_Mana > 0 && steps < 2){
             for(int i=0; i<B_Hand.Count; i++){
                 for(int j=0; j<Arena_B_CardSlots.childCount; j++){
-                    if(!InformationSlots[Arena_B_CardSlots.GetChild(j).name].Item1){
+                    if(InformationSlots[Arena_B_CardSlots.GetChild(j).name].Item1 == false){
                         try{
+                            if(currentBattleState == BattleState.Placing){break;}
                             PlaceOrUseCard(B_Hand[i], Arena_B_CardSlots.GetChild(j).transform, false);
                             break;
                         }
